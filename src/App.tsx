@@ -10,6 +10,8 @@ import Store from "./pages/Store";
 import Social from "./pages/Social";
 import Learning from "./pages/Learning";
 import NotFound from "./pages/NotFound";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/store" element={<Store />} />
           <Route path="/social" element={<Social />} />
           <Route path="/learning" element={<Learning />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
