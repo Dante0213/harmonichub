@@ -8,8 +8,9 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Environment, PresentationControls } from "@react-three/drei";
 import { Calendar } from "@/components/ui/calendar";
 import { BellRing, CheckIcon, Music2, PianoIcon, PlusCircle, Users2 } from "lucide-react";
+import { Euler } from "three";
 
-function Model({ rotation = [0, 0, 0] }) {
+function Model({ rotation = new Euler(0, Math.PI / 6, 0) }) {
   // 3D 기타 모델 - 다른 모델로 대체 가능
   return (
     <mesh rotation={rotation} scale={[0.8, 0.8, 0.8]}>
