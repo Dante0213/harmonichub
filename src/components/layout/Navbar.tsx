@@ -64,10 +64,10 @@ export function Navbar() {
           
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-              <Link to="/login">로그인</Link>
+              <Link to="/sign-in">로그인</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link to="/signup">회원가입</Link>
+              <Link to="/sign-up">회원가입</Link>
             </Button>
           </div>
         </div>
@@ -117,10 +117,10 @@ export function Navbar() {
           <div className="pt-4 mt-4 border-t">
             <div className="grid gap-2">
               <Button variant="outline" size="sm" asChild>
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>로그인</Link>
+                <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>로그인</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>회원가입</Link>
+                <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>회원가입</Link>
               </Button>
             </div>
           </div>

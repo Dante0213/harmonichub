@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email({ message: "유효한 이메일 주소를 입력해주세요." }),
@@ -113,8 +114,8 @@ export default function SignIn() {
               />
               
               <div className="flex justify-end">
-                <Button variant="link" className="px-0 h-auto" asChild>
-                  <a href="/forgot-password">비밀번호를 잊으셨나요?</a>
+                <Button variant="link" className="px-0 h-auto">
+                  비밀번호를 잊으셨나요?
                 </Button>
               </div>
               
@@ -151,7 +152,7 @@ export default function SignIn() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
-            계정이 없으신가요? <a href="/sign-up" className="font-medium text-primary hover:underline">회원가입</a>
+            계정이 없으신가요? <Link to="/sign-up" className="font-medium text-primary hover:underline">회원가입</Link>
           </p>
         </CardFooter>
       </Card>

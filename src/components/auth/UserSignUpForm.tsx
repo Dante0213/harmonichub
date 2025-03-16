@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
@@ -166,7 +167,7 @@ export default function UserSignUpForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          이미 계정이 있으신가요? <a href="/sign-in" className="font-medium text-primary hover:underline">로그인</a>
+          이미 계정이 있으신가요? <Link to="/sign-in" className="font-medium text-primary hover:underline">로그인</Link>
         </p>
       </CardFooter>
     </Card>
