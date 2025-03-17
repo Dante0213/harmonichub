@@ -15,6 +15,24 @@
         document.write('<base href="/music-learn-connect/" />');
       }
     </script>
+    <script>
+      // 리디렉션에서 왔는지 확인하고 원래 경로로 복원
+      (function() {
+        var redirectPath = sessionStorage.getItem('redirect_path');
+        if (redirectPath) {
+          // 리디렉션 경로 초기화
+          sessionStorage.removeItem('redirect_path');
+          
+          // 경로에서 레포지토리 이름 제거 (이미 base href로 처리됨)
+          if (redirectPath.indexOf('/music-learn-connect/') === 0) {
+            redirectPath = redirectPath.replace('/music-learn-connect/', '/');
+          }
+          
+          // 리액트 라우터가 처리할 수 있도록 해시 기반 URL 생성
+          history.replaceState(null, null, redirectPath);
+        }
+      })();
+    </script>
   </head>
 
   <body>

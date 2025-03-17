@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, HashRouter } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
@@ -53,18 +53,20 @@ const queryClient = new QueryClient({
   },
 });
 
-// 환경에 따라 동적으로 basename 설정
+// GitHub Pages에서는 BrowserRouter 대신 HashRouter 사용
+const Router = window.location.hostname.includes('github.io') ? HashRouter : BrowserRouter;
+
+// basename 설정 (HashRouter 사용 시에는 필요 없음)
 const getBasename = () => {
-  // GitHub Pages 배포 환경인 경우에만 basename 설정
-  if (window.location.hostname.includes('github.io')) {
+  if (window.location.hostname.includes('github.io') && Router === BrowserRouter) {
     return '/music-learn-connect/';
   }
-  // 개발 환경에서는 basename 불필요
   return '';
 };
 
 const BASENAME = getBasename();
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
+console.log('라우터 타입:', Router.name);
 
 const App = () => {
   console.log('App 컴포넌트 렌더링 시작');
@@ -75,7 +77,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter basename={BASENAME}>
+          <Router basename={BASENAME}>
             <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -105,7 +107,7 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Chatbot />
-          </BrowserRouter>
+          </Router>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
