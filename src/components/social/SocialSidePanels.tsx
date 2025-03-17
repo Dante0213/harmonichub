@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -75,7 +76,20 @@ export const RecommendedUsersPanel = () => {
       time: "2일 전",
       content: "피아노 연주를 공유합니다",
       likes: 1200,
-      comments: 45
+      comments: 45,
+      // 추가 프로필 정보
+      bio: "피아노 전문 강사입니다. 클래식부터 재즈까지 다양한 장르를 가르치고 있습니다.",
+      instruments: ["피아노", "키보드"],
+      genres: ["클래식", "재즈"],
+      education: [
+        {id: "ed1", institution: "서울음악대학교", degree: "피아노학과", year: "2015-2019"}
+      ],
+      experience: [
+        {id: "ex1", company: "음악학원", position: "피아노 강사", period: "2019-현재"}
+      ],
+      certificates: [
+        {id: "cert1", name: "피아노 교육자격증", issuer: "한국음악교육협회", year: "2018"}
+      ]
     },
     {
       id: "2", 
@@ -93,7 +107,20 @@ export const RecommendedUsersPanel = () => {
       time: "3일 전",
       content: "바이올린 연주 영상입니다",
       likes: 890,
-      comments: 32
+      comments: 32,
+      // 추가 프로필 정보
+      bio: "클래식 바이올리니스트입니다. 오케스트라 활동과 함께 개인 레슨도 진행합니다.",
+      instruments: ["바이올린"],
+      genres: ["클래식", "현대음악"],
+      education: [
+        {id: "ed1", institution: "국립예술대학교", degree: "관현악과", year: "2016-2020"}
+      ],
+      experience: [
+        {id: "ex1", company: "서울 심포니 오케스트라", position: "바이올리니스트", period: "2020-현재"}
+      ],
+      certificates: [
+        {id: "cert1", name: "바이올린 연주자격증", issuer: "한국음악협회", year: "2019"}
+      ]
     },
     {
       id: "3",
@@ -111,7 +138,20 @@ export const RecommendedUsersPanel = () => {
       time: "1주 전",
       content: "오페라 연습 중입니다",
       likes: 750,
-      comments: 28
+      comments: 28,
+      // 추가 프로필 정보
+      bio: "성악을 전공하는 음악가입니다. 오페라와 뮤지컬에 관심이 많습니다.",
+      instruments: ["성악"],
+      genres: ["오페라", "뮤지컬"],
+      education: [
+        {id: "ed1", institution: "한국음악대학", degree: "성악과", year: "2017-2021"}
+      ],
+      experience: [
+        {id: "ex1", company: "국립오페라단", position: "성악가", period: "2021-현재"}
+      ],
+      certificates: [
+        {id: "cert1", name: "성악 콩쿠르 우승", issuer: "전국음악콩쿠르", year: "2020"}
+      ]
     },
     {
       id: "4",
@@ -129,7 +169,20 @@ export const RecommendedUsersPanel = () => {
       time: "5일 전",
       content: "드럼 연주 영상입니다",
       likes: 920,
-      comments: 36
+      comments: 36,
+      // 추가 프로필 정보
+      bio: "드럼을 연주하는 음악가입니다. 여러 밴드와 협업하고 있습니다.",
+      instruments: ["드럼", "퍼커션"],
+      genres: ["록", "재즈", "팝"],
+      education: [
+        {id: "ed1", institution: "실용음악학교", degree: "드럼전공", year: "2018-2022"}
+      ],
+      experience: [
+        {id: "ex1", company: "스튜디오 뮤지션", position: "세션 드러머", period: "2022-현재"}
+      ],
+      certificates: [
+        {id: "cert1", name: "드럼 연주자격증", issuer: "한국실용음악협회", year: "2021"}
+      ]
     }
   ];
   

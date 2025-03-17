@@ -28,19 +28,21 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
         <div className="text-white">
           <div className="flex items-center gap-1">
             <p className="font-semibold">{reel.userHandle}</p>
-            {reel.isTeacher && (
-              <Music className="h-4 w-4 text-purple-500" fill="currentColor" />
-            )}
           </div>
         </div>
       </div>
-      <Button 
-        size="sm" 
-        variant="secondary" 
-        className="ml-auto"
-      >
-        팔로우
-      </Button>
+      
+      <div className="flex items-center gap-2">
+        {reel.isTeacher && (
+          <Music className="h-4 w-4 text-purple-500" fill="currentColor" />
+        )}
+        <Button 
+          size="sm" 
+          variant="secondary"
+        >
+          팔로우
+        </Button>
+      </div>
     </div>
   );
 };
