@@ -1,8 +1,5 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
 import { Reel } from "@/components/social/reels/ReelsData";

@@ -1,8 +1,7 @@
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { reelsData, Reel } from "./reels/ReelsData";
+import { Reel } from "./reels/ReelsData";
 import { useSocial } from "@/pages/Social";
 import { useToast } from "@/hooks/use-toast";
 
