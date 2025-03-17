@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Video, ShoppingBag, MessageCircle, BookOpen, Menu, X } from "lucide-react";
+import { Music, FileQuestion, Bell, Info, Menu, X } from "lucide-react";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +20,8 @@ export function Navbar() {
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
         <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold">음악 플랫폼</span>
+          <Music className="w-6 h-6 mr-2 text-primary" />
+          <span className="text-xl font-bold">Harmonic Hub</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -28,34 +29,34 @@ export function Navbar() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <Link to="/lesson-room">
+                <Link to="/about">
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    <Video className="w-4 h-4 mr-2" />
-                    레슨실
+                    <Info className="w-4 h-4 mr-2" />
+                    소개
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/store">
+                <Link to="/notices">
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    <ShoppingBag className="w-4 h-4 mr-2" />
-                    스토어
+                    <Bell className="w-4 h-4 mr-2" />
+                    공지사항
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/social">
+                <Link to="/guide">
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    SNS
+                    <Info className="w-4 h-4 mr-2" />
+                    이용안내
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/learning">
+                <Link to="/contact">
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    학습실
+                    <FileQuestion className="w-4 h-4 mr-2" />
+                    문의
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -86,32 +87,32 @@ export function Navbar() {
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 flex flex-col px-4 py-6 space-y-4 bg-background md:hidden top-16">
           <Link 
-            to="/lesson-room" 
+            to="/about" 
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
             onClick={() => setIsMenuOpen(false)}
           >
-            <Video className="w-5 h-5 mr-3" /> 레슨실
+            <Info className="w-5 h-5 mr-3" /> 소개
           </Link>
           <Link 
-            to="/store" 
+            to="/notices" 
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
             onClick={() => setIsMenuOpen(false)}
           >
-            <ShoppingBag className="w-5 h-5 mr-3" /> 스토어
+            <Bell className="w-5 h-5 mr-3" /> 공지사항
           </Link>
           <Link 
-            to="/social" 
+            to="/guide" 
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
             onClick={() => setIsMenuOpen(false)}
           >
-            <MessageCircle className="w-5 h-5 mr-3" /> SNS
+            <Info className="w-5 h-5 mr-3" /> 이용안내
           </Link>
           <Link 
-            to="/learning" 
+            to="/contact" 
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
             onClick={() => setIsMenuOpen(false)}
           >
-            <BookOpen className="w-5 h-5 mr-3" /> 학습실
+            <FileQuestion className="w-5 h-5 mr-3" /> 문의
           </Link>
           
           <div className="pt-4 mt-4 border-t">
