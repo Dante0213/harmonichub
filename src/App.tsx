@@ -37,7 +37,6 @@ const RouteDebugger = () => {
   console.log('현재 경로:', location.pathname);
   console.log('해시:', location.hash);
   console.log('전체 URL:', window.location.href);
-  console.log('base 태그:', document.querySelector('base')?.href);
   return null;
 };
 
