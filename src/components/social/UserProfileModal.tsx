@@ -1,10 +1,12 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Video, Users, Heart, Bookmark } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Music, Users, Video, Heart, Bookmark, GraduationCap, Briefcase, Award } from "lucide-react";
 import { Reel } from "./reels/ReelsData";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
+import { ProfileInfo } from "@/components/profile/ProfileInfo";
 
 interface UserProfileModalProps {
   user: Reel;
@@ -22,128 +24,8 @@ export const UserProfileModal = ({ user, isOpen, onClose }: UserProfileModalProp
         
         <div className="flex flex-col md:flex-row gap-6 mt-6">
           <div className="md:w-1/3">
-            <div className="flex flex-col items-center text-center p-4 border rounded-lg">
-              <Avatar className="h-32 w-32 mb-4">
-                <AvatarFallback className="text-4xl">{user.avatar}</AvatarFallback>
-              </Avatar>
-              <h2 className="text-2xl font-bold">{user.user}</h2>
-              <p className="text-muted-foreground mb-2">@{user.userHandle}</p>
-              
-              {user.isTeacher && (
-                <div className="flex items-center text-purple-500 mb-4">
-                  <Music className="mr-1 h-5 w-5" />
-                  <span>음악 선생님</span>
-                </div>
-              )}
-              
-              <div className="grid grid-cols-3 gap-4 w-full mb-4">
-                <div className="text-center">
-                  <p className="font-bold">254</p>
-                  <p className="text-sm text-muted-foreground">게시물</p>
-                </div>
-                <div className="text-center">
-                  <p className="font-bold">1.2K</p>
-                  <p className="text-sm text-muted-foreground">팔로워</p>
-                </div>
-                <div className="text-center">
-                  <p className="font-bold">348</p>
-                  <p className="text-sm text-muted-foreground">팔로잉</p>
-                </div>
-              </div>
-              
-              <Button className="w-full">팔로우</Button>
-              <Button variant="outline" className="w-full mt-2">메시지 보내기</Button>
-            </div>
-            
-            <div className="mt-4 p-4 border rounded-lg">
-              <h3 className="font-semibold mb-2">소개</h3>
-              <p className="text-sm">
-                {user.bio || `음악을 사랑하는 ${user.user}입니다. 매일 새로운 음악을 만들고 공유합니다.
-                ${user.isTeacher ? ' 음악 레슨도 진행하고 있으니 관심 있으시면 연락주세요!' : ''}`}
-              </p>
-              
-              {(user.instruments && user.instruments.length > 0) && (
-                <div className="mt-4">
-                  <h3 className="font-semibold mb-2">악기</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {user.instruments.map((instrument, index) => (
-                      <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
-                        {instrument}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {(user.genres && user.genres.length > 0) && (
-                <div className="mt-4">
-                  <h3 className="font-semibold mb-2">장르</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {user.genres.map((genre, index) => (
-                      <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
-                        {genre}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* 학력, 경력, 자격증 정보 */}
-            <div className="mt-4 p-4 border rounded-lg">
-              <h3 className="font-semibold mb-4">정보</h3>
-              
-              {(user.education && user.education.length > 0) && (
-                <div className="mb-4">
-                  <div className="flex items-center gap-1 mb-2">
-                    <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                    <h4 className="font-medium text-sm">학력</h4>
-                  </div>
-                  <div className="space-y-2">
-                    {user.education.map((edu) => (
-                      <div key={edu.id} className="text-sm">
-                        <p className="font-medium">{edu.institution}</p>
-                        <p className="text-muted-foreground">{edu.degree} • {edu.year}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {(user.experience && user.experience.length > 0) && (
-                <div className="mb-4">
-                  <div className="flex items-center gap-1 mb-2">
-                    <Briefcase className="h-4 w-4 text-muted-foreground" />
-                    <h4 className="font-medium text-sm">경력</h4>
-                  </div>
-                  <div className="space-y-2">
-                    {user.experience.map((exp) => (
-                      <div key={exp.id} className="text-sm">
-                        <p className="font-medium">{exp.company}</p>
-                        <p className="text-muted-foreground">{exp.position} • {exp.period}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {(user.certificates && user.certificates.length > 0) && (
-                <div>
-                  <div className="flex items-center gap-1 mb-2">
-                    <Award className="h-4 w-4 text-muted-foreground" />
-                    <h4 className="font-medium text-sm">자격증</h4>
-                  </div>
-                  <div className="space-y-2">
-                    {user.certificates.map((cert) => (
-                      <div key={cert.id} className="text-sm">
-                        <p className="font-medium">{cert.name}</p>
-                        <p className="text-muted-foreground">{cert.issuer} • {cert.year}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <ProfileHeader userData={user} isCurrentUser={false} />
+            <ProfileInfo userData={user} />
           </div>
           
           <div className="md:w-2/3">

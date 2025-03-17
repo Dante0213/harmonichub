@@ -2,23 +2,26 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Settings, PenSquare } from "lucide-react";
+import { Settings, PenSquare, UserPlus, MessageSquare } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 
 interface ProfileHeaderProps {
   userData: Reel;
-  onEditClick: () => void;
+  onEditClick?: () => void;
+  isCurrentUser?: boolean;
 }
 
-export const ProfileHeader = ({ userData, onEditClick }: ProfileHeaderProps) => {
+export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: ProfileHeaderProps) => {
   return (
     <Card>
       <CardHeader className="relative pb-0">
-        <div className="absolute top-4 right-4">
-          <Button variant="ghost" size="icon">
-            <Settings className="h-5 w-5" />
-          </Button>
-        </div>
+        {isCurrentUser && (
+          <div className="absolute top-4 right-4">
+            <Button variant="ghost" size="icon">
+              <Settings className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
         <div className="flex flex-col items-center">
           <Avatar className="h-32 w-32 mb-4">
             <AvatarFallback className="text-4xl">{userData.avatar}</AvatarFallback>
@@ -49,14 +52,27 @@ export const ProfileHeader = ({ userData, onEditClick }: ProfileHeaderProps) => 
           <p className="text-sm">{userData.bio}</p>
         </div>
         
-        <Button 
-          className="w-full" 
-          variant="outline"
-          onClick={onEditClick}
-        >
-          <PenSquare className="h-4 w-4 mr-2" />
-          프로필 수정
-        </Button>
+        {isCurrentUser ? (
+          <Button 
+            className="w-full" 
+            variant="outline"
+            onClick={onEditClick}
+          >
+            <PenSquare className="h-4 w-4 mr-2" />
+            프로필 수정
+          </Button>
+        ) : (
+          <div className="flex gap-2">
+            <Button className="flex-1">
+              <UserPlus className="h-4 w-4 mr-2" />
+              팔로우
+            </Button>
+            <Button variant="outline" className="flex-1">
+              <MessageSquare className="h-4 w-4 mr-2" />
+              메시지
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
