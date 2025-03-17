@@ -33,8 +33,8 @@ export function Features() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
             <Link key={index} to={feature.link} className="block transition-transform hover:scale-105">
-              <Card className="flex flex-col items-center justify-center h-[200px] mx-auto transition-all hover:shadow-md">
-                <div className="p-6 rounded-full bg-primary/10 mb-4">
+              <Card className="flex flex-col items-center justify-center h-[200px] mx-auto transition-all hover:shadow-md card-hover bg-gradient-to-b from-white to-muted/20 border border-muted">
+                <div className="p-6 rounded-full bg-gradient-to-br from-primary/20 to-secondary/10 mb-4">
                   <feature.icon className="w-10 h-10 text-primary" />
                 </div>
                 <CardContent className="text-center">

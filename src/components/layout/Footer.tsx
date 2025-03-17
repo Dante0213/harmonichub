@@ -5,7 +5,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="py-6 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <footer className="py-6 border-t bg-gradient-to-b from-background to-muted/30 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div>
@@ -18,27 +18,27 @@ export function Footer() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">서비스</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/lesson-room" className="hover:underline">레슨실</Link></li>
-              <li><Link to="/store" className="hover:underline">스토어</Link></li>
-              <li><Link to="/social" className="hover:underline">SNS</Link></li>
-              <li><Link to="/learning" className="hover:underline">학습실</Link></li>
+              <li><Link to="/lesson-room" className="hover:underline hover:text-primary transition-colors">레슨실</Link></li>
+              <li><Link to="/store" className="hover:underline hover:text-primary transition-colors">스토어</Link></li>
+              <li><Link to="/social" className="hover:underline hover:text-primary transition-colors">SNS</Link></li>
+              <li><Link to="/learning" className="hover:underline hover:text-primary transition-colors">학습실</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="mb-4 text-lg font-semibold">회사</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/about" className="hover:underline">소개</Link></li>
-              <li><Link to="/contact" className="hover:underline">연락처</Link></li>
-              <li><Link to="/careers" className="hover:underline">채용</Link></li>
+              <li><Link to="/about" className="hover:underline hover:text-primary transition-colors">소개</Link></li>
+              <li><Link to="/contact" className="hover:underline hover:text-primary transition-colors">연락처</Link></li>
+              <li><Link to="/careers" className="hover:underline hover:text-primary transition-colors">채용</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="mb-4 text-lg font-semibold">법적 고지</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/privacy" className="hover:underline">개인정보처리방침</Link></li>
-              <li><Link to="/terms" className="hover:underline">이용약관</Link></li>
+              <li><Link to="/privacy" className="hover:underline hover:text-primary transition-colors">개인정보처리방침</Link></li>
+              <li><Link to="/terms" className="hover:underline hover:text-primary transition-colors">이용약관</Link></li>
             </ul>
           </div>
         </div>
