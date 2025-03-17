@@ -37,12 +37,16 @@ jobs:
           echo "NPM version: $(npm -v)"
           echo "Directory contents:"
           ls -la
+          echo "Package.json 내용:"
+          cat package.json
           
-      - name: Build
-        run: npm run build
+      - name: Build with increased memory
+        run: |
+          export NODE_OPTIONS="--max-old-space-size=8192"
+          echo "NODE_OPTIONS: $NODE_OPTIONS"
+          npm run build || (echo "빌드 실패" && exit 1)
         env:
           CI: false
-          NODE_OPTIONS: "--max-old-space-size=4096"
       
       - name: Debug build output
         run: |
@@ -50,8 +54,12 @@ jobs:
           ls -la dist/ || echo "dist directory not found"
           if [ -f "dist/index.html" ]; then
             echo "Index.html found!"
+            echo "Index.html 내용 미리보기:"
+            head -n 20 dist/index.html
           else
             echo "Index.html NOT found!"
+            echo "현재 디렉토리 구조:"
+            find . -type f -name "*.html" | sort
           fi
       
       - name: Setup Pages
@@ -61,25 +69,33 @@ jobs:
         run: |
           mkdir -p dist
           touch dist/.nojekyll
+          echo ".nojekyll 파일 생성 완료"
       
       - name: Ensure 404.html exists
         run: |
           if [ ! -f "dist/404.html" ] && [ -f "public/404.html" ]; then
             mkdir -p dist
             cp public/404.html dist/404.html
-            echo "Copied 404.html from public to dist"
+            echo "public에서 404.html을 복사했습니다"
           elif [ ! -f "dist/404.html" ]; then
             mkdir -p dist
             echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Page Not Found</title></head><body><h1>404 - Page Not Found</h1></body></html>" > dist/404.html
-            echo "Created default 404.html"
+            echo "기본 404.html을 생성했습니다"
           else
-            echo "404.html already exists in dist folder"
+            echo "404.html이 이미 dist 폴더에 존재합니다"
           fi
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           path: './dist'
+        id: upload-artifact
+        
+      - name: Debug upload artifact
+        if: always()
+        run: |
+          echo "Artifact upload status: ${{ steps.upload-artifact.outcome }}"
+          echo "Artifact upload conclusion: ${{ steps.upload-artifact.conclusion }}"
 
   deploy:
     environment:
@@ -91,3 +107,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+
