@@ -6,7 +6,6 @@ import { AlertTriangle } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
-  const basePath = "/music-learn-connect";
 
   useEffect(() => {
     // 디버깅 정보 로깅
@@ -19,13 +18,8 @@ const NotFound = () => {
     console.log("전체 URL:", window.location.href);
     console.log("기본 요소:", document.querySelector("base")?.href);
     console.log("Location 객체:", location);
-    console.log("basename 설정:", basePath);
+    console.log("basename 설정:", "/music-learn-connect");
     console.log("문서 제목:", document.title);
-    
-    // 리소스 로딩 오류 점검
-    document.querySelectorAll('img').forEach((img, index) => {
-      console.log(`이미지 #${index + 1} 상태:`, img.complete ? '로드됨' : '로드 안됨', img.src);
-    });
   }, [location.pathname]);
 
   return (
@@ -49,7 +43,7 @@ const NotFound = () => {
               전체 URL: {window.location.href}
             </p>
             <p className="text-sm text-muted-foreground">
-              기본 경로: {basePath}/
+              기본 경로: /music-learn-connect/
             </p>
           </div>
           <Link 

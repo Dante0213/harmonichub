@@ -1,3 +1,4 @@
+
 name: Deploy to GitHub Pages
 
 on:
@@ -49,9 +50,7 @@ jobs:
           export NODE_OPTIONS="--max-old-space-size=8192"
           export GENERATE_SOURCEMAP=false
           export CI=false
-          export PUBLIC_URL="/music-learn-connect"
           echo "NODE_OPTIONS: $NODE_OPTIONS"
-          echo "PUBLIC_URL: $PUBLIC_URL"
           npm run build || (echo "빌드 실패 - 오류 로그 확인" && exit 1)
       
       - name: Debug build output
@@ -75,26 +74,6 @@ jobs:
             cp dist/index.html dist/404.html
             echo "index.html을 404.html로 복사했습니다"
           fi
-          
-      # 추가: dist 디렉토리에 .htaccess 파일 생성하여 올바른 MIME 타입 설정
-      - name: Create .htaccess file for MIME types
-        run: |
-          echo "AddType application/javascript .js .mjs" > dist/.htaccess
-          echo "AddType application/json .json" >> dist/.htaccess
-          echo "AddType text/css .css" >> dist/.htaccess
-          echo "Header set X-Content-Type-Options \"nosniff\"" >> dist/.htaccess
-          echo "Header set Access-Control-Allow-Origin \"*\"" >> dist/.htaccess
-          echo ".htaccess 파일을 생성했습니다"
-      
-      # 추가: 정적 에셋 경로 확인
-      - name: Verify static asset paths
-        run: |
-          echo "JavaScript 파일 확인:"
-          find dist -name "*.js" -type f | head -n 5
-          echo "CSS 파일 확인:"
-          find dist -name "*.css" -type f | head -n 5
-          echo "이미지 파일 확인:"
-          find dist -name "*.png" -type f -o -name "*.jpg" -type f -o -name "*.svg" -type f | head -n 5
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
