@@ -8,14 +8,24 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="./og-image.png" />
-    <!-- GitHub Pages 배포를 위한 기본 설정 - harmonichub로 경로 변경 -->
-    <base href="/harmonichub/" />
+    <!-- 로컬 개발 환경에서는 base 태그 제거, GitHub Pages에서만 사용 -->
     <script>
+      // 현재 환경이 GitHub Pages인지 확인
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      
+      // GitHub Pages 환경에서만 base 태그 추가
+      if (isGitHubPages) {
+        const baseElement = document.createElement('base');
+        baseElement.href = '/harmonichub/';
+        document.head.appendChild(baseElement);
+      }
+      
       // 디버깅 정보 출력
       console.log('문서 로드 시작');
       console.log('호스트:', window.location.hostname);
       console.log('경로:', window.location.pathname);
       console.log('해시:', window.location.hash);
+      console.log('GitHub Pages 환경:', isGitHubPages);
       
       // sessionStorage에서 리디렉션 경로 확인
       var redirectPath = sessionStorage.getItem('redirect_path');
@@ -37,6 +47,7 @@
       window.addEventListener('error', function(e) {
         if (e.target && (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT' || e.target.tagName === 'IMG')) {
           console.error('리소스 로드 실패:', e.target.src || e.target.href);
+          console.error('기본 경로:', document.baseURI);
         }
       }, true);
     </script>

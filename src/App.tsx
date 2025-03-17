@@ -41,6 +41,7 @@ const RouteDebugger = () => {
   console.log('전체 URL:', window.location.href);
   console.log('경로 상태:', location.state);
   console.log('경로 검색어:', location.search);
+  console.log('기본 URI:', document.baseURI);
   return null;
 };
 
@@ -54,18 +55,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages 환경인지 확인
-const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
-console.log('GitHub Pages 환경 확인:', isGitHubPages);
-
-// GitHub Pages에서는 항상 HashRouter 사용
-const Router = HashRouter;
-
-// basename은 HashRouter에서는 필요 없으므로 빈 문자열 반환
-const BASENAME = '';
-console.log('앱 초기화 - 설정된 basename:', BASENAME);
-console.log('라우터 타입:', Router.name);
-
 const App = () => {
   console.log('App 컴포넌트 렌더링 시작');
   
@@ -75,7 +64,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <Router>
+          <HashRouter>
             <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -106,7 +95,7 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Chatbot />
-          </Router>
+          </HashRouter>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

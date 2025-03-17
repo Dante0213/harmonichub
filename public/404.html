@@ -12,6 +12,8 @@
       
       // 디버깅 정보 출력
       console.log('404 페이지 로드됨', l.href);
+      console.log('호스트명:', l.hostname);
+      console.log('경로명:', l.pathname);
       
       // 리디렉션이 발생한 경로 저장
       var pathname = l.pathname.replace(/^\/harmonichub/, '');
