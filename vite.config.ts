@@ -34,6 +34,10 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      // 모든 JavaScript 파일에 적절한 MIME 타입 설정
+      "Content-Type": "application/javascript; charset=utf-8"
+    }
   },
   plugins: [
     react(),
