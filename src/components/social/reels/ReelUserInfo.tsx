@@ -35,7 +35,7 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
     toast({
       title: following ? "팔로우 취소됨" : "팔로우 추가됨",
       description: following ? `${reel.userHandle}님을 더 이상 팔로우하지 않습니다.` : `${reel.userHandle}님을 팔로우합니다.`,
-      duration: 2000
+      duration: 1000
     });
   };
 
