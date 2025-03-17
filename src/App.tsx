@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, HashRouter } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
@@ -55,8 +55,7 @@ const queryClient = new QueryClient({
 });
 
 // GitHub Pages에서는 항상 HashRouter 사용
-// const Router = window.location.hostname.includes('github.io') ? HashRouter : BrowserRouter;
-const Router = HashRouter; // GitHub Pages 배포 문제 해결을 위해 항상 HashRouter 사용
+const Router = HashRouter;
 
 // HashRouter에서는 basename이 필요 없음
 const getBasename = () => {

@@ -25,15 +25,24 @@ export default defineConfig(({ mode }) => ({
     },
     // 청크 사이즈 최적화
     rollupOptions: {
+      external: [], // 외부 모듈을 명시적으로 지정하지 않음
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['@radix-ui', 'class-variance-authority', 'clsx', 'tailwind-merge'],
+          ui: ['class-variance-authority', 'clsx', 'tailwind-merge'],
         },
         // 모든 에셋에 상대 경로 사용
         assetFileNames: 'assets/[name].[hash].[ext]',
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',
+      },
+      // @radix-ui 문제 해결을 위한 추가 설정
+      onwarn(warning, warn) {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || 
+            warning.message.includes('Use of eval')) {
+          return;
+        }
+        warn(warning);
       },
     },
   },
@@ -50,5 +59,10 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  // 모듈 해석 문제 해결을 위한 추가 설정
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+    exclude: []
   },
 }));
