@@ -9,27 +9,23 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <script>
-      // 단순화된 SPA 리다이렉트 처리
+      // SPA router handling for GitHub Pages
       (function() {
-        console.log('인덱스 페이지 로드 - 현재 URL:', window.location.href);
-        
-        // 저장된 경로 확인
         var redirectPath = sessionStorage.getItem('redirect-path');
         if (redirectPath) {
-          console.log('인덱스 페이지 - 저장된 경로 발견:', redirectPath);
-          
-          // 저장된 경로 제거
           sessionStorage.removeItem('redirect-path');
           
-          // 앱 라우터용 경로로 설정 (첫 문자가 /가 아니면 추가)
+          // Make sure path starts with / and remove base path if present
+          if (redirectPath.indexOf('/music-learn-connect') === 0) {
+            redirectPath = redirectPath.replace('/music-learn-connect', '');
+          }
+          
           if (redirectPath.charAt(0) !== '/') {
             redirectPath = '/' + redirectPath;
           }
           
-          console.log('인덱스 페이지 - 히스토리 설정:', redirectPath);
-          history.replaceState(null, '', redirectPath);
-        } else {
-          console.log('인덱스 페이지 - 저장된 경로 없음');
+          console.log('Restoring path:', redirectPath);
+          history.replaceState(null, null, redirectPath);
         }
       })();
     </script>

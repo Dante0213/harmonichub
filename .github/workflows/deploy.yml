@@ -28,31 +28,33 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-      - name: Debug environment
+        
+      - name: List files before build
         run: |
-          echo "Node version: $(node --version)"
-          echo "NPM version: $(npm --version)"
-          echo "Working directory: $PWD"
+          echo "Repository content before build:"
+          ls -la
+          
       - name: Build
         run: npm run build
-      - name: Copy index.html to 404.html
+        
+      - name: List built files
         run: |
-          echo "Copying index.html to 404.html"
-          cp dist/index.html dist/404.html
-          echo "Copy completed"
-      - name: Create .nojekyll file
+          echo "Build output content:"
+          ls -la dist/
+          
+      - name: Prepare for GitHub Pages
         run: |
-          echo "Creating .nojekyll file"
+          # Create .nojekyll file to bypass Jekyll processing
           touch dist/.nojekyll
           echo "Created .nojekyll file"
-      - name: Debug build output
-        run: |
-          echo "Listing dist directory contents:"
+          
+          # Copy index.html to 404.html for SPA routing
+          cp dist/index.html dist/404.html
+          echo "Copied index.html to 404.html"
+          
+          # Verify the files were created correctly
           ls -la dist/
-          echo "Checking for index.html:"
-          cat dist/index.html | head -n 20
-          echo "Checking for 404.html:"
-          cat dist/404.html | head -n 20
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
@@ -68,7 +70,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-      - name: Debug deployment
-        run: |
-          echo "Deployed to: ${{ steps.deployment.outputs.page_url }}"
-          echo "GitHub Pages URL should be: https://[username].github.io/music-learn-connect/"

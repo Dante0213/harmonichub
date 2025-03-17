@@ -3,33 +3,20 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redirecting...</title>
+  <title>Page Not Found</title>
   <script>
-    // 간단한 SPA 리다이렉트 핸들러
+    // GitHub Pages SPA redirect
     (function() {
-      // 기본 경로 (저장소 이름)
-      var basePath = '/music-learn-connect/';
+      // Save the current path
+      sessionStorage.setItem('redirect-path', window.location.pathname);
       
-      // 현재 경로 저장
-      var path = window.location.pathname;
-      console.log('404 핸들러 - 현재 경로:', path);
-      
-      // 기본 URL 생성
-      var homeUrl = window.location.origin + basePath;
-      console.log('404 핸들러 - 홈 URL:', homeUrl);
-      
-      // 경로 정보 저장 (저장소 이름 제거)
-      var cleanPath = path.replace(basePath, '/');
-      sessionStorage.setItem('redirect-path', cleanPath);
-      console.log('404 핸들러 - 저장된 경로:', cleanPath);
-      
-      // 홈으로 리다이렉트
-      window.location.replace(homeUrl);
+      // Redirect to the base URL
+      window.location.replace(window.location.origin + '/music-learn-connect/');
     })();
   </script>
 </head>
 <body>
-  <h1>페이지 이동 중...</h1>
+  <h1>페이지를 찾을 수 없습니다</h1>
   <p>자동으로 이동하지 않는 경우, <a href="/music-learn-connect/">여기를 클릭하세요</a>.</p>
 </body>
 </html>
