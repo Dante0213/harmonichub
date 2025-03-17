@@ -5,7 +5,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="py-6 border-t bg-gradient-to-b from-background to-muted/30 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <footer className="py-6 border-t bg-gradient-to-b from-background to-pastel-purple/10 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div>
@@ -43,7 +43,7 @@ export function Footer() {
           </div>
         </div>
         
-        <div className="pt-8 mt-8 text-sm text-center border-t">
+        <div className="pt-8 mt-8 text-sm text-center border-t border-pastel-purple/20">
           <p>&copy; {currentYear} 음악 플랫폼. All rights reserved.</p>
         </div>
       </div>

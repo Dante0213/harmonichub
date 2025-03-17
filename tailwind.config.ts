@@ -62,6 +62,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// 파스텔 색상 추가
+				pastel: {
+					green: '#F2FCE2',
+					yellow: '#FEF7CD',
+					orange: '#FEC6A1',
+					purple: '#E5DEFF',
+					pink: '#FFDEE2',
+					peach: '#FDE1D3',
+					blue: '#D3E4FD',
+					gray: '#F1F0FB'
 				}
 			},
 			borderRadius: {
@@ -71,6 +82,7 @@ export default {
 			},
 			boxShadow: {
 				'pastel': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+				'soft': '0 4px 10px rgba(0, 0, 0, 0.05)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -96,6 +108,9 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-pastel': 'linear-gradient(to right, #ffc3a0 0%, #ffafbd 100%)',
+				'gradient-soft': 'linear-gradient(to right, #accbee 0%, #e7f0fd 100%)',
+				'gradient-peach': 'linear-gradient(to right, #ffc3a0 0%, #ffafbd 100%)',
+				'gradient-lavender': 'linear-gradient(90deg, #E5DEFF 0%, #D6BCFA 100%)',
 			}
 		}
 	},
