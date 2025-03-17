@@ -11,11 +11,6 @@ export function Features() {
       link: "/teachers"
     },
     {
-      icon: ShoppingBag,
-      title: "스토어",
-      link: "/store"
-    },
-    {
       icon: MessageCircle,
       title: "SNS",
       link: "/social"
@@ -24,6 +19,11 @@ export function Features() {
       icon: BookOpen,
       title: "학습실",
       link: "/learning"
+    },
+    {
+      icon: ShoppingBag,
+      title: "스토어",
+      link: "/store"
     }
   ];
 
