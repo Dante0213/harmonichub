@@ -1,4 +1,3 @@
-
 import { ReelUserInfo } from "./ReelUserInfo";
 import { Reel } from "./ReelsData";
 import { useState } from "react";
@@ -78,7 +77,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
             onCopyLink={copyLinkToClipboard}
           />
           
-          <ReelUserInfo reel={reel} onUserClick={() => onUserClick && onUserClick(reel)} />
+          <ReelUserInfo reel={reel} onUserClick={onUserClick} />
           
           <div className="mb-12">
             <p className="text-base mb-2">{reel.description || reel.content}</p>
