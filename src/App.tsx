@@ -42,12 +42,12 @@ const RouteDebugger = () => {
 
 const queryClient = new QueryClient();
 
-// GitHub Pages 배포를 위한 basename
-// 환경 변수에서 BASE_URL을 가져오되, 기본값으로 /music-learn-connect/ 사용
-const basename = import.meta.env.BASE_URL || '/music-learn-connect/';
+// GitHub Pages 배포를 위한 basename 설정
+const basename = import.meta.env.MODE === 'production' ? '/music-learn-connect' : '/';
 console.log('설정된 basename:', basename);
 console.log('현재 호스트:', window.location.host);
 console.log('현재 전체 URL:', window.location.href);
+console.log('환경 모드:', import.meta.env.MODE);
 
 const App = () => {
   console.log('App 컴포넌트 렌더링 (basename):', basename);
