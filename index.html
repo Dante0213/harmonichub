@@ -8,12 +8,21 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="./og-image.png" />
-    <!-- GitHub Pages 배포를 위한 기본 설정 - 고정 base 사용 -->
-    <base href="/music-learn-connect/" />
+    <!-- GitHub Pages 배포를 위한 기본 설정 수정 -->
+    <base href="/" />
     <script>
-      // 디버깅 정보
+      // 경로 디버깅 보강
       console.log('문서 로드 시작');
       console.log('현재 URL:', window.location.href);
+      console.log('base URI:', document.baseURI);
+      
+      // GitHub Pages 배포시 경로 조정
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      if (isGitHubPages) {
+        const basePath = '/music-learn-connect/';
+        document.querySelector('base').href = basePath;
+        console.log('GitHub Pages 감지: base 경로 설정됨', basePath);
+      }
       
       // 리디렉션 처리
       var redirectPath = sessionStorage.getItem('redirect_path');
@@ -44,6 +53,6 @@
   <body>
     <div id="root"></div>
     <!-- JavaScript 모듈 로드 방식 수정 -->
-    <script type="module" src="./src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

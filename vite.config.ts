@@ -6,13 +6,13 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  // GitHub Pages 레포지토리 경로 설정
-  base: "/music-learn-connect/",
+  // 개발 환경에서는 상대 경로, 프로덕션에서는 GitHub Pages 경로 사용
+  base: mode === 'production' ? '/music-learn-connect/' : '/',
   build: {
     outDir: "dist",
-    sourcemap: false,
+    sourcemap: true, // 디버깅을 위해 소스맵 활성화
     emptyOutDir: true,
-    minify: 'terser',
+    minify: mode === 'production' ? 'terser' : false,
     terserOptions: {
       compress: {
         drop_console: false, // 디버깅을 위해 콘솔 로그 유지
@@ -50,6 +50,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: ['react', 'react-dom', 'react-router-dom', '@react-three/fiber', '@react-three/drei'],
   },
 }));
