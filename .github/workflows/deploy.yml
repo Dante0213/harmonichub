@@ -50,7 +50,9 @@ jobs:
           export NODE_OPTIONS="--max-old-space-size=8192"
           export GENERATE_SOURCEMAP=false
           export CI=false
+          export PUBLIC_URL="/music-learn-connect"
           echo "NODE_OPTIONS: $NODE_OPTIONS"
+          echo "PUBLIC_URL: $PUBLIC_URL"
           npm run build || (echo "빌드 실패 - 오류 로그 확인" && exit 1)
       
       - name: Debug build output
@@ -82,7 +84,18 @@ jobs:
           echo "AddType application/json .json" >> dist/.htaccess
           echo "AddType text/css .css" >> dist/.htaccess
           echo "Header set X-Content-Type-Options \"nosniff\"" >> dist/.htaccess
+          echo "Header set Access-Control-Allow-Origin \"*\"" >> dist/.htaccess
           echo ".htaccess 파일을 생성했습니다"
+      
+      # 추가: 정적 에셋 경로 확인
+      - name: Verify static asset paths
+        run: |
+          echo "JavaScript 파일 확인:"
+          find dist -name "*.js" -type f | head -n 5
+          echo "CSS 파일 확인:"
+          find dist -name "*.css" -type f | head -n 5
+          echo "이미지 파일 확인:"
+          find dist -name "*.png" -type f -o -name "*.jpg" -type f -o -name "*.svg" -type f | head -n 5
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2

@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  // 항상 GitHub Pages 레포지토리 경로 설정 - hash router 사용시에도 필요
+  // GitHub Pages 레포지토리 경로 설정
   base: "/music-learn-connect/",
   build: {
     outDir: "dist",
@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // MIME 타입 문제 해결을 위한 headers 설정 추가
+    // MIME 타입 문제 해결을 위한 headers 설정
     headers: {
       'Content-Type': 'text/javascript',
       'X-Content-Type-Options': 'nosniff'
@@ -69,6 +69,17 @@ export default defineConfig(({ mode }) => ({
   // 모듈 해석 문제 해결을 위한 추가 설정
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: []
+    // 에셋 로드 문제 해결을 위한 추가 설정
+    esbuildOptions: {
+      target: 'es2020',
+      // 정적 자산 처리 개선
+      loader: {
+        '.js': 'jsx',
+        '.ts': 'tsx',
+        '.png': 'file',
+        '.jpg': 'file',
+        '.svg': 'file',
+      }
+    }
   },
 }));
