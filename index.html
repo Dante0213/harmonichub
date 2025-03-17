@@ -10,14 +10,30 @@
     <meta property="og:image" content="./og-image.png" />
     <!-- GitHub Pages 배포 환경에서만 base 태그 적용 - 향상된 버전 -->
     <script>
-      if (window.location.hostname.includes('github.io')) {
-        // base 태그 추가
-        var baseElement = document.createElement('base');
-        baseElement.href = '/music-learn-connect/';
-        document.head.appendChild(baseElement);
-        console.log('GitHub Pages 환경 감지: base 태그 추가됨');
-      }
+      // GitHub Pages 환경 확인 및 base 태그 적용
+      (function() {
+        var isGitHubPages = window.location.hostname.includes('github.io');
+        console.log('GitHub Pages 환경 확인:', isGitHubPages);
+        console.log('현재 호스트:', window.location.hostname);
+        
+        if (isGitHubPages) {
+          // base 태그 추가
+          var baseElement = document.createElement('base');
+          baseElement.href = '/music-learn-connect/';
+          document.head.appendChild(baseElement);
+          console.log('GitHub Pages 환경 감지: base 태그 추가됨');
+        }
+      })();
     </script>
+    <!-- 정적 리소스 로드 실패 디버깅 -->
+    <script>
+      window.addEventListener('error', function(e) {
+        if (e.target && (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT' || e.target.tagName === 'IMG')) {
+          console.error('리소스 로드 실패:', e.target.src || e.target.href);
+        }
+      }, true);
+    </script>
+    <!-- 리다이렉션 처리 강화 -->
     <script>
       // 리다이렉션 처리 강화
       (function() {
@@ -69,7 +85,6 @@
 
   <body>
     <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

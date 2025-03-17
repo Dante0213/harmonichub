@@ -78,7 +78,7 @@ jobs:
           touch dist/.nojekyll
           echo ".nojekyll 파일 생성 완료"
       
-      - name: Copy index.html to 404.html
+      - name: Copy index.html to 404.html for SPA routing
         run: |
           if [ -f "dist/index.html" ]; then
             cp dist/index.html dist/404.html

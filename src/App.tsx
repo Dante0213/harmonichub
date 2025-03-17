@@ -54,15 +54,15 @@ const queryClient = new QueryClient({
   },
 });
 
+// GitHub Pages 환경인지 확인
+const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+console.log('GitHub Pages 환경 확인:', isGitHubPages);
+
 // GitHub Pages에서는 항상 HashRouter 사용
 const Router = HashRouter;
 
-// HashRouter에서는 basename이 필요 없음
-const getBasename = () => {
-  return '';
-};
-
-const BASENAME = getBasename();
+// basename은 HashRouter에서는 필요 없으므로 빈 문자열 반환
+const BASENAME = '';
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
 console.log('라우터 타입:', Router.name);
 
@@ -75,7 +75,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <Router basename={BASENAME}>
+          <Router>
             <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />

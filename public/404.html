@@ -10,14 +10,20 @@
       // 현재 URL 확인
       var l = window.location;
       
+      // 디버깅 정보 출력
+      console.log('404 페이지 로드됨', l.href);
+      console.log('pathname:', l.pathname);
+      console.log('hostname:', l.hostname);
+      
       // 리디렉션이 발생한 경로 저장
-      sessionStorage.setItem('redirect_path', l.pathname + l.search + l.hash);
-      console.log('404 리디렉션 경로 저장됨:', l.pathname + l.search + l.hash);
+      var pathWithoutRepo = l.pathname.replace(/^\/music-learn-connect/, '');
+      sessionStorage.setItem('redirect_path', pathWithoutRepo || '/');
+      console.log('sessionStorage에 저장된 경로:', pathWithoutRepo || '/');
       
       // 홈페이지로 리디렉션
       var redirectUrl = l.protocol + '//' + l.hostname + 
         (l.port ? ':' + l.port : '') + 
-        '/music-learn-connect/';
+        '/music-learn-connect/#' + (pathWithoutRepo || '/');
       
       console.log('리디렉션 대상 URL:', redirectUrl);
       window.location.href = redirectUrl;

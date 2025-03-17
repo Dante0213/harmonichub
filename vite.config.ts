@@ -31,12 +31,12 @@ export default defineConfig(({ mode }) => ({
           vendor: ['react', 'react-dom', 'react-router-dom'],
           ui: ['class-variance-authority', 'clsx', 'tailwind-merge'],
         },
-        // 모든 에셋에 상대 경로 사용
+        // 모든 에셋에 상대 경로 사용 (GitHub Pages 호환성 개선)
         assetFileNames: 'assets/[name].[hash].[ext]',
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',
       },
-      // @radix-ui 문제 해결을 위한 추가 설정
+      // 경고 무시 설정
       onwarn(warning, warn) {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || 
             warning.message.includes('Use of eval') ||
