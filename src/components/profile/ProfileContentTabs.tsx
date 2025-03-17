@@ -3,8 +3,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Music, Users, Heart, Bookmark, FileText } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export const ProfileContentTabs = () => {
+  // 사용자가 전공자인지 여부를 확인 (실제 데이터에서는 사용자 정보를 가져와야 함)
+  const [isProfessional, setIsProfessional] = useState(false); // 예시 상태
+
+  const assignmentTabLabel = isProfessional ? "과제함" : "보낸 과제함";
+
   return (
     <Tabs defaultValue="reels">
       <TabsList className="w-full mb-6">
@@ -26,7 +32,7 @@ export const ProfileContentTabs = () => {
         </TabsTrigger>
         <TabsTrigger value="assignments" className="flex-1">
           <FileText className="h-4 w-4 mr-2" />
-          과제함
+          {assignmentTabLabel}
         </TabsTrigger>
       </TabsList>
       
@@ -90,27 +96,53 @@ export const ProfileContentTabs = () => {
       
       <TabsContent value="assignments" className="mt-6">
         <div className="space-y-4">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="border rounded-md p-4 hover:bg-muted/50 transition-colors">
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" />
-                  <div>
-                    <h3 className="font-medium">학생 {i + 1}의 과제</h3>
-                    <p className="text-xs text-muted-foreground">2023.07.{10 + i}</p>
+          {isProfessional ? (
+            // 전공자인 경우 받은 과제 목록 표시
+            [...Array(2)].map((_, i) => (
+              <div key={i} className="border rounded-md p-4 hover:bg-muted/50 transition-colors">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <div>
+                      <h3 className="font-medium">학생 {i + 1}의 과제</h3>
+                      <p className="text-xs text-muted-foreground">2023.07.{10 + i}</p>
+                    </div>
                   </div>
+                  <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
+                    검토 중
+                  </span>
                 </div>
-                <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
-                  검토 중
-                </span>
+                <p className="text-sm mb-3">피아노 연습곡 #{i + 1} 연주 영상입니다. 피드백 부탁드립니다.</p>
+                <div className="flex justify-end gap-2">
+                  <Button size="sm" variant="outline">보기</Button>
+                  <Button size="sm">피드백 작성</Button>
+                </div>
               </div>
-              <p className="text-sm mb-3">피아노 연습곡 #{i + 1} 연주 영상입니다. 피드백 부탁드립니다.</p>
-              <div className="flex justify-end gap-2">
-                <Button size="sm" variant="outline">보기</Button>
-                <Button size="sm">피드백 작성</Button>
+            ))
+          ) : (
+            // 비전공자인 경우 보낸 과제 목록 표시
+            <div className="rounded-md border">
+              <div className="p-3 bg-muted font-medium">
+                보낸 과제 목록
+              </div>
+              <div className="divide-y">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="p-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="font-medium">피아노_연습곡_{i + 1}.mp3</p>
+                        <p className="text-xs text-muted-foreground">
+                          2023.07.{10 + i} | 김선생님에게 제출
+                        </p>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="sm">보기</Button>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          )}
         </div>
       </TabsContent>
     </Tabs>
