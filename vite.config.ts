@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  base: '/music-learn-connect/', // 슬래시를 끝에 반드시 포함
+  base: "/music-learn-connect/", // 슬래시를 시작과 끝에 모두 포함
   build: {
     outDir: "dist",
     sourcemap: true,

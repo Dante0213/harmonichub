@@ -53,7 +53,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages 배포용 basename 설정 - 끝에 슬래시 포함
+// GitHub Pages 배포용 basename 설정
 const BASENAME = '/music-learn-connect/';
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
 

@@ -34,21 +34,14 @@ jobs:
       - name: Build
         run: npm run build
       
-      - name: Debug build output
-        run: |
-          echo "Build directory contents:"
-          ls -la dist/
-          echo "Index.html content:"
-          cat dist/index.html | head -20
+      - name: Debug
+        run: ls -la dist/
       
       - name: Setup Pages
         uses: actions/configure-pages@v3
       
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
-      
-      - name: Create 404.html
-        run: cp dist/index.html dist/404.html
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
