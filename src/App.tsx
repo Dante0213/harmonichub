@@ -32,13 +32,16 @@ import MoreVideos from "./pages/news/MoreVideos";
 
 const queryClient = new QueryClient();
 
+// GitHub Pages의 기본 URL 경로 설정
+const basename = import.meta.env.MODE === 'production' ? '/music-learn-connect' : '/';
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light">
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/lesson-room" element={<LessonRoom />} />
