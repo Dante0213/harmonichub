@@ -33,7 +33,8 @@ import MoreVideos from "./pages/news/MoreVideos";
 // 경로 디버깅 컴포넌트
 const RouteDebugger = () => {
   const location = useLocation();
-  console.log('현재 경로:', location.pathname);
+  console.log('현재 경로(RouteDebugger):', location.pathname);
+  console.log('전체 URL(RouteDebugger):', window.location.href);
   console.log('경로 상태:', location.state);
   console.log('경로 검색어:', location.search);
   return null;
@@ -41,16 +42,15 @@ const RouteDebugger = () => {
 
 const queryClient = new QueryClient();
 
-// GitHub Pages 배포를 위한 고정 basename
-const basename = '/music-learn-connect';
-console.log('고정 basename:', basename);
-console.log('현재 경로:', window.location.pathname);
-console.log('전체 URL:', window.location.href);
-console.log('기본 URL:', document.baseURI);
+// GitHub Pages 배포를 위한 basename
+// 환경 변수에서 BASE_URL을 가져오되, 기본값으로 /music-learn-connect/ 사용
+const basename = import.meta.env.BASE_URL || '/music-learn-connect/';
+console.log('설정된 basename:', basename);
+console.log('현재 호스트:', window.location.host);
+console.log('현재 전체 URL:', window.location.href);
 
 const App = () => {
-  console.log('App 렌더링됨 (고정 basename):', basename);
-  console.log('호스트:', window.location.host);
+  console.log('App 컴포넌트 렌더링 (basename):', basename);
   
   return (
     <QueryClientProvider client={queryClient}>

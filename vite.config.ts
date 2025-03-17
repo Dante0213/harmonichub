@@ -10,6 +10,8 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: "dist",
     sourcemap: true,
+    // 빌드 과정에서 .nojekyll 파일 자동 생성
+    emptyOutDir: true,
   },
   server: {
     host: "::",
