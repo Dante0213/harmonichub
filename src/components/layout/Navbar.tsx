@@ -24,14 +24,19 @@ export function Navbar() {
   };
 
   // 메인 내비게이션이 표시되어야 하는 페이지인지 확인
-  // 메인 페이지('/')와 SNS 페이지('/social') 및 My 카테고리 페이지들에서는 표시하지 않음
+  // 메인 페이지('/')와 SNS 페이지('/social'), My 카테고리 페이지들, 그리고 새로운 소식 페이지들에서는 표시하지 않음
   const shouldShowMainNav = ![
     "/", 
     "/social",
     "/my/recent-videos",
     "/my/liked-videos", 
     "/my/saved-videos", 
-    "/my/watch-later"
+    "/my/watch-later",
+    "/news/top-100",
+    "/news/performances",
+    "/news/news",
+    "/news/business",
+    "/news/more-videos"
   ].includes(location.pathname);
 
   return (
