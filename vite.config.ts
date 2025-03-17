@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/music-learn-connect/' : '/', // 슬래시(/) 추가
+  base: '/music-learn-connect/', // 항상 고정된 base 경로 사용
   build: {
     outDir: "dist",
     sourcemap: true,

@@ -5,28 +5,19 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // 개선된 리다이렉트 로직
+    // 간소화된 리다이렉트 로직
     (function() {
-      var segmentCount = 1; // GitHub Pages는 일반적으로 하나의 세그먼트(저장소 이름)를 가짐
       var repoName = 'music-learn-connect';
       
-      // 현재 URL에서 l=location.pathname 추출
-      var l = window.location.pathname;
-      console.log('404 페이지 - 현재 경로:', l);
+      // 현재 URL에서 경로 추출
+      var path = window.location.pathname;
+      console.log('404 페이지 - 현재 경로:', path);
       
-      // 저장소 이름이 경로에 포함되어 있는지 확인
-      var isInRepo = l.indexOf('/' + repoName + '/') === 0;
+      // 저장소 이름이 이미 경로에 포함되어 있는지 확인
+      var isInRepo = path.indexOf('/' + repoName + '/') === 0;
       
       // 리다이렉트 경로 설정
-      var redirectPath;
-      if (isInRepo) {
-        // 이미 저장소 경로에 있으면 그대로 사용
-        redirectPath = l;
-      } else {
-        // 저장소 경로가 없으면 추가
-        redirectPath = '/' + repoName + l;
-      }
-      
+      var redirectPath = isInRepo ? path : '/' + repoName + path;
       console.log('404 페이지 - 리다이렉트 경로:', redirectPath);
       
       // 리다이렉트 정보 저장

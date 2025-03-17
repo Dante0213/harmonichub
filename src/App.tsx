@@ -42,8 +42,8 @@ const RouteDebugger = () => {
 
 const queryClient = new QueryClient();
 
-// GitHub Pages 배포를 위한 basename 설정 - vite.config.ts와 일치시킴
-const basename = import.meta.env.MODE === 'production' ? '/music-learn-connect/' : '/';
+// GitHub Pages 배포를 위한 basename 설정 - vite.config.ts와 일치
+const basename = '/music-learn-connect/'; // 항상 고정된 basename 사용
 console.log('설정된 basename:', basename);
 console.log('현재 호스트:', window.location.host);
 console.log('현재 전체 URL:', window.location.href);
