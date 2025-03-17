@@ -40,7 +40,6 @@ const RouteDebugger = () => {
   console.log('전체 URL:', window.location.href);
   console.log('경로 상태:', location.state);
   console.log('경로 검색어:', location.search);
-  console.log('Basename 설정:', '/music-learn-connect/');
   return null;
 };
 
@@ -55,14 +54,11 @@ const queryClient = new QueryClient({
 });
 
 // GitHub Pages 배포용 basename 설정
-// 프로덕션 환경에서는 항상 /music-learn-connect/ 사용
-const BASENAME = '/music-learn-connect/';
+const BASENAME = '/music-learn-connect';
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
 
 const App = () => {
   console.log('App 컴포넌트 렌더링 시작');
-  console.log('환경:', import.meta.env.MODE);
-  console.log('베이스 URL:', import.meta.env.BASE_URL);
   
   return (
     <QueryClientProvider client={queryClient}>

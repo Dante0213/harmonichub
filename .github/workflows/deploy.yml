@@ -33,6 +33,13 @@ jobs:
       
       - name: Build
         run: npm run build
+        
+      - name: Debug build output
+        run: |
+          echo "Build directory contents:"
+          ls -la dist/
+          echo "Index.html content:"
+          cat dist/index.html | head -20
       
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -40,7 +47,7 @@ jobs:
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
       
-      - name: Create simple 404.html for SPA routing
+      - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
       
       - name: Upload artifact
