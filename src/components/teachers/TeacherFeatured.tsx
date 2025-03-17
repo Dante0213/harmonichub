@@ -40,7 +40,7 @@ export function TeacherFeatured() {
           <div className="space-y-4">
             {topTeachers.map((teacher) => (
               <div key={teacher.id} className="flex items-center gap-4">
-                <Avatar className="w-[116px] h-[116px] rounded-md border">
+                <Avatar className="w-16 h-16 rounded-md border">
                   <AvatarImage src={teacher.image} alt={teacher.name} />
                   <AvatarFallback>{teacher.name.charAt(0)}</AvatarFallback>
                 </Avatar>

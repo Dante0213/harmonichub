@@ -6,31 +6,69 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { MessageCircle, Calendar, Video } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 // Mock data for teachers
 const teachersList = [
-  { id: 1, name: "김태희", specialty: "피아노", image: "/placeholder.svg", education: "서울대학교 음악대학", experience: "10년 경력", certificates: "음악교육 자격증", introduction: "반갑습니다. 피아노를 가르치고 있습니다." },
-  { id: 2, name: "이민호", specialty: "기타", image: "/placeholder.svg", education: "한양대학교 음악대학", experience: "8년 경력", certificates: "기타 지도사 자격증", introduction: "기타를 쉽고 재미있게 가르칩니다." },
-  { id: 3, name: "박신혜", specialty: "바이올린", image: "/placeholder.svg", education: "연세대학교 음악대학", experience: "12년 경력", certificates: "바이올린 마스터 자격증", introduction: "바이올린의 아름다움을 전달합니다." },
-  { id: 4, name: "정우성", specialty: "드럼", image: "/placeholder.svg", education: "고려대학교 음악대학", experience: "15년 경력", certificates: "드럼 마스터 자격증", introduction: "리듬과 비트를 느껴보세요." },
-  { id: 5, name: "손예진", specialty: "보컬", image: "/placeholder.svg", education: "이화여자대학교 음악대학", experience: "7년 경력", certificates: "보컬 트레이너 자격증", introduction: "여러분의 목소리를 찾아드립니다." },
-  { id: 6, name: "공유", specialty: "작곡", image: "/placeholder.svg", education: "중앙대학교 음악대학", experience: "9년 경력", certificates: "작곡가 자격증", introduction: "나만의 음악을 만들어보세요." },
+  { id: 1, name: "김태희", specialty: "피아노", image: "/placeholder.svg", education: "서울대학교 음악대학", experience: "10년 경력", certificates: "음악교육 자격증", introduction: "반갑습니다. 피아노를 가르치고 있습니다.", category: "클래식" },
+  { id: 2, name: "이민호", specialty: "기타", image: "/placeholder.svg", education: "한양대학교 음악대학", experience: "8년 경력", certificates: "기타 지도사 자격증", introduction: "기타를 쉽고 재미있게 가르칩니다.", category: "실용음악" },
+  { id: 3, name: "박신혜", specialty: "바이올린", image: "/placeholder.svg", education: "연세대학교 음악대학", experience: "12년 경력", certificates: "바이올린 마스터 자격증", introduction: "바이올린의 아름다움을 전달합니다.", category: "클래식" },
+  { id: 4, name: "정우성", specialty: "드럼", image: "/placeholder.svg", education: "고려대학교 음악대학", experience: "15년 경력", certificates: "드럼 마스터 자격증", introduction: "리듬과 비트를 느껴보세요.", category: "실용음악" },
+  { id: 5, name: "손예진", specialty: "보컬", image: "/placeholder.svg", education: "이화여자대학교 음악대학", experience: "7년 경력", certificates: "보컬 트레이너 자격증", introduction: "여러분의 목소리를 찾아드립니다.", category: "실용음악" },
+  { id: 6, name: "공유", specialty: "작곡", image: "/placeholder.svg", education: "중앙대학교 음악대학", experience: "9년 경력", certificates: "작곡가 자격증", introduction: "나만의 음악을 만들어보세요.", category: "실용음악" },
 ];
 
 export function TeacherGrid() {
   const [selectedTeacher, setSelectedTeacher] = useState<typeof teachersList[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [specialtyFilter, setSpecialtyFilter] = useState<string | null>(null);
 
   const openTeacherProfile = (teacher: typeof teachersList[0]) => {
     setSelectedTeacher(teacher);
     setIsModalOpen(true);
   };
 
+  const filteredTeachers = teachersList.filter(teacher => {
+    if (categoryFilter && teacher.category !== categoryFilter) return false;
+    if (specialtyFilter && teacher.specialty !== specialtyFilter) return false;
+    return true;
+  });
+
+  const specialties = [
+    "보컬", "피아노", "기타", "베이스", "드럼", "퍼커션", "작곡", "화성학 이론", "전자음악", 
+    "바이올린", "비올라", "첼로", "콘트라베이스", "트럼펫", "트럼본", "호른", "튜바", 
+    "클라리넷", "오보에", "플룻", "바순", "월드뮤직", "음향", "뮤직비즈니스"
+  ];
+
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-6">선생님 목록</h2>
+      <div className="flex flex-wrap items-center gap-4 mb-6">
+        <h2 className="text-2xl font-bold">선생님 목록</h2>
+        
+        <div className="flex items-center gap-4">
+          <ToggleGroup type="single" value={categoryFilter || ""} onValueChange={(value) => setCategoryFilter(value || null)}>
+            <ToggleGroupItem value="클래식" className="text-sm">클래식</ToggleGroupItem>
+            <ToggleGroupItem value="실용음악" className="text-sm">실용음악</ToggleGroupItem>
+          </ToggleGroup>
+          
+          <Select onValueChange={(value) => setSpecialtyFilter(value === "all" ? null : value)} value={specialtyFilter || "all"}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="전공 선택" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">모든 전공</SelectItem>
+              {specialties.map(specialty => (
+                <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {teachersList.map((teacher) => (
+        {filteredTeachers.map((teacher) => (
           <Card key={teacher.id} className="h-[280px] overflow-hidden hover:shadow-md transition-shadow">
             <div className="p-4 flex flex-col items-center h-full">
               <Avatar className="w-28 h-28 mb-4">
