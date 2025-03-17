@@ -10,13 +10,26 @@ export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? "/music-learn-connect/" : "/",
   build: {
     outDir: "dist",
-    sourcemap: true,
+    // 빌드 성능 개선을 위해 소스맵 비활성화
+    sourcemap: false,
     emptyOutDir: true,
-    // SSR 문제 방지를 위한 설정 추가
+    // 최적화 설정
     minify: 'terser',
     terserOptions: {
       format: {
         comments: false,
+      },
+      compress: {
+        drop_console: false, // 콘솔 로그 유지 (디버깅 목적)
+      },
+    },
+    // 청크 사이즈 최적화
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['@radix-ui', 'class-variance-authority', 'clsx', 'tailwind-merge'],
+        },
       },
     },
   },

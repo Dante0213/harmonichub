@@ -8,10 +8,13 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
-    <!-- GitHub Pages 배포 환경에서만 base 태그 적용 -->
+    <!-- GitHub Pages 배포 환경에서만 base 태그 적용 - 향상된 버전 -->
     <script>
       if (window.location.hostname.includes('github.io')) {
-        document.write('<base href="/music-learn-connect/" />');
+        // base 태그 추가
+        var baseElement = document.createElement('base');
+        baseElement.href = '/music-learn-connect/';
+        document.head.appendChild(baseElement);
         console.log('GitHub Pages 환경 감지: base 태그 추가됨');
       }
     </script>
@@ -23,6 +26,12 @@
           console.log('현재 URL:', window.location.href);
           console.log('Hostname:', window.location.hostname);
           console.log('Pathname:', window.location.pathname);
+          
+          // GitHub Pages 환경 확인
+          var isGitHubPages = window.location.hostname.includes('github.io');
+          if (isGitHubPages) {
+            console.log('GitHub Pages 환경 감지됨');
+          }
           
           // 리다이렉션에서 왔는지 확인
           var redirectPath = sessionStorage.getItem('redirect_path');

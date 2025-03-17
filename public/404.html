@@ -12,11 +12,15 @@
       
       // 리디렉션이 발생한 경로 저장
       sessionStorage.setItem('redirect_path', l.pathname + l.search + l.hash);
+      console.log('404 리디렉션 경로 저장됨:', l.pathname + l.search + l.hash);
       
       // 홈페이지로 리디렉션
-      window.location.href = l.protocol + '//' + l.hostname + 
+      var redirectUrl = l.protocol + '//' + l.hostname + 
         (l.port ? ':' + l.port : '') + 
         '/music-learn-connect/';
+      
+      console.log('리디렉션 대상 URL:', redirectUrl);
+      window.location.href = redirectUrl;
     })();
   </script>
 </head>
