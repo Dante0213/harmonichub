@@ -8,10 +8,19 @@ import {
   RecommendedUsersPanel,
   ProfilePanel
 } from "@/components/social/SocialSidePanels";
+import { useState } from "react";
+import { UserProfileModal } from "@/components/social/UserProfileModal";
+import { Reel } from "@/components/social/reels/ReelsData";
 
 const Social = () => {
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const [selectedUser, setSelectedUser] = useState<Reel | null>(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  
+  const handleUserClick = (user: Reel) => {
+    setSelectedUser(user);
+    setIsProfileOpen(true);
+  };
   
   return (
     <Layout>
@@ -24,7 +33,7 @@ const Social = () => {
           <div className="container px-4 py-10 mx-auto">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="md:w-2/3">
-                <SocialReelsFeed />
+                <SocialReelsFeed onUserClick={handleUserClick} />
               </div>
               
               <div className="md:w-1/3">
@@ -36,6 +45,14 @@ const Social = () => {
           </div>
         </div>
       </div>
+      
+      {selectedUser && (
+        <UserProfileModal 
+          user={selectedUser} 
+          isOpen={isProfileOpen} 
+          onClose={() => setIsProfileOpen(false)} 
+        />
+      )}
     </Layout>
   );
 };

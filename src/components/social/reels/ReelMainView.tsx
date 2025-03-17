@@ -1,100 +1,101 @@
 
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Canvas } from "@react-three/fiber";
-import { PresentationControls } from "@react-three/drei";
-import { MusicNoteModel, Environment } from "../models/MusicNoteModel";
-import { Reel } from "./ReelsData";
 import { ReelUserInfo } from "./ReelUserInfo";
 import { ReelControls } from "./ReelControls";
+import { Reel } from "./ReelsData";
+import { useState, useRef, useEffect } from "react";
 
 interface ReelMainViewProps {
   reel: Reel;
-  isPlaying: boolean;
-  isMuted: boolean;
-  onPlayToggle: () => void;
-  onMuteToggle: () => void;
-  onPrevReel: () => void;
-  onNextReel: () => void;
-  onUserClick: () => void;
+  onUserClick?: (user: Reel) => void;
 }
 
-export const ReelMainView = ({
-  reel,
-  isPlaying,
-  isMuted,
-  onPlayToggle,
-  onMuteToggle,
-  onPrevReel,
-  onNextReel,
-  onUserClick,
-}: ReelMainViewProps) => {
+export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLiked, setIsLiked] = useState(reel.isLiked);
+  const [likeCount, setLikeCount] = useState(reel.likeCount);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.7,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsPlaying(true);
+          videoRef.current?.play();
+        } else {
+          setIsPlaying(false);
+          videoRef.current?.pause();
+        }
+      });
+    }, options);
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      videoRef.current?.pause();
+    } else {
+      videoRef.current?.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+  };
+
   return (
-    <div className="relative h-[600px] bg-black rounded-lg overflow-hidden">
-      {/* 릴스 컨트롤 버튼 */}
-      <div className="absolute top-1/2 left-2 z-10">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="bg-black/30 text-white rounded-full hover:bg-black/50"
-          onClick={onPrevReel}
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </Button>
-      </div>
+    <div className="relative h-full w-full bg-black rounded-lg overflow-hidden">
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        src={reel.videoUrl}
+        loop
+        muted
+        playsInline
+        onClick={togglePlay}
+      />
       
-      <div className="absolute top-1/2 right-2 z-10">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="bg-black/30 text-white rounded-full hover:bg-black/50"
-          onClick={onNextReel}
-        >
-          <ChevronRight className="h-6 w-6" />
-        </Button>
-      </div>
-      
-      {/* 릴스 콘텐츠 */}
-      <div className="relative w-full h-full flex items-center justify-center">
-        {/* 3D 배경 음표 */}
-        <div className="absolute w-full h-full z-0">
-          <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 45 }}>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
-            <PresentationControls
-              global
-              zoom={0.8}
-              rotation={[0, 0, 0]}
-              polar={[-Math.PI / 4, Math.PI / 4]}
-              azimuth={[-Math.PI / 4, Math.PI / 4]}>
-              <MusicNoteModel />
-            </PresentationControls>
-            <Environment preset="city" />
-          </Canvas>
-        </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-        <div className="absolute inset-0 flex flex-col z-20">
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-white text-center">
-              <h3 className="text-2xl font-bold">음악 릴스</h3>
-              <p>#{reel.content.split('#')[1] || '음악'}</p>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50">
+        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <ReelUserInfo reel={reel} onUserClick={() => onUserClick && onUserClick(reel)} />
+          
+          <div className="mb-4">
+            <p className="text-base mb-2">{reel.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {reel.hashtags.map((tag, index) => (
+                <span key={index} className="text-sm text-blue-300">
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
-          
-          <div className="p-4">
-            <ReelUserInfo reel={reel} onUserClick={onUserClick} />
-            <p className="text-white text-sm mb-2">{reel.content}</p>
-            <ReelControls 
-              reel={reel}
-              isPlaying={isPlaying}
-              isMuted={isMuted}
-              onPlayToggle={onPlayToggle}
-              onMuteToggle={onMuteToggle}
-            />
-          </div>
         </div>
       </div>
+      
+      <ReelControls
+        isPlaying={isPlaying}
+        isLiked={isLiked}
+        likeCount={likeCount}
+        commentCount={reel.commentCount}
+        onPlayToggle={togglePlay}
+        onLikeToggle={toggleLike}
+      />
     </div>
   );
 };

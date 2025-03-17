@@ -6,15 +6,21 @@ import { Reel } from "./ReelsData";
 
 interface ReelUserInfoProps {
   reel: Reel;
-  onUserClick?: () => void;
+  onUserClick?: (user: Reel) => void;
 }
 
 export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
+  const handleUserClick = () => {
+    if (onUserClick) {
+      onUserClick(reel);
+    }
+  };
+
   return (
     <div className="flex items-center gap-3 mb-2">
       <div 
         className="flex items-center gap-1 cursor-pointer" 
-        onClick={onUserClick}
+        onClick={handleUserClick}
       >
         <Avatar>
           <AvatarFallback>{reel.avatar}</AvatarFallback>
@@ -28,7 +34,14 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
           </div>
         </div>
       </div>
-      <Button size="sm" variant="secondary" className="ml-auto">팔로우</Button>
+      <Button 
+        size="sm" 
+        variant="secondary" 
+        className="ml-auto"
+        onClick={() => onUserClick && onUserClick(reel)}
+      >
+        팔로우
+      </Button>
     </div>
   );
 };
