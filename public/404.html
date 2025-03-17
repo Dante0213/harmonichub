@@ -3,29 +3,27 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>GitHub Pages SPA 리디렉션</title>
+  <title>GitHub Pages 리디렉션</title>
   <script>
-    // GitHub Pages SPA 리디렉션을 위한 스크립트
     (function() {
-      // 현재 URL 확인
-      var l = window.location;
+      // 현재 URL 파싱
+      var path = window.location.pathname;
+      path = path.replace(/^\/music-learn-connect\//, '') || '/';
       
-      // 리디렉션이 발생한 경로 저장
-      sessionStorage.setItem('redirect_path', l.pathname + l.search + l.hash);
-      console.log('404 리디렉션 경로 저장됨:', l.pathname + l.search + l.hash);
+      // 디버깅 정보
+      console.log('404 페이지 로드됨:', window.location.href);
+      console.log('저장할 경로:', path);
+      
+      // 세션에 경로 저장
+      sessionStorage.setItem('redirect_path', path);
       
       // 홈페이지로 리디렉션
-      var redirectUrl = l.protocol + '//' + l.hostname + 
-        (l.port ? ':' + l.port : '') + 
-        '/music-learn-connect/';
-      
-      console.log('리디렉션 대상 URL:', redirectUrl);
-      window.location.href = redirectUrl;
+      window.location.replace('/music-learn-connect/');
     })();
   </script>
 </head>
 <body>
-  <h1>리디렉션 중...</h1>
+  <h1>페이지로 이동 중...</h1>
   <p>자동으로 홈페이지로 이동됩니다. 이동되지 않으면 <a href="/music-learn-connect/">여기</a>를 클릭하세요.</p>
 </body>
 </html>

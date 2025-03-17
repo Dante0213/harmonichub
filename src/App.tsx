@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, HashRouter } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
@@ -34,13 +34,9 @@ import MoreVideos from "./pages/news/MoreVideos";
 // 경로 디버깅 컴포넌트
 const RouteDebugger = () => {
   const location = useLocation();
-  console.log('=============================================');
-  console.log('라우터 디버거');
-  console.log('=============================================');
   console.log('현재 경로:', location.pathname);
+  console.log('해시:', location.hash);
   console.log('전체 URL:', window.location.href);
-  console.log('경로 상태:', location.state);
-  console.log('경로 검색어:', location.search);
   return null;
 };
 
@@ -54,21 +50,9 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages에서는 항상 HashRouter 사용
-// const Router = window.location.hostname.includes('github.io') ? HashRouter : BrowserRouter;
-const Router = HashRouter; // GitHub Pages 배포 문제 해결을 위해 항상 HashRouter 사용
-
-// HashRouter에서는 basename이 필요 없음
-const getBasename = () => {
-  return '';
-};
-
-const BASENAME = getBasename();
-console.log('앱 초기화 - 설정된 basename:', BASENAME);
-console.log('라우터 타입:', Router.name);
-
+// GitHub Pages에서는 HashRouter를 사용합니다
 const App = () => {
-  console.log('App 컴포넌트 렌더링 시작');
+  console.log('App 컴포넌트 렌더링', window.location.href);
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -76,7 +60,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <Router basename={BASENAME}>
+          <HashRouter>
             <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -103,11 +87,11 @@ const App = () => {
               <Route path="/news/business" element={<Business />} />
               <Route path="/news/more-videos" element={<MoreVideos />} />
               
-              {/* 404 페이지 - 모든 경로를 캐치 */}
+              {/* 404 페이지 */}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Chatbot />
-          </Router>
+          </HashRouter>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
