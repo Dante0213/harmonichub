@@ -28,7 +28,7 @@ export function Features() {
     {
       icon: Video,
       title: "VOD 강의",
-      link: "/vod"
+      link: "/store?tab=vod"
     }
   ];
 

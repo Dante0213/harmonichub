@@ -1,11 +1,22 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams, useNavigate, useEffect } from "react-router-dom";
 
 const Store = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const activeTab = searchParams.get('tab') || 'all';
+
+  useEffect(() => {
+    console.log('현재 활성화된 탭:', activeTab);
+  }, [activeTab]);
+
+  const handleTabChange = (value: string) => {
+    navigate(`/store?tab=${value}`);
+  };
+
   const products = [
     {
       name: "입문자용 어쿠스틱 기타",
@@ -113,7 +124,7 @@ const Store = () => {
       <div className="container px-4 py-10 mx-auto">
         <h1 className="mb-6 text-3xl font-bold">스토어</h1>
         
-        <Tabs defaultValue="all" className="w-full">
+        <Tabs defaultValue={activeTab} className="w-full" onValueChange={handleTabChange}>
           <TabsList className="mb-6">
             <TabsTrigger value="all">전체 상품</TabsTrigger>
             <TabsTrigger value="instruments">악기</TabsTrigger>
@@ -121,6 +132,7 @@ const Store = () => {
             <TabsTrigger value="vod">VOD 강의</TabsTrigger>
             <TabsTrigger value="accessories">악세서리</TabsTrigger>
           </TabsList>
+          
           
           <TabsContent value="all">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -223,6 +235,7 @@ const Store = () => {
               ))}
             </div>
           </TabsContent>
+          
           
           <TabsContent value="accessories">
             <div className="p-8 text-center text-muted-foreground">
