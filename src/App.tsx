@@ -53,8 +53,17 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages 배포용 basename 설정
-const BASENAME = '/music-learn-connect/';
+// 환경에 따라 동적으로 basename 설정
+const getBasename = () => {
+  // GitHub Pages 배포 환경인 경우에만 basename 설정
+  if (window.location.hostname.includes('github.io')) {
+    return '/music-learn-connect/';
+  }
+  // 개발 환경에서는 basename 불필요
+  return '';
+};
+
+const BASENAME = getBasename();
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
 
 const App = () => {
