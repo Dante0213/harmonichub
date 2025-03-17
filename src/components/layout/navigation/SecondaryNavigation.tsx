@@ -9,6 +9,7 @@ export function SecondaryNavigation() {
   const logPath = () => {
     console.log('현재 URL:', window.location.href);
     console.log('pathname:', window.location.pathname);
+    console.log('hash:', window.location.hash);
   };
 
   return (
@@ -18,6 +19,7 @@ export function SecondaryNavigation() {
         to="/about" 
         className="text-sm font-medium hover:text-primary"
         onClick={logPath}
+        aria-label="소개"
       >
         <span className="hidden md:inline">소개</span>
         <Info className="inline md:hidden w-4 h-4" />
@@ -26,6 +28,7 @@ export function SecondaryNavigation() {
         to="/notices" 
         className="text-sm font-medium hover:text-primary"
         onClick={logPath}
+        aria-label="공지사항"
       >
         <span className="hidden md:inline">공지사항</span>
         <Bell className="inline md:hidden w-4 h-4" />
@@ -34,6 +37,7 @@ export function SecondaryNavigation() {
         to="/guide" 
         className="text-sm font-medium hover:text-primary"
         onClick={logPath}
+        aria-label="이용안내"
       >
         <span className="hidden md:inline">이용안내</span>
         <Info className="inline md:hidden w-4 h-4" />
@@ -42,6 +46,7 @@ export function SecondaryNavigation() {
         to="/contact" 
         className="text-sm font-medium hover:text-primary"
         onClick={logPath}
+        aria-label="문의"
       >
         <span className="hidden md:inline">문의</span>
         <FileQuestion className="inline md:hidden w-4 h-4" />

@@ -53,14 +53,12 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages에서는 BrowserRouter 대신 HashRouter 사용
-const Router = window.location.hostname.includes('github.io') ? HashRouter : BrowserRouter;
+// GitHub Pages에서는 항상 HashRouter 사용
+// const Router = window.location.hostname.includes('github.io') ? HashRouter : BrowserRouter;
+const Router = HashRouter; // GitHub Pages 배포 문제 해결을 위해 항상 HashRouter 사용
 
-// basename 설정 (HashRouter 사용 시에는 필요 없음)
+// HashRouter에서는 basename이 필요 없음
 const getBasename = () => {
-  if (window.location.hostname.includes('github.io') && Router === BrowserRouter) {
-    return '/music-learn-connect/';
-  }
   return '';
 };
 

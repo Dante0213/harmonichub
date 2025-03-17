@@ -8,28 +8,42 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
-    <!-- 개발 모드에서는 base 태그를 제거하고 배포 시에만 적용하도록 수정 -->
+    <!-- GitHub Pages 배포 환경에서만 base 태그 적용 -->
     <script>
-      // GitHub Pages 배포 환경에서만 base 태그 적용
       if (window.location.hostname.includes('github.io')) {
         document.write('<base href="/music-learn-connect/" />');
+        console.log('GitHub Pages 환경 감지: base 태그 추가됨');
       }
     </script>
     <script>
-      // 리디렉션에서 왔는지 확인하고 원래 경로로 복원
+      // 리다이렉션 처리 강화
       (function() {
-        var redirectPath = sessionStorage.getItem('redirect_path');
-        if (redirectPath) {
-          // 리디렉션 경로 초기화
-          sessionStorage.removeItem('redirect_path');
+        try {
+          // 디버깅 정보 출력
+          console.log('현재 URL:', window.location.href);
+          console.log('Hostname:', window.location.hostname);
+          console.log('Pathname:', window.location.pathname);
           
-          // 경로에서 레포지토리 이름 제거 (이미 base href로 처리됨)
-          if (redirectPath.indexOf('/music-learn-connect/') === 0) {
-            redirectPath = redirectPath.replace('/music-learn-connect/', '/');
+          // 리다이렉션에서 왔는지 확인
+          var redirectPath = sessionStorage.getItem('redirect_path');
+          console.log('리다이렉션 경로 찾음:', redirectPath);
+          
+          if (redirectPath) {
+            // 리다이렉션 경로 초기화
+            sessionStorage.removeItem('redirect_path');
+            
+            // 경로에서 레포지토리 이름 제거 (이미 base href로 처리됨)
+            if (redirectPath.indexOf('/music-learn-connect/') === 0) {
+              redirectPath = redirectPath.replace('/music-learn-connect/', '/');
+              console.log('수정된 리다이렉션 경로:', redirectPath);
+            }
+            
+            // 리액트 라우터가 처리할 수 있도록 경로 설정
+            history.replaceState(null, null, redirectPath);
+            console.log('리다이렉션 완료:', window.location.href);
           }
-          
-          // 리액트 라우터가 처리할 수 있도록 해시 기반 URL 생성
-          history.replaceState(null, null, redirectPath);
+        } catch (error) {
+          console.error('리다이렉션 처리 중 오류 발생:', error);
         }
       })();
     </script>
