@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Teachers from "./pages/Teachers";
+import MyPage from "./pages/MyPage";
 import { Chatbot } from "./components/chatbot/Chatbot";
 
 // My 카테고리 페이지들
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/teachers" element={<Teachers />} />
+            <Route path="/mypage" element={<MyPage />} />
             
             {/* My 카테고리 페이지들 */}
             <Route path="/my/recent-videos" element={<RecentVideos />} />

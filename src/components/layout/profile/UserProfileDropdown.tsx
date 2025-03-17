@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Music } from "lucide-react";
+import { LogOut, Music, Settings, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,18 +58,21 @@ export function UserProfileDropdown() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <Link to="/profile" className="flex w-full">
-              프로필
+            <Link to="/mypage" className="flex w-full items-center">
+              <User className="mr-2 h-4 w-4" />
+              마이페이지
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link to="/settings" className="flex w-full">
+            <Link to="/settings" className="flex w-full items-center">
+              <Settings className="mr-2 h-4 w-4" />
               설정
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="flex items-center">
+          <LogOut className="mr-2 h-4 w-4" />
           로그아웃
         </DropdownMenuItem>
       </DropdownMenuContent>
