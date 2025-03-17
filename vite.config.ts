@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "./", // 깃허브 페이지스를 위한 상대 경로 설정
+  base: "/", // GitHub Pages를 위한 설정을 절대 경로로 변경
   server: {
     host: "::",
     port: 8080,
