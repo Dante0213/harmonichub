@@ -18,10 +18,9 @@ export const ReelUserInfo = ({ reel }: ReelUserInfoProps) => {
         <div className="flex items-center gap-1">
           <p className="font-semibold">{reel.userHandle}</p>
           {reel.isTeacher && (
-            <Music className="h-4 w-4 text-primary" fill="currentColor" />
+            <Music className="h-4 w-4 text-purple-400" fill="currentColor" />
           )}
         </div>
-        <p className="text-xs">@{reel.userHandle}</p>
       </div>
       <Button size="sm" variant="secondary" className="ml-auto">팔로우</Button>
     </div>
