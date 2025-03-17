@@ -1,0 +1,125 @@
+
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { GraduationCap, Briefcase, Award, Calendar } from "lucide-react";
+import { Reel } from "@/components/social/reels/ReelsData";
+
+interface ProfileInfoProps {
+  userData: Reel;
+}
+
+export const ProfileInfo = ({ userData }: ProfileInfoProps) => {
+  return (
+    <>
+      <Card className="mt-6">
+        <CardHeader>
+          <h3 className="font-semibold">악기 & 장르</h3>
+        </CardHeader>
+        <CardContent>
+          <h4 className="text-sm font-medium mb-2">악기</h4>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {userData.instruments?.map((instrument, index) => (
+              <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                {instrument}
+              </div>
+            ))}
+          </div>
+          
+          <h4 className="text-sm font-medium mb-2">장르</h4>
+          <div className="flex flex-wrap gap-2">
+            {userData.genres?.map((genre, index) => (
+              <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                {genre}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* 정보 카드: 학력, 경력, 자격증 */}
+      <Card className="mt-6">
+        <CardHeader>
+          <h3 className="font-semibold">정보</h3>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* 학력 */}
+          {userData.education && userData.education.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <GraduationCap className="h-5 w-5 text-muted-foreground" />
+                <h4 className="font-medium">학력</h4>
+              </div>
+              <div className="space-y-3 pl-7">
+                {userData.education.map((edu) => (
+                  <div key={edu.id}>
+                    <p className="font-medium">{edu.institution}</p>
+                    <p className="text-sm text-muted-foreground">{edu.degree} • {edu.year}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* 경력 */}
+          {userData.experience && userData.experience.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Briefcase className="h-5 w-5 text-muted-foreground" />
+                <h4 className="font-medium">경력</h4>
+              </div>
+              <div className="space-y-3 pl-7">
+                {userData.experience.map((exp) => (
+                  <div key={exp.id}>
+                    <p className="font-medium">{exp.company}</p>
+                    <p className="text-sm text-muted-foreground">{exp.position} • {exp.period}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* 자격증 */}
+          {userData.certificates && userData.certificates.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Award className="h-5 w-5 text-muted-foreground" />
+                <h4 className="font-medium">자격증</h4>
+              </div>
+              <div className="space-y-3 pl-7">
+                {userData.certificates.map((cert) => (
+                  <div key={cert.id}>
+                    <p className="font-medium">{cert.name}</p>
+                    <p className="text-sm text-muted-foreground">{cert.issuer} • {cert.year}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+      
+      <Card className="mt-6">
+        <CardHeader>
+          <h3 className="font-semibold">다가오는 일정</h3>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="font-medium">기타 레슨</p>
+                <p className="text-xs text-muted-foreground">5월 15일 (화) 18:00</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="font-medium">연주회 연습</p>
+                <p className="text-xs text-muted-foreground">5월 18일 (금) 19:30</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </>
+  );
+};
