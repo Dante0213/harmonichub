@@ -1,7 +1,7 @@
 
 import { ReelUserInfo } from "./ReelUserInfo";
 import { Reel } from "./ReelsData";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { ReelVideoPlayer } from "./ReelVideoPlayer";
 import { ReelInteractionButtons } from "./ReelInteractionButtons";
 import { ReelComments } from "./ReelComments";
