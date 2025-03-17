@@ -24,8 +24,15 @@ export function Navbar() {
   };
 
   // 메인 내비게이션이 표시되어야 하는 페이지인지 확인
-  // 메인 페이지('/')와 SNS 페이지('/social')에서는 표시하지 않음
-  const shouldShowMainNav = !["/", "/social"].includes(location.pathname);
+  // 메인 페이지('/')와 SNS 페이지('/social') 및 My 카테고리 페이지들에서는 표시하지 않음
+  const shouldShowMainNav = ![
+    "/", 
+    "/social",
+    "/my/recent-videos",
+    "/my/liked-videos", 
+    "/my/saved-videos", 
+    "/my/watch-later"
+  ].includes(location.pathname);
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

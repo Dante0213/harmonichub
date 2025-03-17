@@ -7,10 +7,10 @@ import { Clock } from "lucide-react";
 const WatchLater = () => {
   return (
     <Layout>
-      <div className="flex">
+      <div className="flex h-[calc(100vh-64px)]">
         <SocialSidebar />
         
-        <div className="flex-1 md:ml-64">
+        <div className="flex-1 md:ml-64 overflow-y-auto">
           <div className="container px-4 py-10 mx-auto">
             <div className="flex items-center mb-6 gap-2">
               <Clock className="w-6 h-6 text-primary" />
