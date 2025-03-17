@@ -9,11 +9,11 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <script>
-      // GitHub Pages용 SPA 리다이렉트 처리
+      // SPA 리다이렉트 처리
       (function() {
         var redirect = sessionStorage.redirect;
         delete sessionStorage.redirect;
-        if (redirect && redirect != location.href) {
+        if (redirect && redirect !== window.location.href) {
           history.replaceState(null, null, redirect);
           console.log('리다이렉트 경로 복원:', redirect);
         }

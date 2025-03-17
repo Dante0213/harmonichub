@@ -5,18 +5,9 @@
   <meta charset="utf-8">
   <title>리다이렉트 중...</title>
   <script>
-    // GitHub Pages에서 SPA 라우팅을 위한 리다이렉트
-    var pathSegmentsToKeep = 1;
-    var l = window.location;
-    
-    // 현재 경로를 세션 스토리지에 저장
-    sessionStorage.redirect = l.pathname + l.search + l.hash;
-    
-    // 기본 경로로 리다이렉트
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      '/music-learn-connect/'
-    );
+    // SPA 라우팅을 위한 리다이렉트
+    sessionStorage.redirect = window.location.pathname + window.location.search + window.location.hash;
+    window.location.replace("/music-learn-connect/");
   </script>
 </head>
 <body>

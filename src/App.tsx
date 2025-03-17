@@ -44,7 +44,7 @@ const RouteDebugger = () => {
   return null;
 };
 
-// 항상 객체로 초기화
+// 쿼리 클라이언트 설정
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -54,8 +54,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages에 맞는 basename 설정
-// 개발 환경에서는 빈 문자열, 프로덕션 환경에서는 /music-learn-connect/
+// GitHub Pages 배포용 basename 설정
+// 프로덕션 환경에서는 항상 /music-learn-connect/ 사용
 const BASENAME = '/music-learn-connect/';
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
 
