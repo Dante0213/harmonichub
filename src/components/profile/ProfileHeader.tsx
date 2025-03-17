@@ -90,7 +90,7 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
           
           {isCurrentUser ? (
             <Button 
-              className="w-full" 
+              className="w-full h-10" 
               variant="outline"
               onClick={onEditClick}
             >
@@ -98,9 +98,9 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
               프로필 수정
             </Button>
           ) : (
-            <div className="flex gap-2">
+            <div className="flex gap-2 h-10">
               <Button 
-                className="flex-1"
+                className="flex-1 h-10"
                 onClick={handleFollowToggle}
                 variant={following ? "outline" : "default"}
               >
@@ -118,7 +118,7 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
               </Button>
               <Button 
                 variant="outline" 
-                className="flex-1"
+                className="flex-1 h-10"
                 onClick={handleChatOpen}
               >
                 <MessageSquare className="h-4 w-4 mr-2" />
