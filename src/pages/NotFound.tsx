@@ -18,7 +18,7 @@ const NotFound = () => {
     console.log("전체 URL:", window.location.href);
     console.log("기본 요소:", document.querySelector("base")?.href);
     console.log("Location 객체:", location);
-    console.log("basename 설정:", "/music-learn-connect");
+    console.log("basename 설정:", "/harmonichub");
     console.log("문서 제목:", document.title);
   }, [location.pathname]);
 
@@ -43,7 +43,7 @@ const NotFound = () => {
               전체 URL: {window.location.href}
             </p>
             <p className="text-sm text-muted-foreground">
-              기본 경로: /music-learn-connect/
+              기본 경로: /harmonichub/
             </p>
           </div>
           <Link 

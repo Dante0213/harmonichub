@@ -14,7 +14,7 @@
       console.log('404 페이지 로드됨', l.href);
       
       // 리디렉션이 발생한 경로 저장
-      var pathname = l.pathname.replace(/^\/music-learn-connect/, '');
+      var pathname = l.pathname.replace(/^\/harmonichub/, '');
       if (pathname === '') pathname = '/';
       
       sessionStorage.setItem('redirect_path', pathname);
@@ -23,7 +23,7 @@
       // 홈페이지로 리디렉션
       var redirectUrl = l.protocol + '//' + l.hostname + 
         (l.port ? ':' + l.port : '') + 
-        '/music-learn-connect/';
+        '/harmonichub/';
       
       console.log('리디렉션 URL:', redirectUrl);
       window.location.replace(redirectUrl);
@@ -32,6 +32,6 @@
 </head>
 <body>
   <h1>리디렉션 중...</h1>
-  <p>자동으로 홈페이지로 이동됩니다. 이동되지 않으면 <a href="/music-learn-connect/">여기</a>를 클릭하세요.</p>
+  <p>자동으로 홈페이지로 이동됩니다. 이동되지 않으면 <a href="/harmonichub/">여기</a>를 클릭하세요.</p>
 </body>
 </html>
