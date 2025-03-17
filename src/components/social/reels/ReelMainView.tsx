@@ -16,6 +16,7 @@ interface ReelMainViewProps {
   onMuteToggle: () => void;
   onPrevReel: () => void;
   onNextReel: () => void;
+  onUserClick: () => void;
 }
 
 export const ReelMainView = ({
@@ -26,6 +27,7 @@ export const ReelMainView = ({
   onMuteToggle,
   onPrevReel,
   onNextReel,
+  onUserClick,
 }: ReelMainViewProps) => {
   return (
     <div className="relative h-[600px] bg-black rounded-lg overflow-hidden">
@@ -81,7 +83,7 @@ export const ReelMainView = ({
           </div>
           
           <div className="p-4">
-            <ReelUserInfo reel={reel} />
+            <ReelUserInfo reel={reel} onUserClick={onUserClick} />
             <p className="text-white text-sm mb-2">{reel.content}</p>
             <ReelControls 
               reel={reel}

@@ -1,7 +1,7 @@
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Link } from "react-router-dom";
 import { Music } from "lucide-react";
 
 export const AdBanner = () => {
@@ -22,6 +22,33 @@ export const AdBanner = () => {
           </p>
           <Button size="sm" className="w-full">자세히 보기</Button>
         </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const ProfilePanel = () => {
+  const currentUser = {
+    name: "김음악",
+    handle: "music_kim",
+    instrument: "기타리스트"
+  };
+  
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <h3 className="text-lg font-semibold">내 프로필</h3>
+      </CardHeader>
+      <CardContent>
+        <Link to="/profile" className="flex items-center gap-3 hover:bg-muted p-2 rounded-md transition-colors">
+          <Avatar className="h-12 w-12">
+            <AvatarFallback className="text-lg">{currentUser.name[0]}</AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="font-medium text-base">{currentUser.name}</p>
+            <p className="text-sm text-muted-foreground">@{currentUser.handle}</p>
+          </div>
+        </Link>
       </CardContent>
     </Card>
   );
@@ -58,23 +85,6 @@ export const RecommendedUsersPanel = () => {
           ))}
         </ul>
       </CardContent>
-    </Card>
-  );
-};
-
-export const CreatePostPanel = () => {
-  return (
-    <Card className="mb-6">
-      <CardContent className="pt-6">
-        <textarea 
-          className="w-full min-h-[100px] p-3 border rounded-md resize-none" 
-          placeholder="무엇을 공유하고 싶으신가요?"
-        />
-      </CardContent>
-      <div className="flex justify-between p-6 pt-0">
-        <Button variant="outline">사진/동영상</Button>
-        <Button>게시하기</Button>
-      </div>
     </Card>
   );
 };

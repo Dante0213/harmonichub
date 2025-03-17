@@ -6,20 +6,26 @@ import { Reel } from "./ReelsData";
 
 interface ReelUserInfoProps {
   reel: Reel;
+  onUserClick?: () => void;
 }
 
-export const ReelUserInfo = ({ reel }: ReelUserInfoProps) => {
+export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
   return (
     <div className="flex items-center gap-3 mb-2">
-      <Avatar>
-        <AvatarFallback>{reel.avatar}</AvatarFallback>
-      </Avatar>
-      <div className="text-white">
-        <div className="flex items-center gap-1">
-          <p className="font-semibold">{reel.userHandle}</p>
-          {reel.isTeacher && (
-            <Music className="h-4 w-4 text-purple-500" fill="currentColor" />
-          )}
+      <div 
+        className="flex items-center gap-1 cursor-pointer" 
+        onClick={onUserClick}
+      >
+        <Avatar>
+          <AvatarFallback>{reel.avatar}</AvatarFallback>
+        </Avatar>
+        <div className="text-white">
+          <div className="flex items-center gap-1">
+            <p className="font-semibold">{reel.userHandle}</p>
+            {reel.isTeacher && (
+              <Music className="h-4 w-4 text-purple-500" fill="currentColor" />
+            )}
+          </div>
         </div>
       </div>
       <Button size="sm" variant="secondary" className="ml-auto">팔로우</Button>
