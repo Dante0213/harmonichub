@@ -12,7 +12,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { EyeIcon, EyeOffIcon, Loader2, Upload } from "lucide-react";
+import { EyeIcon, EyeOffIcon, FileIcon, Loader2, Upload, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const professionalFormSchema = z.object({
   // 일반 사용자 정보
@@ -35,10 +36,24 @@ const professionalFormSchema = z.object({
 
 type ProfessionalFormValues = z.infer<typeof professionalFormSchema>;
 
+// 파일 타입 검증 함수
+const isValidFileType = (file: File) => {
+  const acceptedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 
+                          'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+  return acceptedTypes.includes(file.type);
+};
+
+// 파일 사이즈 검증 함수 (5MB)
+const isValidFileSize = (file: File) => {
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  return file.size <= maxSize;
+};
+
 export default function ProfessionalSignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [fileList, setFileList] = useState<FileList | null>(null);
+  const [fileList, setFileList] = useState<File[]>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
   const { toast } = useToast();
   
   const form = useForm<ProfessionalFormValues>({
@@ -63,6 +78,12 @@ export default function ProfessionalSignUpForm() {
       console.log("Uploaded files:", fileList);
       // TODO: 실제 인증 로직 구현
       
+      // 파일 분석 시뮬레이션
+      if (fileList.length > 0) {
+        // 파일 분석 로직은 여기에 구현
+        await simulateFileAnalysis();
+      }
+      
       // 성공 메시지
       toast({
         title: "전문가 회원가입 신청 완료",
@@ -80,9 +101,53 @@ export default function ProfessionalSignUpForm() {
     }
   };
 
+  // 파일 분석 시뮬레이션 함수
+  const simulateFileAnalysis = async () => {
+    // 실제로는 백엔드 API를 호출하여 파일 분석을 수행
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        toast({
+          title: "파일 분석 완료",
+          description: `${fileList.length}개의 파일이 성공적으로 분석되었습니다.`,
+        });
+        resolve();
+      }, 2000); // 2초 딜레이로 분석 시뮬레이션
+    });
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError(null);
+    
     if (e.target.files && e.target.files.length > 0) {
-      setFileList(e.target.files);
+      const newFiles: File[] = Array.from(e.target.files);
+      
+      // 파일 유효성 검사
+      for (const file of newFiles) {
+        if (!isValidFileType(file)) {
+          setFileError("지원되지 않는 파일 형식입니다. PDF 또는 PPT 파일만 업로드 가능합니다.");
+          return;
+        }
+        
+        if (!isValidFileSize(file)) {
+          setFileError("파일 크기가 너무 큽니다. 최대 5MB까지 업로드 가능합니다.");
+          return;
+        }
+      }
+      
+      setFileList(prev => [...prev, ...newFiles]);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setFileList(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // 파일 아이콘 결정 함수
+  const getFileIcon = (file: File) => {
+    if (file.type === 'application/pdf') {
+      return <FileIcon className="w-4 h-4 text-red-500" />;
+    } else {
+      return <FileIcon className="w-4 h-4 text-blue-500" />;
     }
   };
 
@@ -303,32 +368,59 @@ export default function ProfessionalSignUpForm() {
                   )}
                 />
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="file-upload">증빙 자료 업로드</Label>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="file-upload" className="flex items-center gap-2 p-8 border-2 border-dashed rounded-md cursor-pointer hover:bg-muted">
                       <Upload className="w-6 h-6 text-muted-foreground" />
-                      <span className="text-muted-foreground">학위증, 자격증, 경력 증명서 등을 업로드하세요</span>
+                      <span className="text-muted-foreground">학위증, 자격증, 경력 증명서, PPT, PDF 등을 업로드하세요</span>
                       <Input 
                         id="file-upload" 
                         type="file" 
                         multiple 
-                        className="hidden" 
+                        className="hidden"
+                        accept=".pdf,.ppt,.pptx" 
                         onChange={handleFileChange}
                       />
                     </Label>
                   </div>
-                  {fileList && fileList.length > 0 && (
-                    <div className="text-sm">
-                      {Array.from(fileList).map((file, index) => (
-                        <p key={index} className="text-muted-foreground">
-                          {file.name} ({Math.round(file.size / 1024)} KB)
-                        </p>
-                      ))}
+                  
+                  {fileError && (
+                    <p className="text-sm text-destructive">{fileError}</p>
+                  )}
+                  
+                  {fileList.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">업로드된 파일 ({fileList.length})</p>
+                      <div className="border rounded-md divide-y">
+                        {fileList.map((file, index) => (
+                          <div key={index} className="flex items-center justify-between p-2 text-sm">
+                            <div className="flex items-center gap-2">
+                              {getFileIcon(file)}
+                              <span className="font-medium truncate max-w-[200px]">
+                                {file.name}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                ({Math.round(file.size / 1024)} KB)
+                              </span>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="w-6 h-6"
+                              onClick={() => removeFile(index)}
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
+                  
                   <p className="text-sm text-muted-foreground">
-                    PDF, JPG, PNG 파일 (최대 5MB)
+                    PDF, PPT, PPTX 파일 (최대 5MB)
                   </p>
                 </div>
               </div>
@@ -352,7 +444,7 @@ export default function ProfessionalSignUpForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          이미 계정이 있으신가요? <a href="/sign-in" className="font-medium text-primary hover:underline">로그인</a>
+          이미 계정이 있으신가요? <Link to="/sign-in" className="font-medium text-primary hover:underline">로그인</Link>
         </p>
       </CardFooter>
     </Card>
