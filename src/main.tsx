@@ -3,6 +3,20 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// MIME 타입 문제 디버깅
+try {
+  // MIME 타입 오류가 발생하는 경우를 대비해 오류 핸들러 등록
+  window.addEventListener('error', (e) => {
+    console.error('Script loading error detected:', e.message);
+    if (e.message.includes('MIME type') || e.message.includes('application/octet-stream')) {
+      console.error('MIME type error detected. This may be caused by incorrect server configuration.');
+      console.error('Error details:', e);
+    }
+  }, true);
+} catch (err) {
+  console.error('Error setting up error handler:', err);
+}
+
 // 콘솔에 환경 정보 출력하여 디버깅 돕기
 console.log('=============================================');
 console.log('애플리케이션 시작 - 기본 정보');
@@ -11,6 +25,7 @@ console.log('Environment mode:', import.meta.env.MODE);
 console.log('Base URL:', import.meta.env.BASE_URL);
 console.log('Window location:', window.location.href);
 console.log('Document base URL:', document.baseURI);
+console.log('Script type check:', document.currentScript?.getAttribute('type'));
 
 // GitHub Pages 배포 문제 디버깅을 위한 추가 로그
 console.log('Window origin:', window.location.origin);
@@ -21,7 +36,7 @@ console.log('Navigator user agent:', navigator.userAgent);
 const scripts = document.querySelectorAll('script');
 console.log('Loaded scripts:', scripts.length);
 scripts.forEach((script, i) => {
-  console.log(`Script #${i + 1}:`, script.src || 'Inline script');
+  console.log(`Script #${i + 1}:`, script.src || 'Inline script', 'Type:', script.type);
 });
 
 // DOM 요소 점검

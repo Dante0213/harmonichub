@@ -74,6 +74,15 @@ jobs:
             cp dist/index.html dist/404.html
             echo "index.html을 404.html로 복사했습니다"
           fi
+          
+      # 추가: dist 디렉토리에 .htaccess 파일 생성하여 올바른 MIME 타입 설정
+      - name: Create .htaccess file for MIME types
+        run: |
+          echo "AddType text/javascript .js .mjs" > dist/.htaccess
+          echo "AddType application/json .json" >> dist/.htaccess
+          echo "AddType text/css .css" >> dist/.htaccess
+          echo "Header set X-Content-Type-Options \"nosniff\"" >> dist/.htaccess
+          echo ".htaccess 파일을 생성했습니다"
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2

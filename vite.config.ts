@@ -50,6 +50,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // MIME 타입 문제 해결을 위한 headers 설정 추가
+    headers: {
+      'Content-Type': 'text/javascript',
+      'X-Content-Type-Options': 'nosniff'
+    }
   },
   plugins: [
     react(),
