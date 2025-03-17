@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -47,7 +46,6 @@ export const ProfilePanel = () => {
           </Avatar>
           <div>
             <p className="font-medium text-base">{currentUser.name}</p>
-            <p className="text-sm text-muted-foreground">@{currentUser.handle}</p>
           </div>
         </Link>
       </CardContent>
@@ -210,7 +208,6 @@ export const RecommendedUsersPanel = () => {
                   </Avatar>
                   <div>
                     <p className="font-medium">{user.user}</p>
-                    <p className="text-xs text-muted-foreground">@{user.userHandle}</p>
                   </div>
                 </div>
                 <Button 
