@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,8 +32,10 @@ import MoreVideos from "./pages/news/MoreVideos";
 const queryClient = new QueryClient();
 
 // GitHub Pages의 기본 URL 경로 설정
-const basename = import.meta.env.MODE === 'production' ? '/music-learn-connect' : '/';
+const basename = '/music-learn-connect';
 console.log('Using basename:', basename);
+console.log('Current path:', window.location.pathname);
+console.log('Environment mode:', import.meta.env.MODE);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

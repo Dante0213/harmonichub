@@ -6,12 +6,13 @@
   <title>Redirecting...</title>
   <script>
     // GitHub Pages SPA 리다이렉트
-    sessionStorage.redirect = location.href;
-    location.href = "/music-learn-connect/";
+    const fullPath = window.location.pathname;
+    sessionStorage.redirect = fullPath;
+    window.location.href = "/music-learn-connect/";
   </script>
 </head>
 <body>
   <h1>Redirecting...</h1>
-  <p>If you are not redirected automatically, <a href="/music-learn-connect/">click here</a>.</p>
+  <p>자동으로 리다이렉트되지 않는 경우, <a href="/music-learn-connect/">여기를 클릭하세요</a>.</p>
 </body>
 </html>

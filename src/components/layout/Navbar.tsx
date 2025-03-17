@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { NavbarLogo } from "./navigation/NavbarLogo";
 import { SecondaryNavigation } from "./navigation/SecondaryNavigation";
