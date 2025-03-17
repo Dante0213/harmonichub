@@ -39,7 +39,8 @@ export default defineConfig(({ mode }) => ({
       // @radix-ui 문제 해결을 위한 추가 설정
       onwarn(warning, warn) {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || 
-            warning.message.includes('Use of eval')) {
+            warning.message.includes('Use of eval') ||
+            warning.message.includes('BatchedMesh')) {
           return;
         }
         warn(warning);
