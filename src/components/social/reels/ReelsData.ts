@@ -6,6 +6,8 @@ export interface Reel {
   avatar: string;
   imageUrl?: string;
   isTeacher?: boolean;
+  isVerified?: boolean; // 추가된 필드
+  followers?: string; // 추가된 필드
   time: string;
   content: string;
   likes: number;
@@ -42,6 +44,8 @@ export const reelsData: Reel[] = [
     userHandle: "yujin_choi",
     avatar: "Y",
     isTeacher: true,
+    isVerified: true, // 추가
+    followers: "2.3K", // 추가
     time: "3시간 전",
     content: "새로 배운 재즈 피아노 연주입니다. 즉흥 연주라 부족한 점이 많지만 봐주세요~ #재즈피아노 #즉흥연주 #음악",
     likes: 123,
@@ -75,6 +79,8 @@ export const reelsData: Reel[] = [
     userHandle: "seungho_j",
     avatar: "S",
     isTeacher: false,
+    isVerified: false, // 추가
+    followers: "876", // 추가
     time: "5시간 전",
     content: "기타 핑거스타일 연습 중입니다. 이 곡 완성하면 또 올릴게요! #기타 #핑거스타일 #어쿠스틱기타",
     likes: 89,
@@ -108,6 +114,8 @@ export const reelsData: Reel[] = [
     userHandle: "dahee_kim",
     avatar: "D",
     isTeacher: true,
+    isVerified: true, // 추가
+    followers: "2.3K", // 추가
     time: "1일 전",
     content: "드럼 솔로 연습 - 처음 도전해봤어요. 많이 서툴지만 조언 부탁드려요! #드럼 #드럼솔로 #연습중",
     likes: 201,
