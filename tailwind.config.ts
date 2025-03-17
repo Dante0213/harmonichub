@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// 새로운 색상 추가
+				luniverse: {
+					purple: '#9b87f5',
+					lightpurple: '#D6BCFA',
+					softpurple: '#E5DEFF',
+					softpeach: '#FDE1D3',
+					lilac: '#C8B6FF',
+					skyblue: '#B8E0FF',
+					pastelblue: '#A5C0FF',
+					pastellavender: '#D8C4FF',
+					pastelpink: '#FFCAD4'
 				}
 			},
 			borderRadius: {
@@ -84,11 +97,20 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 5s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'gradient-luniverse': 'linear-gradient(90deg, #B8E0FF 0%, #D8C4FF 50%, #FFCAD4 100%)',
+				'gradient-hero': 'linear-gradient(135deg, #C8B6FF 0%, #B8E0FF 100%)'
 			}
 		}
 	},
