@@ -12,7 +12,7 @@ export function Hero() {
         <div className="flex flex-col items-center justify-center text-center">
           <div className="space-y-8 max-w-4xl">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              <span className="gradient-text">Harmonic</span> Hub
+              <span className="hero-title">Harmonic</span> Hub
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
