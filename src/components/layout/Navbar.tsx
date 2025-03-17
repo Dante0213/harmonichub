@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -15,6 +15,9 @@ import { Music, FileQuestion, Bell, Info, Menu, X, User, ShoppingBag, MessageCir
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -27,16 +30,28 @@ export function Navbar() {
           
           {/* Main Navigation */}
           <div className="hidden md:flex md:items-center md:gap-3">
-            <Link to="/teachers" className="px-3 py-2 text-sm font-medium hover:text-primary">
+            <Link 
+              to="/teachers" 
+              className={`px-3 py-2 text-sm font-medium ${isActive('/teachers') ? 'text-primary' : 'hover:text-primary'}`}
+            >
               선생님
             </Link>
-            <Link to="/social" className="px-3 py-2 text-sm font-medium hover:text-primary">
+            <Link 
+              to="/social" 
+              className={`px-3 py-2 text-sm font-medium ${isActive('/social') ? 'text-primary' : 'hover:text-primary'}`}
+            >
               SNS
             </Link>
-            <Link to="/learning" className="px-3 py-2 text-sm font-medium hover:text-primary">
+            <Link 
+              to="/learning" 
+              className={`px-3 py-2 text-sm font-medium ${isActive('/learning') ? 'text-primary' : 'hover:text-primary'}`}
+            >
               학습실
             </Link>
-            <Link to="/store" className="px-3 py-2 text-sm font-medium hover:text-primary">
+            <Link 
+              to="/store" 
+              className={`px-3 py-2 text-sm font-medium ${isActive('/store') ? 'text-primary' : 'hover:text-primary'}`}
+            >
               스토어
             </Link>
           </div>
