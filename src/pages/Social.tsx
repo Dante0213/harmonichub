@@ -8,7 +8,7 @@ import { SocialPostFeed } from "@/components/social/SocialPostFeed";
 import { SocialTrendingFeed } from "@/components/social/SocialTrendingFeed";
 import { SocialFollowingView } from "@/components/social/SocialFollowingView";
 import { 
-  HashtagPanel, 
+  AdBanner, 
   RecommendedUsersPanel, 
   CreatePostPanel 
 } from "@/components/social/SocialSidePanels";
@@ -59,7 +59,7 @@ const Social = () => {
               </div>
               
               <div className="md:w-1/3">
-                <HashtagPanel />
+                <AdBanner />
                 <RecommendedUsersPanel />
               </div>
             </div>

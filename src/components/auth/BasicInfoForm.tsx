@@ -24,10 +24,30 @@ export default function BasicInfoForm({ form }: BasicInfoFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>이름</FormLabel>
+              <FormLabel>이름 (본명)</FormLabel>
               <FormControl>
                 <Input placeholder="홍길동" {...field} />
               </FormControl>
+              <FormDescription>
+                본명은 사이트 내에서 공개되지 않으며, 자격 확인용으로만 사용됩니다.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="nickname"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>닉네임</FormLabel>
+              <FormControl>
+                <Input placeholder="음악선생님" {...field} />
+              </FormControl>
+              <FormDescription>
+                사이트 내에서 공개적으로 표시될 닉네임입니다.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

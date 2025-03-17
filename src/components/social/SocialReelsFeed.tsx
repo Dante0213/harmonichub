@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { 
   Heart, MessageSquare, Share2, Play, 
-  Pause, Volume2, VolumeX, ChevronLeft, ChevronRight
+  Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, Music
 } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { PresentationControls } from "@react-three/drei";
@@ -15,6 +15,7 @@ interface Reel {
   user: string;
   userHandle: string;
   avatar: string;
+  isTeacher?: boolean;  // 선생님 여부를 나타내는 필드 추가
   time: string;
   content: string;
   likes: number;
@@ -30,6 +31,7 @@ export const SocialReelsFeed = () => {
       user: "최유진",
       userHandle: "yujin_choi",
       avatar: "Y",
+      isTeacher: true,  // 선생님으로 표시
       time: "3시간 전",
       content: "새로 배운 재즈 피아노 연주입니다. 즉흥 연주라 부족한 점이 많지만 봐주세요~ #재즈피아노 #즉흥연주 #음악",
       likes: 123,
@@ -42,6 +44,7 @@ export const SocialReelsFeed = () => {
       user: "정승호",
       userHandle: "seungho_j",
       avatar: "S",
+      isTeacher: false,
       time: "5시간 전",
       content: "기타 핑거스타일 연습 중입니다. 이 곡 완성하면 또 올릴게요! #기타 #핑거스타일 #어쿠스틱기타",
       likes: 89,
@@ -54,6 +57,7 @@ export const SocialReelsFeed = () => {
       user: "김다희",
       userHandle: "dahee_kim",
       avatar: "D",
+      isTeacher: true,  // 선생님으로 표시
       time: "1일 전",
       content: "드럼 솔로 연습 - 처음 도전해봤어요. 많이 서툴지만 조언 부탁드려요! #드럼 #드럼솔로 #연습중",
       likes: 201,
@@ -150,7 +154,12 @@ export const SocialReelsFeed = () => {
                   <AvatarFallback>{reels[activeReelIndex].avatar}</AvatarFallback>
                 </Avatar>
                 <div className="text-white">
-                  <p className="font-semibold">{reels[activeReelIndex].user}</p>
+                  <div className="flex items-center gap-1">
+                    <p className="font-semibold">{reels[activeReelIndex].userHandle}</p>
+                    {reels[activeReelIndex].isTeacher && (
+                      <Music className="h-4 w-4 text-primary" fill="currentColor" />
+                    )}
+                  </div>
                   <p className="text-xs">@{reels[activeReelIndex].userHandle}</p>
                 </div>
                 <Button size="sm" variant="secondary" className="ml-auto">팔로우</Button>
@@ -205,7 +214,12 @@ export const SocialReelsFeed = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
               <div className="absolute bottom-2 left-2 text-white text-xs">
-                <p className="font-semibold">{reel.user}</p>
+                <div className="flex items-center gap-1">
+                  <p className="font-semibold">{reel.userHandle}</p>
+                  {reel.isTeacher && (
+                    <Music className="h-3 w-3 text-primary" fill="currentColor" />
+                  )}
+                </div>
                 <div className="flex items-center gap-1 mt-1">
                   <Play className="w-3 h-3" />
                   <span>{reel.views}</span>

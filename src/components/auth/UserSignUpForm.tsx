@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
+  nickname: z.string().min(2, { message: "닉네임은 2자 이상이어야 합니다." }),
   email: z.string().email({ message: "유효한 이메일 주소를 입력해주세요." }),
   password: z.string().min(8, { message: "비밀번호는 8자 이상이어야 합니다." }),
   confirmPassword: z.string()
@@ -33,6 +34,7 @@ export default function UserSignUpForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      nickname: "",
       email: "",
       password: "",
       confirmPassword: ""
@@ -79,10 +81,30 @@ export default function UserSignUpForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이름</FormLabel>
+                  <FormLabel>이름 (본명)</FormLabel>
                   <FormControl>
                     <Input placeholder="홍길동" {...field} />
                   </FormControl>
+                  <FormDescription>
+                    본명은 사이트 내에서 공개되지 않습니다.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="nickname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>닉네임</FormLabel>
+                  <FormControl>
+                    <Input placeholder="음악천재" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    사이트 내에서 공개적으로 표시될 닉네임입니다.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

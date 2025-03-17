@@ -16,6 +16,7 @@ import ProfessionalInfoForm from "./ProfessionalInfoForm";
 const professionalFormSchema = z.object({
   // 일반 사용자 정보
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
+  nickname: z.string().min(2, { message: "닉네임은 2자 이상이어야 합니다." }),
   email: z.string().email({ message: "유효한 이메일 주소를 입력해주세요." }),
   password: z.string().min(8, { message: "비밀번호는 8자 이상이어야 합니다." }),
   confirmPassword: z.string(),
@@ -44,6 +45,7 @@ export default function ProfessionalSignUpForm() {
     resolver: zodResolver(professionalFormSchema),
     defaultValues: {
       name: "",
+      nickname: "",
       email: "",
       password: "",
       confirmPassword: "",

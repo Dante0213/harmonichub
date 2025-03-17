@@ -2,22 +2,26 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Music } from "lucide-react";
 
-export const HashtagPanel = () => {
+export const AdBanner = () => {
   return (
-    <Card className="mb-6">
+    <Card className="mb-6 overflow-hidden">
       <CardHeader>
-        <h3 className="text-lg font-semibold">인기 해시태그</h3>
+        <h3 className="text-lg font-semibold">광고</h3>
       </CardHeader>
-      <CardContent>
-        <ul className="space-y-2">
-          <li><a href="#" className="text-primary hover:underline">#피아노</a></li>
-          <li><a href="#" className="text-primary hover:underline">#기타</a></li>
-          <li><a href="#" className="text-primary hover:underline">#바이올린</a></li>
-          <li><a href="#" className="text-primary hover:underline">#첫레슨</a></li>
-          <li><a href="#" className="text-primary hover:underline">#클래식</a></li>
-          <li><a href="#" className="text-primary hover:underline">#연주영상</a></li>
-        </ul>
+      <CardContent className="p-0">
+        <div className="relative aspect-[16/9] bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+          <p className="text-lg font-medium text-center p-6">
+            여기에 광고 배너가 표시됩니다
+          </p>
+        </div>
+        <div className="p-4">
+          <p className="text-sm text-muted-foreground mb-2">
+            음악 레슨과 악기를 찾고 계신가요?
+          </p>
+          <Button size="sm" className="w-full">자세히 보기</Button>
+        </div>
       </CardContent>
     </Card>
   );
