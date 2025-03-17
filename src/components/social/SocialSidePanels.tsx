@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
-import { Music, User } from "lucide-react";
+import { Music } from "lucide-react";
 import { useState } from "react";
 import { UserProfileModal } from "./UserProfileModal";
 import { Reel } from "./reels/ReelsData";
@@ -59,7 +59,7 @@ export const RecommendedUsersPanel = () => {
   const [selectedUser, setSelectedUser] = useState<Reel | null>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const recommendedUsers = [
+  const recommendedUsers: Reel[] = [
     {
       id: "1",
       avatar: "김",
@@ -71,7 +71,12 @@ export const RecommendedUsersPanel = () => {
       hashtags: ["#피아노", "#음악교육"],
       likeCount: 1200,
       commentCount: 45,
-      isLiked: false
+      isLiked: false,
+      // Add required Reel fields
+      time: "2일 전",
+      content: "피아노 연주를 공유합니다",
+      likes: 1200,
+      comments: 45
     },
     {
       id: "2", 
@@ -84,7 +89,12 @@ export const RecommendedUsersPanel = () => {
       hashtags: ["#바이올린", "#클래식"],
       likeCount: 890,
       commentCount: 32,
-      isLiked: false
+      isLiked: false,
+      // Add required Reel fields
+      time: "3일 전",
+      content: "바이올린 연주 영상입니다",
+      likes: 890,
+      comments: 32
     },
     {
       id: "3",
@@ -97,7 +107,12 @@ export const RecommendedUsersPanel = () => {
       hashtags: ["#성악", "#오페라"],
       likeCount: 750,
       commentCount: 28,
-      isLiked: false
+      isLiked: false,
+      // Add required Reel fields
+      time: "1주 전",
+      content: "오페라 연습 중입니다",
+      likes: 750,
+      comments: 28
     },
     {
       id: "4",
@@ -110,7 +125,12 @@ export const RecommendedUsersPanel = () => {
       hashtags: ["#드럼", "#밴드"],
       likeCount: 920,
       commentCount: 36,
-      isLiked: false
+      isLiked: false,
+      // Add required Reel fields
+      time: "5일 전",
+      content: "드럼 연주 영상입니다",
+      likes: 920,
+      comments: 36
     }
   ];
   

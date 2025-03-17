@@ -11,8 +11,9 @@ interface ReelMainViewProps {
 
 export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLiked, setIsLiked] = useState(reel.isLiked);
-  const [likeCount, setLikeCount] = useState(reel.likeCount);
+  const [isLiked, setIsLiked] = useState(reel.isLiked || false);
+  const [likeCount, setLikeCount] = useState(reel.likeCount || reel.likes || 0);
+  const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -56,7 +57,14 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(!isMuted);
+    }
   };
 
   return (
@@ -64,9 +72,9 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
       <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
-        src={reel.videoUrl}
+        src={reel.videoUrl || "https://example.com/placeholder.mp4"}
         loop
-        muted
+        muted={isMuted}
         playsInline
         onClick={togglePlay}
       />
@@ -76,9 +84,9 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
           <ReelUserInfo reel={reel} onUserClick={() => onUserClick && onUserClick(reel)} />
           
           <div className="mb-4">
-            <p className="text-base mb-2">{reel.description}</p>
+            <p className="text-base mb-2">{reel.description || reel.content}</p>
             <div className="flex flex-wrap gap-2">
-              {reel.hashtags.map((tag, index) => (
+              {reel.hashtags && reel.hashtags.map((tag, index) => (
                 <span key={index} className="text-sm text-blue-300">
                   {tag}
                 </span>
@@ -92,9 +100,11 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
         isPlaying={isPlaying}
         isLiked={isLiked}
         likeCount={likeCount}
-        commentCount={reel.commentCount}
+        commentCount={reel.commentCount || reel.comments || 0}
         onPlayToggle={togglePlay}
         onLikeToggle={toggleLike}
+        isMuted={isMuted}
+        onMuteToggle={toggleMute}
       />
     </div>
   );
