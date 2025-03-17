@@ -3,8 +3,7 @@ import {
   Sheet, 
   SheetContent, 
   SheetHeader, 
-  SheetTitle,
-  SheetClose
+  SheetTitle
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Reel } from "./ReelsData";
@@ -79,9 +78,12 @@ export const ReelComments = ({ reel, isOpen, onOpenChange }: ReelCommentsProps) 
       >
         <SheetHeader className="relative">
           <SheetTitle className="text-white">댓글 {comments.length}개</SheetTitle>
-          <SheetClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+          <button 
+            className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+            onClick={() => onOpenChange(false)}
+          >
             <X className="h-4 w-4 text-white" />
-          </SheetClose>
+          </button>
         </SheetHeader>
         
         <div className="mt-6 overflow-y-auto h-[calc(100vh-200px)]">

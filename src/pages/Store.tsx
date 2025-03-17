@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from "react-router-dom";
 
 const Store = () => {
   const products = [
@@ -56,6 +57,57 @@ const Store = () => {
     }
   ];
 
+  const vodContents = [
+    {
+      name: "피아노 기초 마스터",
+      price: 99000,
+      description: "처음부터 차근차근 배우는 피아노 기초 강의입니다. 총 24개 레슨이 포함되어 있습니다.",
+      instructor: "김지수",
+      level: "초급",
+      duration: "8주"
+    },
+    {
+      name: "어쿠스틱 기타 입문",
+      price: 89000,
+      description: "기초부터 시작하는 어쿠스틱 기타 강의입니다. 코드와 스트로크 패턴을 배웁니다.",
+      instructor: "박현우",
+      level: "초급",
+      duration: "6주"
+    },
+    {
+      name: "재즈 피아노 기초",
+      price: 110000,
+      description: "기본 코드부터 재즈 스케일, 즉흥 연주까지 배우는 재즈 피아노 강의입니다.",
+      instructor: "김지수",
+      level: "중급",
+      duration: "7주"
+    },
+    {
+      name: "클래식 기타 마스터",
+      price: 120000,
+      description: "클래식 기타의 기본 테크닉부터 주요 레퍼토리까지 배울 수 있는 강의입니다.",
+      instructor: "박현우",
+      level: "중급",
+      duration: "8주"
+    },
+    {
+      name: "바이올린 테크닉",
+      price: 130000,
+      description: "다양한 바이올린 테크닉을 마스터할 수 있는 종합 강의입니다.",
+      instructor: "이미나",
+      level: "중급",
+      duration: "10주"
+    },
+    {
+      name: "드럼 리듬 패턴",
+      price: 95000,
+      description: "다양한 장르의 드럼 리듬 패턴을 배울 수 있는 강의입니다.",
+      instructor: "정태현",
+      level: "초급",
+      duration: "5주"
+    }
+  ];
+
   return (
     <Layout>
       <div className="container px-4 py-10 mx-auto">
@@ -66,6 +118,7 @@ const Store = () => {
             <TabsTrigger value="all">전체 상품</TabsTrigger>
             <TabsTrigger value="instruments">악기</TabsTrigger>
             <TabsTrigger value="books">교재</TabsTrigger>
+            <TabsTrigger value="vod">VOD 강의</TabsTrigger>
             <TabsTrigger value="accessories">악세서리</TabsTrigger>
           </TabsList>
           
@@ -129,6 +182,42 @@ const Store = () => {
                   </CardContent>
                   <CardFooter>
                     <Button className="w-full">장바구니 담기</Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="vod">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {vodContents.map((vod, i) => (
+                <Card key={i}>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{vod.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-40 mb-4 bg-muted rounded-md flex items-center justify-center">
+                      <span className="text-muted-foreground">강의 썸네일</span>
+                    </div>
+                    <p className="mb-4 text-sm">{vod.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <div className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-muted">
+                        {vod.level}
+                      </div>
+                      <div className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-muted">
+                        {vod.duration}
+                      </div>
+                      <div className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-muted">
+                        강사: {vod.instructor}
+                      </div>
+                    </div>
+                    <p className="text-lg font-semibold">₩{vod.price.toLocaleString()}</p>
+                  </CardContent>
+                  <CardFooter className="flex gap-2">
+                    <Button className="flex-1">구매하기</Button>
+                    <Link to="/learning" className="flex-1">
+                      <Button className="w-full" variant="outline">미리보기</Button>
+                    </Link>
                   </CardFooter>
                 </Card>
               ))}
