@@ -9,17 +9,13 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <script>
-      // Simple SPA router handling for GitHub Pages
+      // GitHub Pages용 SPA 리다이렉트 처리
       (function() {
-        var redirectPath = sessionStorage.getItem('spa-path');
-        if (redirectPath) {
-          sessionStorage.removeItem('spa-path');
-          // Remove the repo name from the path if it exists
-          if (redirectPath.indexOf('/music-learn-connect') === 0) {
-            redirectPath = redirectPath.replace('/music-learn-connect', '');
-          }
-          history.replaceState(null, null, redirectPath || '/');
-          console.log('SPA navigation restored to:', redirectPath);
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+          console.log('리다이렉트 경로 복원:', redirect);
         }
       })();
     </script>
