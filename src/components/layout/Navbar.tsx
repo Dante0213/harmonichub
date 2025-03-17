@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -16,8 +16,20 @@ import { Music, FileQuestion, Bell, Info, Menu, X, User, ShoppingBag, MessageCir
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
   const isActive = (path: string) => location.pathname === path;
+
+  // 현재 페이지에 있을 때 클릭하면 페이지 새로고침
+  const handleNavClick = (path: string) => {
+    if (location.pathname === path) {
+      // 현재 페이지면 새로고침
+      window.location.reload();
+    } else {
+      // 다른 페이지면 이동
+      navigate(path);
+    }
+  };
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,32 +40,32 @@ export function Navbar() {
             <span className="text-xl font-bold">Harmonic Hub</span>
           </Link>
           
-          {/* Main Navigation */}
+          {/* Main Navigation - 모든 페이지에서 동일하게 위치 */}
           <div className="hidden md:flex md:items-center md:gap-3">
-            <Link 
-              to="/teachers" 
+            <button 
+              onClick={() => handleNavClick('/teachers')}
               className={`px-3 py-2 text-sm font-medium ${isActive('/teachers') ? 'text-primary' : 'hover:text-primary'}`}
             >
               선생님
-            </Link>
-            <Link 
-              to="/social" 
+            </button>
+            <button 
+              onClick={() => handleNavClick('/social')}
               className={`px-3 py-2 text-sm font-medium ${isActive('/social') ? 'text-primary' : 'hover:text-primary'}`}
             >
               SNS
-            </Link>
-            <Link 
-              to="/learning" 
+            </button>
+            <button 
+              onClick={() => handleNavClick('/learning')}
               className={`px-3 py-2 text-sm font-medium ${isActive('/learning') ? 'text-primary' : 'hover:text-primary'}`}
             >
               학습실
-            </Link>
-            <Link 
-              to="/store" 
+            </button>
+            <button 
+              onClick={() => handleNavClick('/store')}
               className={`px-3 py-2 text-sm font-medium ${isActive('/store') ? 'text-primary' : 'hover:text-primary'}`}
             >
               스토어
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -120,34 +132,42 @@ export function Navbar() {
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 flex flex-col px-4 py-6 space-y-4 bg-background md:hidden top-16">
           {/* Main Navigation for Mobile */}
-          <Link 
-            to="/teachers" 
+          <button 
+            onClick={() => {
+              handleNavClick('/teachers');
+              setIsMenuOpen(false);
+            }}
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
-            onClick={() => setIsMenuOpen(false)}
           >
             <User className="w-5 h-5 mr-3" /> 선생님
-          </Link>
-          <Link 
-            to="/social" 
+          </button>
+          <button 
+            onClick={() => {
+              handleNavClick('/social');
+              setIsMenuOpen(false);
+            }}
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
-            onClick={() => setIsMenuOpen(false)}
           >
             <MessageCircle className="w-5 h-5 mr-3" /> SNS
-          </Link>
-          <Link 
-            to="/learning" 
+          </button>
+          <button 
+            onClick={() => {
+              handleNavClick('/learning');
+              setIsMenuOpen(false);
+            }}
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
-            onClick={() => setIsMenuOpen(false)}
           >
             <BookOpen className="w-5 h-5 mr-3" /> 학습실
-          </Link>
-          <Link 
-            to="/store" 
+          </button>
+          <button 
+            onClick={() => {
+              handleNavClick('/store');
+              setIsMenuOpen(false);
+            }}
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
-            onClick={() => setIsMenuOpen(false)}
           >
             <ShoppingBag className="w-5 h-5 mr-3" /> 스토어
-          </Link>
+          </button>
           
           {/* Secondary Navigation for Mobile */}
           <Link 
