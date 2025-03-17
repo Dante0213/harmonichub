@@ -36,7 +36,7 @@ const Learning = () => {
         </div>
         
         <Tabs defaultValue="lessonroom" className="w-full">
-          <TabsList className="mb-4">
+          <TabsList className="mb-4 grid grid-cols-3">
             <TabsTrigger value="lessonroom">레슨룸 입장</TabsTrigger>
             <TabsTrigger value="homework">지난 숙제</TabsTrigger>
             <TabsTrigger value="history">레슨 기록</TabsTrigger>
