@@ -3,9 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Music } from "lucide-react";
 import { Reel } from "./ReelsData";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useSocial } from "@/pages/Social";
 
 interface ReelUserInfoProps {
   reel: Reel;
@@ -13,7 +13,8 @@ interface ReelUserInfoProps {
 }
 
 export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
-  const [isFollowing, setIsFollowing] = useState(false);
+  const { isFollowing, followUser, unfollowUser } = useSocial();
+  const following = isFollowing(reel.id);
   const { toast } = useToast();
 
   const handleUserClick = () => {
@@ -24,11 +25,16 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
 
   const handleFollowToggle = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent triggering the parent onClick
-    setIsFollowing(!isFollowing);
+    
+    if (following) {
+      unfollowUser(reel.id);
+    } else {
+      followUser(reel);
+    }
     
     toast({
-      title: isFollowing ? "팔로우 취소됨" : "팔로우 추가됨",
-      description: isFollowing ? `${reel.userHandle}님을 더 이상 팔로우하지 않습니다.` : `${reel.userHandle}님을 팔로우합니다.`,
+      title: following ? "팔로우 취소됨" : "팔로우 추가됨",
+      description: following ? `${reel.userHandle}님을 더 이상 팔로우하지 않습니다.` : `${reel.userHandle}님을 팔로우합니다.`,
       duration: 2000
     });
   };
@@ -52,23 +58,22 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
           >
             {reel.userHandle}
           </p>
-          {reel.isVerified && (
-            <Badge variant="outline" className="text-xs px-1 py-0 h-5 border-purple-500 text-purple-400">인증됨</Badge>
-          )}
           {reel.isTeacher && (
-            <Music className="h-4 w-4 text-purple-500" />
+            <>
+              <Music className="h-4 w-4 text-purple-500" />
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs h-6 border-white/30 text-white hover:bg-white/10 ml-1"
+                onClick={handleFollowToggle}
+              >
+                {following ? "팔로잉" : "팔로우"}
+              </Button>
+            </>
           )}
         </div>
         <p className="text-xs text-gray-300">{reel.followers || "0"} 팔로워</p>
       </div>
-      <Button 
-        variant="outline" 
-        size="sm" 
-        className="text-xs h-6 border-white/30 text-white hover:bg-white/10"
-        onClick={handleFollowToggle}
-      >
-        {isFollowing ? "팔로잉" : "팔로우"}
-      </Button>
     </div>
   );
 };
