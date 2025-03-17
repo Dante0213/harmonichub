@@ -68,47 +68,6 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
     }
   };
 
-  // 인터랙티브 컨트롤 렌더링 함수
-  const renderInteractiveControls = () => (
-    <div className="flex items-center gap-2 mb-2">
-      <Button
-        variant="ghost"
-        size="icon"
-        className={`rounded-full bg-black/50 hover:bg-black/70 text-white ${isLiked ? 'text-red-500' : ''}`}
-        onClick={toggleLike}
-      >
-        <Heart className="w-5 h-5" fill={isLiked ? "currentColor" : "none"} />
-        <span className="text-xs absolute -bottom-5">{likeCount}</span>
-      </Button>
-      
-      <Button
-        variant="ghost"
-        size="icon"
-        className="rounded-full bg-black/50 hover:bg-black/70 text-white"
-      >
-        <MessageSquare className="w-5 h-5" />
-        <span className="text-xs absolute -bottom-5">{reel.commentCount || reel.comments || 0}</span>
-      </Button>
-      
-      <Button
-        variant="ghost"
-        size="icon"
-        className="rounded-full bg-black/50 hover:bg-black/70 text-white"
-      >
-        <Share2 className="w-5 h-5" />
-      </Button>
-      
-      <Button
-        variant="ghost"
-        size="icon"
-        className="rounded-full bg-black/50 hover:bg-black/70 text-white"
-        onClick={toggleMute}
-      >
-        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-      </Button>
-    </div>
-  );
-
   return (
     <div className="relative h-full w-full bg-black rounded-lg overflow-hidden">
       <video
@@ -123,7 +82,43 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
       
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50">
         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-          {renderInteractiveControls()}
+          <div className="flex items-center gap-2 mb-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`rounded-full bg-black/50 hover:bg-black/70 text-white ${isLiked ? 'text-red-500' : ''}`}
+              onClick={toggleLike}
+            >
+              <Heart className="w-5 h-5" fill={isLiked ? "currentColor" : "none"} />
+              <span className="text-xs absolute -bottom-5">{likeCount}</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-black/50 hover:bg-black/70 text-white"
+            >
+              <MessageSquare className="w-5 h-5" />
+              <span className="text-xs absolute -bottom-5">{reel.commentCount || reel.comments || 0}</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-black/50 hover:bg-black/70 text-white"
+            >
+              <Share2 className="w-5 h-5" />
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-black/50 hover:bg-black/70 text-white"
+              onClick={toggleMute}
+            >
+              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </Button>
+          </div>
           <ReelUserInfo reel={reel} onUserClick={() => onUserClick && onUserClick(reel)} />
           
           <div className="mb-4">
