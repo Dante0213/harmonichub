@@ -10,13 +10,24 @@
     <meta property="og:image" content="/og-image.png" />
     <base href="/music-learn-connect/" />
     <script>
-      // GitHub Pages SPA 리다이렉트 처리
+      // 향상된 GitHub Pages SPA 리다이렉트 처리
       (function() {
-        const redirect = sessionStorage.redirect;
-        if (redirect) {
-          delete sessionStorage.redirect;
-          const cleanPath = redirect.replace(/^.*?\/music-learn-connect/, '');
-          history.replaceState(null, null, cleanPath || '/');
+        try {
+          const redirect = sessionStorage.getItem('redirect');
+          console.log('Redirect URL:', redirect);
+          
+          if (redirect) {
+            sessionStorage.removeItem('redirect');
+            
+            // GitHub Pages 기본 URL 제거하고 경로만 추출
+            let path = redirect.replace(/^.*?\/music-learn-connect/, '');
+            if (!path) path = '/';
+            
+            console.log('Redirecting to path:', path);
+            history.replaceState(null, null, path);
+          }
+        } catch (error) {
+          console.error('Redirect error:', error);
         }
       })();
     </script>

@@ -5,10 +5,10 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // GitHub Pages SPA 리다이렉트
-    const fullPath = window.location.pathname;
-    sessionStorage.redirect = fullPath;
-    window.location.href = "/music-learn-connect/";
+    // GitHub Pages SPA 리다이렉트 - 전체 URL 저장
+    const fullUrl = window.location.href;
+    sessionStorage.setItem('redirect', fullUrl);
+    window.location.replace('/music-learn-connect/');
   </script>
 </head>
 <body>

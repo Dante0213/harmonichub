@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,45 +38,49 @@ console.log('Using basename:', basename);
 console.log('Current path:', window.location.pathname);
 console.log('Environment mode:', import.meta.env.MODE);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter basename={basename}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/lesson-room" element={<LessonRoom />} />
-            <Route path="/store" element={<Store />} />
-            <Route path="/social" element={<Social />} />
-            <Route path="/learning" element={<Learning />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/teachers" element={<Teachers />} />
-            <Route path="/mypage" element={<MyPage />} />
-            
-            {/* My 카테고리 페이지들 */}
-            <Route path="/my/recent-videos" element={<RecentVideos />} />
-            <Route path="/my/liked-videos" element={<LikedVideos />} />
-            <Route path="/my/saved-videos" element={<SavedVideos />} />
-            <Route path="/my/watch-later" element={<WatchLater />} />
-            
-            {/* 새로운 소식 페이지들 */}
-            <Route path="/news/top-100" element={<Top100 />} />
-            <Route path="/news/performances" element={<Performances />} />
-            <Route path="/news/news" element={<News />} />
-            <Route path="/news/business" element={<Business />} />
-            <Route path="/news/more-videos" element={<MoreVideos />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Chatbot />
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  console.log('App rendered with basename:', basename);
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter basename={basename}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/lesson-room" element={<LessonRoom />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/social" element={<Social />} />
+              <Route path="/learning" element={<Learning />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/teachers" element={<Teachers />} />
+              <Route path="/mypage" element={<MyPage />} />
+              
+              {/* My 카테고리 페이지들 */}
+              <Route path="/my/recent-videos" element={<RecentVideos />} />
+              <Route path="/my/liked-videos" element={<LikedVideos />} />
+              <Route path="/my/saved-videos" element={<SavedVideos />} />
+              <Route path="/my/watch-later" element={<WatchLater />} />
+              
+              {/* 새로운 소식 페이지들 */}
+              <Route path="/news/top-100" element={<Top100 />} />
+              <Route path="/news/performances" element={<Performances />} />
+              <Route path="/news/news" element={<News />} />
+              <Route path="/news/business" element={<Business />} />
+              <Route path="/news/more-videos" element={<MoreVideos />} />
+              
+              {/* 404 페이지 - 모든 경로를 캐치 */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Chatbot />
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
