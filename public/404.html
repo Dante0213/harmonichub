@@ -5,8 +5,26 @@
   <meta charset="utf-8">
   <title>리다이렉트 중...</title>
   <script>
-    // 기본 페이지로 리다이렉트
-    window.location.href = "/music-learn-connect/";
+    // GitHub Pages SPA 리디렉션을 위한 스크립트
+    const pathSegmentsToKeep = 1;
+    
+    let location = window.location;
+    let pathname = location.pathname;
+    
+    // /music-learn-connect/로 시작하는지 확인하고, 그렇지 않다면 추가
+    if (!pathname.startsWith('/music-learn-connect/')) {
+      pathname = '/music-learn-connect' + pathname;
+    }
+    
+    // 저장할 경로 세그먼트 수 계산
+    const segments = pathname.split('/').filter(p => p);
+    const remainingPath = '/' + segments.slice(pathSegmentsToKeep).join('/');
+    
+    // 홈 URL 설정
+    const homeUrl = location.protocol + '//' + location.host + '/music-learn-connect/';
+    
+    // 해시 기반 라우팅으로 리디렉션
+    window.location.href = homeUrl + '#' + remainingPath;
   </script>
 </head>
 <body>
