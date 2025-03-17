@@ -4,17 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload } from "lucide-react";
+import { Upload, FileText } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { isValidFileType, isValidFileSize } from "@/lib/file-utils";
 
 export const HomeworkSubmission = () => {
   const [file, setFile] = useState<File | null>(null);
   const [teacherName, setTeacherName] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [description, setDescription] = useState("");
+  const [savedFiles, setSavedFiles] = useState<{name: string, date: string, teacher: string}[]>([
+    { name: "피아노_연습_녹음.mp3", date: "2023-07-10", teacher: "김지수" },
+    { name: "기타_코드_연습.pdf", date: "2023-07-05", teacher: "박현우" },
+  ]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -22,27 +25,40 @@ export const HomeworkSubmission = () => {
     }
   };
 
-  const handleSubmit = (type: 'file' | 'text') => {
+  const handleSubmit = () => {
     if (!teacherName) {
       toast.error("선생님 이름을 입력해주세요.");
       return;
     }
 
-    if (type === 'file') {
-      if (!file) {
-        toast.error("파일을 선택해주세요.");
-        return;
-      }
-      toast.success(`${teacherName} 선생님에게 과제가 제출되었습니다.`);
-      // 실제로는 서버로 데이터를 전송하고 과제함에 저장하는 로직이 필요합니다.
-    } else {
-      if (!title || !content) {
-        toast.error("제목과 내용을 모두 입력해주세요.");
-        return;
-      }
-      toast.success(`${teacherName} 선생님에게 과제가 제출되었습니다.`);
-      // 실제로는 서버로 데이터를 전송하고 보낸 과제함에 저장하는 로직이 필요합니다.
+    if (!file) {
+      toast.error("파일을 선택해주세요.");
+      return;
     }
+
+    // 파일 유효성 검사
+    if (!isValidFileSize(file)) {
+      toast.error("파일 크기는 5MB 이하여야 합니다.");
+      return;
+    }
+    
+    // 새 파일 목록에 추가
+    const newFile = {
+      name: file.name,
+      date: new Date().toISOString().split('T')[0],
+      teacher: teacherName
+    };
+    
+    setSavedFiles([newFile, ...savedFiles]);
+    toast.success(`${teacherName} 선생님에게 과제가 제출되었습니다.`);
+    
+    // 폼 초기화
+    setFile(null);
+    setDescription("");
+    
+    // 파일 input 초기화
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
   };
 
   return (
@@ -66,7 +82,7 @@ export const HomeworkSubmission = () => {
         <Tabs defaultValue="upload" className="w-full">
           <TabsList className="mb-4 grid grid-cols-2">
             <TabsTrigger value="upload">파일 업로드</TabsTrigger>
-            <TabsTrigger value="text">보낸 과제</TabsTrigger>
+            <TabsTrigger value="storage">보낸 과제</TabsTrigger>
           </TabsList>
           
           <TabsContent value="upload">
@@ -100,27 +116,35 @@ export const HomeworkSubmission = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="text">
+          <TabsContent value="storage">
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="homework-title">제목</Label>
-                <Input 
-                  id="homework-title" 
-                  placeholder="숙제 제목" 
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="homework-content">내용</Label>
-                <Textarea 
-                  id="homework-content" 
-                  placeholder="숙제 내용을 적어주세요" 
-                  rows={6} 
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                />
-              </div>
+              {savedFiles.length > 0 ? (
+                <div className="rounded-md border">
+                  <div className="p-3 bg-muted font-medium">
+                    저장된 파일 목록
+                  </div>
+                  <div className="divide-y">
+                    {savedFiles.map((savedFile, index) => (
+                      <div key={index} className="p-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <FileText className="h-5 w-5 text-primary" />
+                          <div>
+                            <p className="font-medium">{savedFile.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {savedFile.date} | {savedFile.teacher} 선생님에게 제출
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="ghost" size="sm">보기</Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center p-8 border border-dashed rounded-md">
+                  <p className="text-muted-foreground">제출한 과제가 없습니다.</p>
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>
@@ -128,10 +152,12 @@ export const HomeworkSubmission = () => {
       <CardFooter>
         <Tabs defaultValue="upload" className="w-full">
           <TabsContent value="upload">
-            <Button className="w-full" onClick={() => handleSubmit('file')}>제출하기</Button>
+            <Button className="w-full" onClick={handleSubmit}>제출하기</Button>
           </TabsContent>
-          <TabsContent value="text">
-            <Button className="w-full" onClick={() => handleSubmit('text')}>제출하기</Button>
+          <TabsContent value="storage">
+            <div className="flex justify-end w-full">
+              <Button variant="outline">새로고침</Button>
+            </div>
           </TabsContent>
         </Tabs>
       </CardFooter>
