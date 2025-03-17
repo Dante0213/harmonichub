@@ -34,13 +34,9 @@ import MoreVideos from "./pages/news/MoreVideos";
 // 경로 디버깅 컴포넌트
 const RouteDebugger = () => {
   const location = useLocation();
-  console.log('=============================================');
-  console.log('라우터 디버거');
-  console.log('=============================================');
   console.log('현재 경로:', location.pathname);
+  console.log('해시:', location.hash);
   console.log('전체 URL:', window.location.href);
-  console.log('경로 상태:', location.state);
-  console.log('경로 검색어:', location.search);
   return null;
 };
 
@@ -54,20 +50,9 @@ const queryClient = new QueryClient({
   },
 });
 
-// GitHub Pages 환경인지 확인
-const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
-console.log('GitHub Pages 환경 확인:', isGitHubPages);
-
-// GitHub Pages에서는 항상 HashRouter 사용
-const Router = HashRouter;
-
-// basename은 HashRouter에서는 필요 없으므로 빈 문자열 반환
-const BASENAME = '';
-console.log('앱 초기화 - 설정된 basename:', BASENAME);
-console.log('라우터 타입:', Router.name);
-
+// GitHub Pages에서는 HashRouter를 사용합니다
 const App = () => {
-  console.log('App 컴포넌트 렌더링 시작');
+  console.log('App 컴포넌트 렌더링', window.location.href);
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -75,7 +60,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <Router>
+          <HashRouter>
             <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -102,11 +87,11 @@ const App = () => {
               <Route path="/news/business" element={<Business />} />
               <Route path="/news/more-videos" element={<MoreVideos />} />
               
-              {/* 404 페이지 - 모든 경로를 캐치 */}
+              {/* 404 페이지 */}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Chatbot />
-          </Router>
+          </HashRouter>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
