@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Video, Users, Heart, Bookmark, UserPlus, UserCheck, MessageSquare } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Reel } from "./reels/ReelsData";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileInfo } from "@/components/profile/ProfileInfo";
