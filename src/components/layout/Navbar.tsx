@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Music, FileQuestion, Bell, Info, Menu, X } from "lucide-react";
+import { Music, FileQuestion, Bell, Info, Menu, X, User, ShoppingBag, MessageCircle, BookOpen } from "lucide-react";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,10 +19,28 @@ export function Navbar() {
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
-        <Link to="/" className="flex items-center">
-          <Music className="w-6 h-6 mr-2 text-primary" />
-          <span className="text-xl font-bold">Harmonic Hub</span>
-        </Link>
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center mr-8">
+            <Music className="w-6 h-6 mr-2 text-primary" />
+            <span className="text-xl font-bold">Harmonic Hub</span>
+          </Link>
+          
+          {/* Main Navigation */}
+          <div className="hidden md:flex md:items-center md:gap-3">
+            <Link to="/teachers" className="px-3 py-2 text-sm font-medium hover:text-primary">
+              선생님
+            </Link>
+            <Link to="/social" className="px-3 py-2 text-sm font-medium hover:text-primary">
+              SNS
+            </Link>
+            <Link to="/learning" className="px-3 py-2 text-sm font-medium hover:text-primary">
+              학습실
+            </Link>
+            <Link to="/store" className="px-3 py-2 text-sm font-medium hover:text-primary">
+              스토어
+            </Link>
+          </div>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:gap-4">
@@ -86,6 +104,37 @@ export function Navbar() {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 flex flex-col px-4 py-6 space-y-4 bg-background md:hidden top-16">
+          {/* Main Navigation for Mobile */}
+          <Link 
+            to="/teachers" 
+            className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <User className="w-5 h-5 mr-3" /> 선생님
+          </Link>
+          <Link 
+            to="/social" 
+            className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <MessageCircle className="w-5 h-5 mr-3" /> SNS
+          </Link>
+          <Link 
+            to="/learning" 
+            className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <BookOpen className="w-5 h-5 mr-3" /> 학습실
+          </Link>
+          <Link 
+            to="/store" 
+            className="flex items-center p-2 text-lg hover:bg-accent rounded-md"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <ShoppingBag className="w-5 h-5 mr-3" /> 스토어
+          </Link>
+          
+          {/* Secondary Navigation for Mobile */}
           <Link 
             to="/about" 
             className="flex items-center p-2 text-lg hover:bg-accent rounded-md"

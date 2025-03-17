@@ -21,6 +21,15 @@ export default function SignUp() {
     setSignUpType(SignUpType.None);
   };
 
+  const handleSocialSignUp = (provider: string, type: SignUpType) => {
+    toast({
+      title: `${provider}로 ${type === SignUpType.User ? '일반회원' : '전문가'} 가입`,
+      description: `${provider}를 통한 회원가입을 진행합니다.`,
+    });
+    // 실제 OAuth 회원가입 구현
+    console.log(`${provider} 회원가입 시도`, type);
+  };
+
   return (
     <div className="container max-w-5xl py-12 md:py-24">
       <div className="flex flex-col items-center space-y-6">
@@ -65,6 +74,30 @@ export default function SignUp() {
                 </CardDescription>
               </CardContent>
             </Card>
+
+            {/* Social Sign Up Options */}
+            <div className="md:col-span-2 mt-6">
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="px-2 bg-background text-muted-foreground">소셜 계정으로 가입</span>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button variant="outline" className="w-full" onClick={() => handleSocialSignUp("구글", SignUpType.User)}>
+                  구글 계정으로 가입
+                </Button>
+                <Button variant="outline" className="w-full" onClick={() => handleSocialSignUp("네이버", SignUpType.User)}>
+                  네이버 계정으로 가입
+                </Button>
+                <Button variant="outline" className="w-full" onClick={() => handleSocialSignUp("카카오", SignUpType.User)}>
+                  카카오 계정으로 가입
+                </Button>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="w-full max-w-xl">
@@ -81,6 +114,32 @@ export default function SignUp() {
             ) : (
               <ProfessionalSignUpForm />
             )}
+
+            {/* Social Sign Up Options for specific user type */}
+            <Card className="mt-6">
+              <CardContent className="pt-6">
+                <div className="relative my-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t"></span>
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="px-2 bg-card text-muted-foreground">소셜 계정으로 가입</span>
+                  </div>
+                </div>
+                
+                <div className="grid gap-2 mt-4">
+                  <Button variant="outline" className="w-full" onClick={() => handleSocialSignUp("구글", signUpType)}>
+                    구글 계정으로 가입
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => handleSocialSignUp("네이버", signUpType)}>
+                    네이버 계정으로 가입
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => handleSocialSignUp("카카오", signUpType)}>
+                    카카오 계정으로 가입
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>

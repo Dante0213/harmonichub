@@ -54,6 +54,15 @@ export default function SignIn() {
     }
   };
 
+  const handleSocialLogin = (provider: string) => {
+    toast({
+      title: `${provider} 로그인`,
+      description: `${provider}로 로그인을 시도합니다.`,
+    });
+    // 실제 OAuth 로그인 구현
+    console.log(`${provider} 로그인 시도`);
+  };
+
   return (
     <div className="container flex items-center justify-center min-h-[80vh]">
       <Card className="w-full max-w-md">
@@ -140,11 +149,14 @@ export default function SignIn() {
               </div>
               
               <div className="space-y-2">
-                <Button variant="outline" className="w-full" type="button">
+                <Button variant="outline" className="w-full" type="button" onClick={() => handleSocialLogin("Google")}>
                   구글로 로그인
                 </Button>
-                <Button variant="outline" className="w-full" type="button">
-                  페이스북으로 로그인
+                <Button variant="outline" className="w-full" type="button" onClick={() => handleSocialLogin("Naver")}>
+                  네이버로 로그인
+                </Button>
+                <Button variant="outline" className="w-full" type="button" onClick={() => handleSocialLogin("Kakao")}>
+                  카카오로 로그인
                 </Button>
               </div>
             </form>

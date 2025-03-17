@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [name, setName] = useState("");
@@ -16,6 +18,15 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
   const [certificates, setCertificates] = useState("");
   const [introduction, setIntroduction] = useState("");
   const [image, setImage] = useState("/placeholder.svg");
+  const [musicTypes, setMusicTypes] = useState<string[]>([]);
+
+  const handleMusicTypeChange = (value: string) => {
+    if (musicTypes.includes(value)) {
+      setMusicTypes(musicTypes.filter((type) => type !== value));
+    } else {
+      setMusicTypes([...musicTypes, value]);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +37,8 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
       experience,
       certificates,
       introduction,
-      image
+      image,
+      musicTypes
     });
     onOpenChange(false);
   };
@@ -53,6 +65,38 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
                 placeholder="이름을 입력하세요"
                 required
               />
+            </div>
+          </div>
+          
+          <div>
+            <Label className="mb-2 block">음악 장르</Label>
+            <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="classic" 
+                  checked={musicTypes.includes("클래식")}
+                  onCheckedChange={() => handleMusicTypeChange("클래식")}
+                />
+                <label
+                  htmlFor="classic"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  클래식
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="popular" 
+                  checked={musicTypes.includes("실용음악")}
+                  onCheckedChange={() => handleMusicTypeChange("실용음악")}
+                />
+                <label
+                  htmlFor="popular"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  실용음악
+                </label>
+              </div>
             </div>
           </div>
           
