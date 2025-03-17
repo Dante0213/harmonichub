@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Music } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ import {
 export function UserProfileDropdown() {
   // 여기에 로그인 상태를 확인하는 로직을 추가할 수 있습니다.
   const isLoggedIn = false; // 예시: 실제로는 인증 상태에 따라 변경
+  const isProfessional = false; // 예시: 실제로는 사용자 정보에 따라 변경 (전문가 여부)
   
   if (!isLoggedIn) {
     return (
@@ -42,7 +44,12 @@ export function UserProfileDropdown() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">사용자</p>
+            <div className="flex items-center gap-1">
+              <p className="text-sm font-medium leading-none">사용자</p>
+              {isProfessional && (
+                <Music className="h-3 w-3 text-purple-500" fill="currentColor" />
+              )}
+            </div>
             <p className="text-xs leading-none text-muted-foreground">
               user@example.com
             </p>
