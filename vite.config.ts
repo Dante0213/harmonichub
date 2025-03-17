@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     // MIME 타입 문제 해결을 위한 headers 설정
     headers: {
-      'Content-Type': 'text/javascript',
+      'Content-Type': 'application/javascript',
       'X-Content-Type-Options': 'nosniff'
     }
   },
