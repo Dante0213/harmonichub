@@ -139,4 +139,3 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
     </>
   );
 };
-
