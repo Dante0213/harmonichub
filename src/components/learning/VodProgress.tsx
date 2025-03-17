@@ -2,6 +2,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface VodCourse {
   title: string;
@@ -72,10 +73,12 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full flex items-center gap-2">
-          <PlusCircle className="h-4 w-4" />
-          <span>스토어에서 더 보기</span>
-        </Button>
+        <Link to="/store">
+          <Button variant="outline" className="w-full flex items-center gap-2">
+            <PlusCircle className="h-4 w-4" />
+            <span>스토어에서 더 보기</span>
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
