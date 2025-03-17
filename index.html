@@ -11,20 +11,16 @@
     <script>
       // GitHub Pages SPA 리다이렉트 처리
       (function() {
-        if (sessionStorage.redirect) {
-          const redirectURL = new URL(sessionStorage.redirect);
+        const redirect = sessionStorage.redirect;
+        if (redirect) {
           delete sessionStorage.redirect;
-          const baseTag = document.createElement('base');
-          baseTag.href = redirectURL.origin + '/music-learn-connect/';
-          document.head.appendChild(baseTag);
           history.replaceState(null, null, 
-            redirectURL.pathname.replace('/music-learn-connect', '') + 
-            redirectURL.search + 
-            redirectURL.hash
+            redirect.replace('/music-learn-connect', '') || '/'
           );
         }
       })();
     </script>
+    <base href="/music-learn-connect/" />
   </head>
 
   <body>

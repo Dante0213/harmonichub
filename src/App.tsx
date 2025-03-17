@@ -34,6 +34,7 @@ const queryClient = new QueryClient();
 
 // GitHub Pages의 기본 URL 경로 설정
 const basename = import.meta.env.MODE === 'production' ? '/music-learn-connect' : '/';
+console.log('Using basename:', basename);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
