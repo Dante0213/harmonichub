@@ -43,8 +43,6 @@ jobs:
           echo "NPM version: $(npm -v)"
           echo "Directory contents:"
           ls -la
-          echo "Package.json 내용:"
-          cat package.json
           
       # 빌드 과정에서 메모리 문제를 해결하기 위해 NODE_OPTIONS 환경 변수 설정
       - name: Build with increased memory
@@ -59,28 +57,20 @@ jobs:
         run: |
           echo "Build directory contents:"
           ls -la dist/ || echo "dist directory not found"
-          if [ -f "dist/index.html" ]; then
-            echo "Index.html found!"
-            echo "Index.html 내용 미리보기:"
-            head -n 20 dist/index.html
-          else
-            echo "Index.html NOT found!"
-            echo "현재 디렉토리 구조:"
-            find . -type f -name "*.html" | sort
-          fi
-      
+          
       - name: Setup Pages
         uses: actions/configure-pages@v3
       
       - name: Create .nojekyll file
-        run: |
-          mkdir -p dist
-          touch dist/.nojekyll
-          echo ".nojekyll 파일 생성 완료"
+        run: touch dist/.nojekyll
       
-      - name: Copy index.html to 404.html for SPA routing
+      # 수정: 우리 자체 404.html 파일 사용
+      - name: Ensure 404.html exists
         run: |
-          if [ -f "dist/index.html" ]; then
+          if [ -f "public/404.html" ]; then
+            cp public/404.html dist/404.html
+            echo "public/404.html을 dist/404.html로 복사했습니다"
+          else
             cp dist/index.html dist/404.html
             echo "index.html을 404.html로 복사했습니다"
           fi
@@ -91,12 +81,6 @@ jobs:
           path: './dist'
           retention-days: 1
         id: upload-artifact
-        
-      - name: Debug upload artifact
-        if: always()
-        run: |
-          echo "Artifact upload status: ${{ steps.upload-artifact.outcome }}"
-          echo "Artifact upload conclusion: ${{ steps.upload-artifact.conclusion }}"
 
   deploy:
     environment:

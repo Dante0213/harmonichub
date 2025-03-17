@@ -6,8 +6,8 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  // 개발 환경에서는 base를 설정하지 않고, 프로덕션에서만 base 경로 설정
-  base: mode === 'production' ? "/music-learn-connect/" : "/",
+  // 항상 GitHub Pages 레포지토리 경로 설정 - hash router 사용시에도 필요
+  base: "/music-learn-connect/",
   build: {
     outDir: "dist",
     // 빌드 성능 개선을 위해 소스맵 비활성화
