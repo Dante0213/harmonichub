@@ -5,23 +5,36 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // 간소화된 리다이렉트 로직
-    var pathSegments = window.location.pathname.split('/');
-    var repoName = 'music-learn-connect';
-    
-    // 저장소 이름이 포함된 경로인지 확인
-    var hasRepoName = pathSegments.indexOf(repoName) !== -1;
-    
-    // 리다이렉트 경로 설정
-    var redirectPath = hasRepoName ? window.location.pathname : '/' + repoName + window.location.pathname;
-    
-    console.log('404 페이지 로드됨. 리다이렉트 경로:', redirectPath);
-    
-    // 리다이렉트 정보 저장
-    sessionStorage.setItem('redirect-path', redirectPath);
-    
-    // 기본 페이지로 리다이렉트
-    window.location.href = '/' + repoName + '/';
+    // 개선된 리다이렉트 로직
+    (function() {
+      var segmentCount = 1; // GitHub Pages는 일반적으로 하나의 세그먼트(저장소 이름)를 가짐
+      var repoName = 'music-learn-connect';
+      
+      // 현재 URL에서 l=location.pathname 추출
+      var l = window.location.pathname;
+      console.log('404 페이지 - 현재 경로:', l);
+      
+      // 저장소 이름이 경로에 포함되어 있는지 확인
+      var isInRepo = l.indexOf('/' + repoName + '/') === 0;
+      
+      // 리다이렉트 경로 설정
+      var redirectPath;
+      if (isInRepo) {
+        // 이미 저장소 경로에 있으면 그대로 사용
+        redirectPath = l;
+      } else {
+        // 저장소 경로가 없으면 추가
+        redirectPath = '/' + repoName + l;
+      }
+      
+      console.log('404 페이지 - 리다이렉트 경로:', redirectPath);
+      
+      // 리다이렉트 정보 저장
+      sessionStorage.setItem('redirect-path', redirectPath);
+      
+      // 기본 페이지로 리다이렉트
+      window.location.href = '/' + repoName + '/';
+    })();
   </script>
 </head>
 <body>

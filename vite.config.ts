@@ -6,11 +6,10 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  base: "/music-learn-connect/", // GitHub Pages 배포 경로
+  base: mode === 'production' ? '/music-learn-connect/' : '/', // 슬래시(/) 추가
   build: {
     outDir: "dist",
     sourcemap: true,
-    // 빌드 과정에서 .nojekyll 파일 자동 생성
     emptyOutDir: true,
   },
   server: {
