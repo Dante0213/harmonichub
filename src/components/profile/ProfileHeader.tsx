@@ -117,7 +117,7 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
                 )}
               </Button>
               <Button 
-                variant={following ? "default" : "outline"} 
+                variant="outline" 
                 className="flex-1"
                 onClick={handleChatOpen}
               >
