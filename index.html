@@ -9,7 +9,7 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <script>
-      // 단순화된 SPA 리다이렉트 핸들러
+      // 더 단순화된 SPA 리다이렉트 핸들러
       (function() {
         console.log('초기 로드시 URL:', window.location.href);
         
@@ -25,6 +25,8 @@
           
           // 히스토리 API로 경로 변경
           history.replaceState(null, null, routePath);
+        } else {
+          console.log('리다이렉트 경로 없음, 정상 로드');
         }
       })();
     </script>

@@ -14,4 +14,13 @@ console.log('Window origin:', window.location.origin);
 console.log('Window pathname:', window.location.pathname);
 console.log('Navigator user agent:', navigator.userAgent);
 
-createRoot(document.getElementById("root")!).render(<App />);
+// 앱이 실제로 마운트되었는지 확인
+console.log('React DOM 마운트 시작');
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(<App />);
+  console.log('React DOM 마운트 완료');
+} else {
+  console.error('root 요소를 찾을 수 없음!');
+}
