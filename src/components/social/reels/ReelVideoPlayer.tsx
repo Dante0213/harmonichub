@@ -19,8 +19,9 @@ export const ReelVideoPlayer = ({
   isPlaying 
 }: ReelVideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [error, setError] = useState<boolean>(false);
 
-  // IntersectionObserver to handle video playback based on visibility
+  // IntersectionObserver를 사용하여 화면에 보이는지 여부에 따라 비디오 재생 관리
   useEffect(() => {
     const options = {
       root: null,
@@ -31,9 +32,10 @@ export const ReelVideoPlayer = ({
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          if (isPlaying && videoRef.current) {
+          if (isPlaying && videoRef.current && !error) {
             videoRef.current.play().catch(err => {
-              console.log("Video play failed:", err);
+              console.log("비디오 재생 실패:", err);
+              setError(true);
             });
           }
         } else {
@@ -53,22 +55,23 @@ export const ReelVideoPlayer = ({
         observer.unobserve(videoRef.current);
       }
     };
-  }, [isPlaying]);
+  }, [isPlaying, error]);
 
-  // Handle play/pause state changes
+  // 재생/일시정지 상태 변경 처리
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && !error) {
       if (isPlaying) {
         videoRef.current.play().catch(err => {
-          console.log("Video play failed:", err);
+          console.log("비디오 재생 실패:", err);
+          setError(true);
         });
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, error]);
 
-  // Handle volume and mute changes
+  // 볼륨 및 음소거 변경 처리
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.volume = volume / 100;
@@ -76,21 +79,37 @@ export const ReelVideoPlayer = ({
     }
   }, [volume, isMuted]);
 
+  // 비디오 로드 에러 처리
+  const handleVideoError = () => {
+    console.log("비디오 로드 중 오류 발생");
+    setError(true);
+  };
+
   return (
     <>
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        src={videoUrl || "https://example.com/placeholder.mp4"}
-        loop
-        muted={isMuted}
-        playsInline
-        onClick={onVideoClick}
-      />
+      {error ? (
+        <div className="absolute inset-0 w-full h-full bg-black flex items-center justify-center text-white">
+          <div className="text-center p-4">
+            <p className="text-lg">비디오를 로드할 수 없습니다</p>
+            <p className="text-sm text-gray-400 mt-2">나중에 다시 시도해주세요</p>
+          </div>
+        </div>
+      ) : (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          src={videoUrl || "https://example.com/placeholder.mp4"}
+          loop
+          muted={isMuted}
+          playsInline
+          onClick={onVideoClick}
+          onError={handleVideoError}
+        />
+      )}
       
-      {/* Play/pause button in center */}
+      {/* 재생/일시정지 버튼 중앙 */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        {!isPlaying && (
+        {!isPlaying && !error && (
           <Button
             variant="ghost"
             size="icon"

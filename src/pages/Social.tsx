@@ -1,6 +1,5 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { useLocation } from "react-router-dom";
 import { SocialSidebar } from "@/components/social/SocialSidebar";
 import { SocialReelsFeed } from "@/components/social/SocialReelsFeed";
 import { 
@@ -13,7 +12,6 @@ import { UserProfileModal } from "@/components/social/UserProfileModal";
 import { Reel } from "@/components/social/reels/ReelsData";
 
 const Social = () => {
-  const location = useLocation();
   const [selectedUser, setSelectedUser] = useState<Reel | null>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   
@@ -25,10 +23,10 @@ const Social = () => {
   return (
     <Layout>
       <div className="flex h-full w-full">
-        {/* Sidebar */}
+        {/* 사이드바 */}
         <SocialSidebar />
 
-        {/* Main content */}
+        {/* 메인 콘텐츠 */}
         <div className="flex-1 md:ml-64 overflow-hidden">
           <div className="container px-4 py-10 mx-auto max-w-[1400px]">
             <div className="flex flex-col md:flex-row gap-6">
