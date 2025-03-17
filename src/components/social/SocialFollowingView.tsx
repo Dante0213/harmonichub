@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Reel } from "./reels/ReelsData";
 import { useSocial } from "@/pages/Social";
 import { useToast } from "@/hooks/use-toast";
+import { UserCheck } from "lucide-react";
 
 export const SocialFollowingView = () => {
   const { followedUsers, unfollowUser } = useSocial();
@@ -54,6 +55,7 @@ export const SocialFollowingView = () => {
               size="sm"
               onClick={() => handleUnfollow(user)}
             >
+              <UserCheck className="h-4 w-4 mr-2" />
               팔로잉
             </Button>
           </div>
