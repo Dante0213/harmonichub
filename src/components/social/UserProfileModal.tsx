@@ -1,12 +1,10 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Reel } from "./reels/ReelsData";
 import { useState } from "react";
 import { ChatDialog } from "./chat/ChatDialog";
 import { ProfileModalInfo } from "./profile/ProfileModalInfo";
 import { ProfileTabsContent } from "./profile/ProfileTabsContent";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Reel } from "./reels/ReelsData";
 
 interface UserProfileModalProps {
   user: Reel;
