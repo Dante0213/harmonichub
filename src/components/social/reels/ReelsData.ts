@@ -18,6 +18,13 @@ export interface Reel {
   likeCount?: number;
   commentCount?: number;
   isLiked?: boolean;
+  // Additional profile information
+  education?: {id: string; institution: string; degree: string; year: string}[];
+  experience?: {id: string; company: string; position: string; period: string}[];
+  certificates?: {id: string; name: string; issuer: string; year: string}[];
+  instruments?: string[];
+  genres?: string[];
+  bio?: string;
 }
 
 export const reelsData: Reel[] = [
@@ -39,7 +46,20 @@ export const reelsData: Reel[] = [
     hashtags: ["#재즈피아노", "#즉흥연주", "#음악"],
     likeCount: 123,
     commentCount: 18,
-    isLiked: false
+    isLiked: false,
+    // Additional profile information
+    bio: "음악을 사랑하는 피아니스트입니다. 즉흥 연주와 재즈를 좋아해요.",
+    instruments: ["피아노", "키보드"],
+    genres: ["재즈", "클래식"],
+    education: [
+      {id: "ed1", institution: "서울예술대학교", degree: "음악학과", year: "2018-2022"}
+    ],
+    experience: [
+      {id: "ex1", company: "서울재즈클럽", position: "피아니스트", period: "2022-현재"}
+    ],
+    certificates: [
+      {id: "cert1", name: "피아노 연주자격증", issuer: "한국음악협회", year: "2020"}
+    ]
   },
   {
     id: 102,
@@ -59,7 +79,20 @@ export const reelsData: Reel[] = [
     hashtags: ["#기타", "#핑거스타일", "#어쿠스틱기타"],
     likeCount: 89,
     commentCount: 7,
-    isLiked: false
+    isLiked: false,
+    // Additional profile information
+    bio: "기타 연주를 사랑하는 음악가입니다. 핑거스타일 연주를 주로 합니다.",
+    instruments: ["기타", "우쿨렐레"],
+    genres: ["어쿠스틱", "포크"],
+    education: [
+      {id: "ed1", institution: "한국음악대학", degree: "기타학과", year: "2019-2023"}
+    ],
+    experience: [
+      {id: "ex1", company: "어쿠스틱 카페", position: "연주자", period: "2023-현재"}
+    ],
+    certificates: [
+      {id: "cert1", name: "기타 연주 자격증", issuer: "한국기타협회", year: "2021"}
+    ]
   },
   {
     id: 103,
@@ -79,6 +112,19 @@ export const reelsData: Reel[] = [
     hashtags: ["#드럼", "#드럼솔로", "#연습중"],
     likeCount: 201,
     commentCount: 32,
-    isLiked: false
+    isLiked: false,
+    // Additional profile information
+    bio: "드럼을 사랑하는 음악가입니다. 다양한 장르에 도전하고 있어요.",
+    instruments: ["드럼", "퍼커션"],
+    genres: ["록", "팝", "재즈"],
+    education: [
+      {id: "ed1", institution: "국립예술대학", degree: "타악기학과", year: "2017-2021"}
+    ],
+    experience: [
+      {id: "ex1", company: "서울 뮤직 밴드", position: "드러머", period: "2021-현재"}
+    ],
+    certificates: [
+      {id: "cert1", name: "드럼 전문가 자격증", issuer: "한국드럼협회", year: "2019"}
+    ]
   }
 ];

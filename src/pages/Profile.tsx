@@ -11,19 +11,44 @@ import {
   Users, 
   Heart, 
   Bookmark,
-  Calendar
+  Calendar,
+  GraduationCap,
+  Briefcase,
+  Award
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useState } from "react";
+import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
+import { Reel } from "@/components/social/reels/ReelsData";
 
 const Profile = () => {
-  const currentUser = {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [userData, setUserData] = useState<Reel>({
+    id: "current-user",
     name: "김음악",
-    handle: "music_kim",
+    user: "김음악",
+    userHandle: "music_kim",
     avatar: "김",
     bio: "음악을 사랑하는 기타리스트입니다. 취미로 작곡도 하고 있어요.",
-    posts: 42,
-    followers: 156,
-    following: 98
+    time: "",
+    content: "",
+    likes: 0,
+    comments: 0,
+    instruments: ["기타", "피아노", "우쿨렐레"],
+    genres: ["어쿠스틱", "재즈", "팝"],
+    education: [
+      {id: "ed1", institution: "서울음악대학", degree: "음악학과", year: "2018-2022"}
+    ],
+    experience: [
+      {id: "ex1", company: "음악 스튜디오", position: "기타리스트", period: "2022-현재"}
+    ],
+    certificates: [
+      {id: "cert1", name: "음악 지도사 자격증", issuer: "한국음악협회", year: "2021"}
+    ]
+  });
+
+  const handleProfileUpdate = (updatedData: Reel) => {
+    setUserData(updatedData);
   };
 
   return (
@@ -41,22 +66,22 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-col items-center">
                   <Avatar className="h-32 w-32 mb-4">
-                    <AvatarFallback className="text-4xl">{currentUser.avatar}</AvatarFallback>
+                    <AvatarFallback className="text-4xl">{userData.avatar}</AvatarFallback>
                   </Avatar>
-                  <h1 className="text-2xl font-bold">{currentUser.name}</h1>
-                  <p className="text-muted-foreground">@{currentUser.handle}</p>
+                  <h1 className="text-2xl font-bold">{userData.user}</h1>
+                  <p className="text-muted-foreground">@{userData.userHandle}</p>
                   
                   <div className="flex justify-between w-full mt-6 mb-2">
                     <div className="text-center flex-1">
-                      <p className="font-bold">{currentUser.posts}</p>
+                      <p className="font-bold">42</p>
                       <p className="text-sm text-muted-foreground">게시물</p>
                     </div>
                     <div className="text-center flex-1">
-                      <p className="font-bold">{currentUser.followers}</p>
+                      <p className="font-bold">156</p>
                       <p className="text-sm text-muted-foreground">팔로워</p>
                     </div>
                     <div className="text-center flex-1">
-                      <p className="font-bold">{currentUser.following}</p>
+                      <p className="font-bold">98</p>
                       <p className="text-sm text-muted-foreground">팔로잉</p>
                     </div>
                   </div>
@@ -66,10 +91,14 @@ const Profile = () => {
               <CardContent className="pt-6">
                 <div className="mb-6">
                   <h3 className="font-semibold mb-2">소개</h3>
-                  <p className="text-sm">{currentUser.bio}</p>
+                  <p className="text-sm">{userData.bio}</p>
                 </div>
                 
-                <Button className="w-full" variant="outline">
+                <Button 
+                  className="w-full" 
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(true)}
+                >
                   <PenSquare className="h-4 w-4 mr-2" />
                   프로필 수정
                 </Button>
@@ -83,17 +112,83 @@ const Profile = () => {
               <CardContent>
                 <h4 className="text-sm font-medium mb-2">악기</h4>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <div className="bg-secondary px-3 py-1 rounded-full text-sm">기타</div>
-                  <div className="bg-secondary px-3 py-1 rounded-full text-sm">피아노</div>
-                  <div className="bg-secondary px-3 py-1 rounded-full text-sm">우쿨렐레</div>
+                  {userData.instruments?.map((instrument, index) => (
+                    <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                      {instrument}
+                    </div>
+                  ))}
                 </div>
                 
                 <h4 className="text-sm font-medium mb-2">장르</h4>
                 <div className="flex flex-wrap gap-2">
-                  <div className="bg-secondary px-3 py-1 rounded-full text-sm">어쿠스틱</div>
-                  <div className="bg-secondary px-3 py-1 rounded-full text-sm">재즈</div>
-                  <div className="bg-secondary px-3 py-1 rounded-full text-sm">팝</div>
+                  {userData.genres?.map((genre, index) => (
+                    <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                      {genre}
+                    </div>
+                  ))}
                 </div>
+              </CardContent>
+            </Card>
+            
+            {/* 정보 카드: 학력, 경력, 자격증 */}
+            <Card className="mt-6">
+              <CardHeader>
+                <h3 className="font-semibold">정보</h3>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* 학력 */}
+                {userData.education && userData.education.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <GraduationCap className="h-5 w-5 text-muted-foreground" />
+                      <h4 className="font-medium">학력</h4>
+                    </div>
+                    <div className="space-y-3 pl-7">
+                      {userData.education.map((edu) => (
+                        <div key={edu.id}>
+                          <p className="font-medium">{edu.institution}</p>
+                          <p className="text-sm text-muted-foreground">{edu.degree} • {edu.year}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* 경력 */}
+                {userData.experience && userData.experience.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Briefcase className="h-5 w-5 text-muted-foreground" />
+                      <h4 className="font-medium">경력</h4>
+                    </div>
+                    <div className="space-y-3 pl-7">
+                      {userData.experience.map((exp) => (
+                        <div key={exp.id}>
+                          <p className="font-medium">{exp.company}</p>
+                          <p className="text-sm text-muted-foreground">{exp.position} • {exp.period}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* 자격증 */}
+                {userData.certificates && userData.certificates.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Award className="h-5 w-5 text-muted-foreground" />
+                      <h4 className="font-medium">자격증</h4>
+                    </div>
+                    <div className="space-y-3 pl-7">
+                      {userData.certificates.map((cert) => (
+                        <div key={cert.id}>
+                          <p className="font-medium">{cert.name}</p>
+                          <p className="text-sm text-muted-foreground">{cert.issuer} • {cert.year}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
             
@@ -222,6 +317,14 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      
+      {/* 프로필 수정 모달 */}
+      <ProfileEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        userData={userData}
+        onUpdate={handleProfileUpdate}
+      />
     </Layout>
   );
 };
