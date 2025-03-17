@@ -30,7 +30,7 @@ export const HomeworkHistory = ({ homeworks }: HomeworkHistoryProps) => {
 
   return (
     <Tabs defaultValue="received">
-      <TabsList className="mb-4">
+      <TabsList className="mb-4 grid w-full grid-cols-2">
         <TabsTrigger value="received">받은 과제</TabsTrigger>
         <TabsTrigger value="submitted">보낸 과제</TabsTrigger>
       </TabsList>
