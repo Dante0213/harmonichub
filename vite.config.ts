@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/", // GitHub Pages를 위한 설정을 절대 경로로 변경
+  base: mode === 'production' ? "/music-learn-connect/" : "/",
   server: {
     host: "::",
     port: 8080,
