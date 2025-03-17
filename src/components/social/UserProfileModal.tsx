@@ -93,7 +93,7 @@ export const UserProfileModal = ({ user, isOpen, onClose }: UserProfileModalProp
                     <p className="text-sm">{user.bio}</p>
                   </div>
                   
-                  <div className="flex gap-2 h-10">
+                  <div className="flex gap-2">
                     <Button 
                       className="flex-1 h-10"
                       onClick={handleFollowToggle}
