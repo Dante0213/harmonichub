@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -6,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Upload } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { v4 as uuidv4 } from "uuid";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ProfileEditModalProps {
   isOpen: boolean;
@@ -49,8 +49,15 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
   const [education, setEducation] = useState(defaultValues.education);
   const [experience, setExperience] = useState(defaultValues.experience);
   const [certificates, setCertificates] = useState(defaultValues.certificates);
+  
+  const [profileImage, setProfileImage] = useState<string>(userData.imageUrl || "");
 
   const handleSubmit = (data: ProfileFormData) => {
+    // Save profile image to localStorage
+    if (profileImage) {
+      localStorage.setItem('userProfileImage', profileImage);
+    }
+    
     const updatedData = {
       ...userData,
       bio: data.bio,
@@ -58,11 +65,24 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
       genres,
       education,
       experience,
-      certificates
+      certificates,
+      imageUrl: profileImage
     };
     
     onUpdate(updatedData);
     onClose();
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        setProfileImage(result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const addInstrument = () => {
@@ -147,6 +167,45 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <Avatar className="h-24 w-24">
+                {profileImage ? (
+                  <AvatarImage src={profileImage} alt={userData.user} />
+                ) : (
+                  <AvatarFallback className="text-2xl">{userData.avatar}</AvatarFallback>
+                )}
+              </Avatar>
+              
+              <div className="flex items-center gap-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  id="profile-image"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => document.getElementById('profile-image')?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  프로필 이미지 업로드
+                </Button>
+                {profileImage && (
+                  <Button 
+                    type="button" 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={() => setProfileImage("")}
+                  >
+                    <X className="h-4 w-4 mr-1" />
+                    삭제
+                  </Button>
+                )}
+              </div>
+            </div>
+            
             <FormField
               control={form.control}
               name="bio"

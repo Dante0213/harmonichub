@@ -1,6 +1,6 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Settings, PenSquare, UserPlus, MessageSquare } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
@@ -24,7 +24,11 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
         )}
         <div className="flex flex-col items-center">
           <Avatar className="h-32 w-32 mb-4">
-            <AvatarFallback className="text-4xl">{userData.avatar}</AvatarFallback>
+            {userData.imageUrl ? (
+              <AvatarImage src={userData.imageUrl} alt={userData.user} />
+            ) : (
+              <AvatarFallback className="text-4xl">{userData.avatar}</AvatarFallback>
+            )}
           </Avatar>
           <h1 className="text-2xl font-bold">{userData.user}</h1>
           <p className="text-muted-foreground">@{userData.userHandle}</p>

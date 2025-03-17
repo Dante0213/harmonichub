@@ -4,6 +4,7 @@ export interface Reel {
   user: string;
   userHandle: string;
   avatar: string;
+  imageUrl?: string;
   isTeacher?: boolean;
   time: string;
   content: string;
