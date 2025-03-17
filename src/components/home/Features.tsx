@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { User, ShoppingBag, MessageCircle, BookOpen, Video } from "lucide-react";
+import { User, ShoppingBag, MessageCircle, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function Features() {
@@ -24,18 +24,13 @@ export function Features() {
       icon: ShoppingBag,
       title: "스토어",
       link: "/store"
-    },
-    {
-      icon: Video,
-      title: "VOD 강의",
-      link: "/store?tab=vod"
     }
   ];
 
   return (
     <section className="py-10">
       <div className="container px-4 mx-auto">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
             <Link key={index} to={feature.link} className="block transition-transform hover:scale-105">
               <Card className="flex flex-col items-center justify-center h-[200px] mx-auto transition-all hover:shadow-md">
