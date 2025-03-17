@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Music } from "lucide-react";
 import { Reel } from "./ReelsData";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSocial } from "@/pages/Social";
 
@@ -24,19 +23,23 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
   };
 
   const handleFollowToggle = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering the parent onClick
+    e.stopPropagation(); // 부모 onClick이 트리거되는 것을 방지
     
     if (following) {
       unfollowUser(reel.id);
+      toast({
+        title: "팔로우 취소됨",
+        description: `${reel.userHandle}님을 더 이상 팔로우하지 않습니다.`,
+        duration: 1000
+      });
     } else {
       followUser(reel);
+      toast({
+        title: "팔로우 추가됨",
+        description: `${reel.userHandle}님을 팔로우합니다.`,
+        duration: 1000
+      });
     }
-    
-    toast({
-      title: following ? "팔로우 취소됨" : "팔로우 추가됨",
-      description: following ? `${reel.userHandle}님을 더 이상 팔로우하지 않습니다.` : `${reel.userHandle}님을 팔로우합니다.`,
-      duration: 1000
-    });
   };
 
   return (
