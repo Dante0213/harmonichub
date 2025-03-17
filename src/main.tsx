@@ -17,6 +17,13 @@ console.log('Window origin:', window.location.origin);
 console.log('Window pathname:', window.location.pathname);
 console.log('Navigator user agent:', navigator.userAgent);
 
+// 로드된 스크립트 확인
+const scripts = document.querySelectorAll('script');
+console.log('Loaded scripts:', scripts.length);
+scripts.forEach((script, i) => {
+  console.log(`Script #${i + 1}:`, script.src || 'Inline script');
+});
+
 // DOM 요소 점검
 console.log('=============================================');
 console.log('DOM 요소 점검');

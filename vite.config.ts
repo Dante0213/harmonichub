@@ -30,6 +30,10 @@ export default defineConfig(({ mode }) => ({
           vendor: ['react', 'react-dom', 'react-router-dom'],
           ui: ['@radix-ui', 'class-variance-authority', 'clsx', 'tailwind-merge'],
         },
+        // 모든 에셋에 상대 경로 사용
+        assetFileNames: 'assets/[name].[hash].[ext]',
+        chunkFileNames: 'assets/[name].[hash].js',
+        entryFileNames: 'assets/[name].[hash].js',
       },
     },
   },

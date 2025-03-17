@@ -7,7 +7,7 @@
     <title>music-learn-connect</title>
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image" content="./og-image.png" />
     <!-- GitHub Pages 배포 환경에서만 base 태그 적용 - 향상된 버전 -->
     <script>
       if (window.location.hostname.includes('github.io')) {
@@ -31,6 +31,15 @@
           var isGitHubPages = window.location.hostname.includes('github.io');
           if (isGitHubPages) {
             console.log('GitHub Pages 환경 감지됨');
+            
+            // 404 리다이렉션을 위한 경로 저장
+            if (window.location.pathname.indexOf('/music-learn-connect') === 0 && 
+                window.location.pathname !== '/music-learn-connect/' && 
+                window.location.pathname !== '/music-learn-connect/index.html') {
+              var path = window.location.pathname;
+              sessionStorage.setItem('redirect_path', path);
+              console.log('리다이렉션 경로 저장:', path);
+            }
           }
           
           // 리다이렉션에서 왔는지 확인
@@ -60,7 +69,6 @@
 
   <body>
     <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
