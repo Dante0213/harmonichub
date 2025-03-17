@@ -19,6 +19,13 @@ export interface Reel {
   likeCount?: number;
   commentCount?: number;
   isLiked?: boolean;
+  // 댓글 데이터를 위한 속성 추가
+  commentData?: {
+    user: string;
+    text: string;
+    time: string;
+    likes: number;
+  }[];
   // Additional profile information
   education?: {id: string; institution: string; degree: string; year: string}[];
   experience?: {id: string; company: string; position: string; period: string}[];
