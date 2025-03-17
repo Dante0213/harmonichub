@@ -4,9 +4,9 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
+// GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  base: "/music-learn-connect/",
+  base: "/music-learn-connect/", // GitHub Pages 배포 경로
   build: {
     outDir: "dist",
     sourcemap: true,

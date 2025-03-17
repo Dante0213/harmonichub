@@ -10,13 +10,19 @@
     <meta property="og:image" content="/og-image.png" />
     <base href="/music-learn-connect/" />
     <script>
-      // SPA redirect handler - simplified and reliable
+      // 디버깅용 로그 추가
+      console.log('초기 로드 경로:', window.location.pathname);
+      console.log('기본 URL:', document.baseURI);
+      
+      // SPA 리다이렉트 핸들러 - 개선 버전
       (function() {
         var redirect = sessionStorage.getItem('spa-redirect');
         if (redirect && redirect !== '/music-learn-connect/') {
-          console.log('SPA redirect to:', redirect);
+          console.log('SPA 리다이렉트 경로:', redirect);
           sessionStorage.removeItem('spa-redirect');
-          history.replaceState(null, null, redirect);
+          var cleanPath = redirect.replace(/^\/music-learn-connect/, '');
+          if (!cleanPath.startsWith('/')) cleanPath = '/' + cleanPath;
+          history.replaceState(null, null, cleanPath);
         }
       })();
     </script>

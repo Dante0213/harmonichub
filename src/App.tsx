@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
@@ -30,17 +30,27 @@ import News from "./pages/news/News";
 import Business from "./pages/news/Business";
 import MoreVideos from "./pages/news/MoreVideos";
 
+// 경로 디버깅 컴포넌트
+const RouteDebugger = () => {
+  const location = useLocation();
+  console.log('현재 경로:', location.pathname);
+  console.log('경로 상태:', location.state);
+  console.log('경로 검색어:', location.search);
+  return null;
+};
+
 const queryClient = new QueryClient();
 
 // GitHub Pages 배포를 위한 고정 basename
 const basename = '/music-learn-connect';
-console.log('Fixed basename:', basename);
-console.log('Current path:', window.location.pathname);
-console.log('Full URL:', window.location.href);
+console.log('고정 basename:', basename);
+console.log('현재 경로:', window.location.pathname);
+console.log('전체 URL:', window.location.href);
+console.log('기본 URL:', document.baseURI);
 
 const App = () => {
-  console.log('App rendered with fixed basename:', basename);
-  console.log('Host:', window.location.host);
+  console.log('App 렌더링됨 (고정 basename):', basename);
+  console.log('호스트:', window.location.host);
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -49,6 +59,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter basename={basename}>
+            <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/lesson-room" element={<LessonRoom />} />

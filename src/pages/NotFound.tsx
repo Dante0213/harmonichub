@@ -8,14 +8,18 @@ const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // 디버깅 정보 로깅
     console.error(
-      "404 Error: User attempted to access non-existent route:",
+      "404 오류: 존재하지 않는 경로에 접근 시도:",
       location.pathname
     );
     
     // 추가 디버깅 정보
-    console.log("Full URL:", window.location.href);
-    console.log("Base element:", document.querySelector("base")?.href);
+    console.log("전체 URL:", window.location.href);
+    console.log("기본 요소:", document.querySelector("base")?.href);
+    console.log("Location 객체:", location);
+    console.log("basename 설정:", "/music-learn-connect");
+    console.log("문서 제목:", document.title);
   }, [location.pathname]);
 
   return (
@@ -30,12 +34,22 @@ const NotFound = () => {
           <p className="mb-8 text-muted-foreground">
             요청하신 페이지가 이동되었거나 삭제되었을 수 있습니다.
           </p>
-          <p className="mb-4 text-sm text-muted-foreground">
-            현재 경로: {location.pathname}
-          </p>
+          <div className="mb-6 p-4 bg-muted rounded-md text-left">
+            <h3 className="font-medium mb-2">디버깅 정보:</h3>
+            <p className="text-sm text-muted-foreground mb-1">
+              현재 경로: {location.pathname}
+            </p>
+            <p className="text-sm text-muted-foreground mb-1">
+              전체 URL: {window.location.href}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              기본 경로: /music-learn-connect/
+            </p>
+          </div>
           <Link 
             to="/" 
             className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            onClick={() => console.log("홈으로 이동 클릭됨")}
           >
             홈으로 돌아가기
           </Link>

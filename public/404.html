@@ -5,13 +5,25 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // Single page application GitHub Pages redirect
-    sessionStorage.setItem('spa-redirect', window.location.pathname);
+    // 디버깅 로그 추가
+    console.log('404 페이지 로드됨. 현재 경로:', window.location.pathname);
+    
+    // 경로 정리 - music-learn-connect가 중복되는 경우 제거
+    var path = window.location.pathname;
+    if (path.indexOf('/music-learn-connect') > 0) {
+      path = path.substring(path.indexOf('/music-learn-connect'));
+    }
+    
+    // 리다이렉트 경로 저장
+    sessionStorage.setItem('spa-redirect', path);
+    console.log('저장된 리다이렉트 경로:', path);
+    
+    // 기본 페이지로 리다이렉트
     window.location.href = '/music-learn-connect/';
   </script>
 </head>
 <body>
-  <h1>Redirecting...</h1>
-  <p>If you are not redirected automatically, <a href="/music-learn-connect/">click here</a>.</p>
+  <h1>페이지 이동 중...</h1>
+  <p>자동으로 이동하지 않는 경우, <a href="/music-learn-connect/">여기를 클릭하세요</a>.</p>
 </body>
 </html>
