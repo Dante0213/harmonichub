@@ -28,16 +28,31 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
+      - name: Debug environment
+        run: |
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "Working directory: $PWD"
       - name: Build
         run: npm run build
-      - name: Copy index.html to 404.html in dist
-        run: cp dist/index.html dist/404.html
+      - name: Copy index.html to 404.html
+        run: |
+          echo "Copying index.html to 404.html"
+          cp dist/index.html dist/404.html
+          echo "Copy completed"
       - name: Create .nojekyll file
-        run: touch dist/.nojekyll
+        run: |
+          echo "Creating .nojekyll file"
+          touch dist/.nojekyll
+          echo "Created .nojekyll file"
       - name: Debug build output
         run: |
           echo "Listing dist directory contents:"
           ls -la dist/
+          echo "Checking for index.html:"
+          cat dist/index.html | head -n 20
+          echo "Checking for 404.html:"
+          cat dist/404.html | head -n 20
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
@@ -56,3 +71,4 @@ jobs:
       - name: Debug deployment
         run: |
           echo "Deployed to: ${{ steps.deployment.outputs.page_url }}"
+          echo "GitHub Pages URL should be: https://[username].github.io/music-learn-connect/"

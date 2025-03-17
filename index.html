@@ -9,24 +9,27 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <script>
-      // 더 단순화된 SPA 리다이렉트 핸들러
+      // 단순화된 SPA 리다이렉트 처리
       (function() {
-        console.log('초기 로드시 URL:', window.location.href);
+        console.log('인덱스 페이지 로드 - 현재 URL:', window.location.href);
         
-        // 저장된 리다이렉트 경로 확인
+        // 저장된 경로 확인
         var redirectPath = sessionStorage.getItem('redirect-path');
         if (redirectPath) {
-          console.log('저장된 리다이렉트 경로 발견:', redirectPath);
+          console.log('인덱스 페이지 - 저장된 경로 발견:', redirectPath);
+          
+          // 저장된 경로 제거
           sessionStorage.removeItem('redirect-path');
           
-          // 라우터용 경로 생성 (저장소 이름 제거)
-          var routePath = redirectPath.replace(/^\/music-learn-connect/, '') || '/';
-          console.log('라우터용 경로로 변환:', routePath);
+          // 앱 라우터용 경로로 설정 (첫 문자가 /가 아니면 추가)
+          if (redirectPath.charAt(0) !== '/') {
+            redirectPath = '/' + redirectPath;
+          }
           
-          // 히스토리 API로 경로 변경
-          history.replaceState(null, null, routePath);
+          console.log('인덱스 페이지 - 히스토리 설정:', redirectPath);
+          history.replaceState(null, '', redirectPath);
         } else {
-          console.log('리다이렉트 경로 없음, 정상 로드');
+          console.log('인덱스 페이지 - 저장된 경로 없음');
         }
       })();
     </script>

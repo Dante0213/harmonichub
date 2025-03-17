@@ -5,23 +5,26 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // 매우 단순화된 리다이렉트 로직
+    // 간단한 SPA 리다이렉트 핸들러
     (function() {
-      var repoName = 'music-learn-connect';
+      // 기본 경로 (저장소 이름)
+      var basePath = '/music-learn-connect/';
       
-      // GitHub Pages의 404 페이지에서는 전체 URL 경로를 그대로 사용
-      var fullPath = window.location.pathname;
-      console.log('404 페이지 - 전체 경로:', fullPath);
+      // 현재 경로 저장
+      var path = window.location.pathname;
+      console.log('404 핸들러 - 현재 경로:', path);
       
-      // 항상 저장소 기본 경로로 리다이렉트하면서 원래 경로 정보 저장
-      var homePath = '/' + repoName + '/';
-      console.log('홈 경로로 리다이렉트:', homePath);
+      // 기본 URL 생성
+      var homeUrl = window.location.origin + basePath;
+      console.log('404 핸들러 - 홈 URL:', homeUrl);
       
-      // 원래 요청된 경로 저장
-      sessionStorage.setItem('redirect-path', fullPath);
+      // 경로 정보 저장 (저장소 이름 제거)
+      var cleanPath = path.replace(basePath, '/');
+      sessionStorage.setItem('redirect-path', cleanPath);
+      console.log('404 핸들러 - 저장된 경로:', cleanPath);
       
-      // 기본 페이지로 리다이렉트
-      window.location.replace(homePath);
+      // 홈으로 리다이렉트
+      window.location.replace(homeUrl);
     })();
   </script>
 </head>

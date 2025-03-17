@@ -33,24 +33,35 @@ import MoreVideos from "./pages/news/MoreVideos";
 // 경로 디버깅 컴포넌트
 const RouteDebugger = () => {
   const location = useLocation();
-  console.log('현재 경로(RouteDebugger):', location.pathname);
-  console.log('전체 URL(RouteDebugger):', window.location.href);
+  console.log('=============================================');
+  console.log('라우터 디버거');
+  console.log('=============================================');
+  console.log('현재 경로:', location.pathname);
+  console.log('전체 URL:', window.location.href);
   console.log('경로 상태:', location.state);
   console.log('경로 검색어:', location.search);
+  console.log('Basename 설정:', '/music-learn-connect/');
   return null;
 };
 
-const queryClient = new QueryClient();
+// 항상 객체로 초기화
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-// GitHub Pages 배포를 위한 basename 설정 - vite.config.ts와 일치
-const basename = '/music-learn-connect/'; // 항상 고정된 basename 사용
-console.log('설정된 basename:', basename);
-console.log('현재 호스트:', window.location.host);
-console.log('현재 전체 URL:', window.location.href);
-console.log('환경 모드:', import.meta.env.MODE);
+// 고정된 basename - 반드시 뒤에 슬래시(/)로 끝나야 함
+const BASENAME = '/music-learn-connect/';
+console.log('앱 초기화 - 설정된 basename:', BASENAME);
 
 const App = () => {
-  console.log('App 컴포넌트 렌더링 (basename):', basename);
+  console.log('App 컴포넌트 렌더링 시작');
+  console.log('환경:', import.meta.env.MODE);
+  console.log('베이스 URL:', import.meta.env.BASE_URL);
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -58,7 +69,7 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter basename={basename}>
+          <BrowserRouter basename={BASENAME}>
             <RouteDebugger />
             <Routes>
               <Route path="/" element={<Index />} />

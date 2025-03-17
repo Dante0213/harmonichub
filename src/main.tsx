@@ -4,6 +4,9 @@ import App from './App.tsx'
 import './index.css'
 
 // 콘솔에 환경 정보 출력하여 디버깅 돕기
+console.log('=============================================');
+console.log('애플리케이션 시작 - 기본 정보');
+console.log('=============================================');
 console.log('Environment mode:', import.meta.env.MODE);
 console.log('Base URL:', import.meta.env.BASE_URL);
 console.log('Window location:', window.location.href);
@@ -14,13 +17,34 @@ console.log('Window origin:', window.location.origin);
 console.log('Window pathname:', window.location.pathname);
 console.log('Navigator user agent:', navigator.userAgent);
 
+// DOM 요소 점검
+console.log('=============================================');
+console.log('DOM 요소 점검');
+console.log('=============================================');
+console.log('Root element exists:', !!document.getElementById("root"));
+console.log('Body content:', document.body.innerHTML.substring(0, 100) + '...');
+
+// CSS 리소스 점검
+const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
+console.log('CSS links found:', cssLinks.length);
+cssLinks.forEach((link, index) => {
+  console.log(`CSS #${index + 1}:`, link.getAttribute('href'));
+});
+
 // 앱이 실제로 마운트되었는지 확인
+console.log('=============================================');
 console.log('React DOM 마운트 시작');
+console.log('=============================================');
 const rootElement = document.getElementById("root");
 if (rootElement) {
-  const root = createRoot(rootElement);
-  root.render(<App />);
-  console.log('React DOM 마운트 완료');
+  try {
+    const root = createRoot(rootElement);
+    root.render(<App />);
+    console.log('React DOM 마운트 성공');
+  } catch (error) {
+    console.error('React DOM 마운트 실패:', error);
+  }
 } else {
-  console.error('root 요소를 찾을 수 없음!');
+  console.error('치명적 오류: root 요소를 찾을 수 없음!');
+  console.error('HTML 구조:', document.documentElement.innerHTML);
 }
