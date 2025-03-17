@@ -2,13 +2,18 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserProfileModal } from "../UserProfileModal";
 import { Reel } from "../reels/ReelsData";
+import { useSocial } from "@/pages/Social";
+import { useToast } from "@/hooks/use-toast";
+import { UserCheck, UserPlus } from "lucide-react";
 
 export const RecommendedUsersPanel = () => {
   const [selectedUser, setSelectedUser] = useState<Reel | null>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { isFollowing, followUser, unfollowUser } = useSocial();
+  const { toast } = useToast();
 
   const recommendedUsers: Reel[] = [
     {
@@ -142,6 +147,28 @@ export const RecommendedUsersPanel = () => {
     setIsProfileOpen(true);
   };
 
+  const handleFollowToggle = (e: React.MouseEvent, user: Reel) => {
+    e.stopPropagation(); // 부모 요소 클릭 이벤트 전파 방지
+    
+    const following = isFollowing(user.id);
+    
+    if (following) {
+      unfollowUser(user.id);
+      toast({
+        title: "팔로우 취소됨",
+        description: `${user.userHandle}님을 더 이상 팔로우하지 않습니다.`,
+        duration: 1000
+      });
+    } else {
+      followUser(user);
+      toast({
+        title: "팔로우 추가됨",
+        description: `${user.userHandle}님을 팔로우합니다.`,
+        duration: 1000
+      });
+    }
+  };
+
   return (
     <>
       <Card>
@@ -150,27 +177,46 @@ export const RecommendedUsersPanel = () => {
         </CardHeader>
         <CardContent>
           <ul className="space-y-4">
-            {recommendedUsers.map((user) => (
-              <li key={user.id} className="flex items-center justify-between">
-                <div 
-                  className="flex items-center gap-2 cursor-pointer"
-                  onClick={() => handleUserClick(user)}
-                >
-                  <Avatar>
-                    <AvatarFallback>{user.avatar}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{user.user}</p>
+            {recommendedUsers.map((user) => {
+              const following = isFollowing(user.id);
+              return (
+                <li key={user.id} className="flex items-center justify-between">
+                  <div 
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={() => handleUserClick(user)}
+                  >
+                    <Avatar>
+                      {user.imageUrl ? (
+                        <AvatarImage src={user.imageUrl} alt={user.user} />
+                      ) : (
+                        <AvatarFallback>{user.avatar}</AvatarFallback>
+                      )}
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{user.user}</p>
+                    </div>
                   </div>
-                </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                >
-                  팔로우
-                </Button>
-              </li>
-            ))}
+                  <Button 
+                    variant={following ? "outline" : "default"}
+                    size="sm"
+                    onClick={(e) => handleFollowToggle(e, user)}
+                    className="gap-1"
+                  >
+                    {following ? (
+                      <>
+                        <UserCheck className="h-3 w-3" />
+                        팔로잉
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="h-3 w-3" />
+                        팔로우
+                      </>
+                    )}
+                  </Button>
+                </li>
+              );
+            })}
           </ul>
         </CardContent>
       </Card>
