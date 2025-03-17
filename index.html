@@ -11,25 +11,28 @@
     <!-- GitHub Pages 배포를 위한 기본 설정 - 고정 base 사용 -->
     <base href="/music-learn-connect/" />
     <script>
-      // 디버깅 정보
+      // 디버깅 정보 출력
       console.log('문서 로드 시작');
-      console.log('현재 URL:', window.location.href);
+      console.log('호스트:', window.location.hostname);
+      console.log('경로:', window.location.pathname);
+      console.log('해시:', window.location.hash);
       
-      // 리디렉션 처리
+      // sessionStorage에서 리디렉션 경로 확인
       var redirectPath = sessionStorage.getItem('redirect_path');
       if (redirectPath) {
         console.log('리디렉션 경로 발견:', redirectPath);
+        
+        // 세션 스토리지 초기화
         sessionStorage.removeItem('redirect_path');
         
-        // 해시 설정 (앞의 슬래시 제거)
-        if (redirectPath.startsWith('/')) redirectPath = redirectPath.substring(1);
-        if (redirectPath && !window.location.hash) {
+        // 해시 라우팅 설정
+        if (!window.location.hash) {
           window.location.hash = redirectPath;
           console.log('리디렉션 완료:', window.location.href);
         }
       }
     </script>
-    <!-- 정적 리소스 로드 디버깅 -->
+    <!-- 정적 리소스 로드 실패 디버깅 -->
     <script>
       window.addEventListener('error', function(e) {
         if (e.target && (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT' || e.target.tagName === 'IMG')) {
@@ -43,7 +46,6 @@
 
   <body>
     <div id="root"></div>
-    <!-- JavaScript 모듈 로드 방식 수정 -->
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
