@@ -32,14 +32,15 @@ import MoreVideos from "./pages/news/MoreVideos";
 
 const queryClient = new QueryClient();
 
-// GitHub Pages의 기본 URL 경로 설정
+// GitHub Pages 배포를 위한 고정 basename
 const basename = '/music-learn-connect';
-console.log('Using basename:', basename);
+console.log('Fixed basename:', basename);
 console.log('Current path:', window.location.pathname);
-console.log('Environment mode:', import.meta.env.MODE);
+console.log('Full URL:', window.location.href);
 
 const App = () => {
-  console.log('App rendered with basename:', basename);
+  console.log('App rendered with fixed basename:', basename);
+  console.log('Host:', window.location.host);
   
   return (
     <QueryClientProvider client={queryClient}>
