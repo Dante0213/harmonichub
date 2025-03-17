@@ -12,7 +12,7 @@ export const SocialReelsFeed = ({ onUserClick }: SocialReelsFeedProps) => {
   const [reels, setReels] = useState<Reel[]>(reelsData);
   const [visibleReels, setVisibleReels] = useState<number>(5);
 
-  // 스크롤 이벤트 리스너 추가
+  // Add scroll event listener
   useEffect(() => {
     const handleScroll = () => {
       const isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
@@ -26,16 +26,16 @@ export const SocialReelsFeed = ({ onUserClick }: SocialReelsFeedProps) => {
   }, [visibleReels, reels.length]);
 
   return (
-    <Card className="overflow-hidden border-none shadow-none bg-transparent">
-      <CardContent className="p-0 relative">
-        <div className="space-y-6">
-          {reels.slice(0, visibleReels).map((reel, index) => (
-            <div key={reel.id} className="h-[calc(100vh-200px)] min-h-[500px] relative">
-              <ReelMainView reel={reel} onUserClick={() => onUserClick && onUserClick(reel)} />
+    <div className="w-full">
+      <Card className="overflow-hidden border-none shadow-none bg-transparent">
+        <CardContent className="p-0 space-y-6">
+          {reels.slice(0, visibleReels).map((reel) => (
+            <div key={reel.id} className="h-[calc(100vh-200px)] min-h-[500px] max-h-[800px] relative rounded-lg overflow-hidden">
+              <ReelMainView reel={reel} onUserClick={onUserClick ? () => onUserClick(reel) : undefined} />
             </div>
           ))}
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

@@ -1,6 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
 
 interface ReelVideoPlayerProps {
   videoUrl: string;
@@ -19,6 +20,7 @@ export const ReelVideoPlayer = ({
 }: ReelVideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // IntersectionObserver to handle video playback based on visibility
   useEffect(() => {
     const options = {
       root: null,
@@ -29,9 +31,15 @@ export const ReelVideoPlayer = ({
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          videoRef.current?.play();
+          if (isPlaying && videoRef.current) {
+            videoRef.current.play().catch(err => {
+              console.log("Video play failed:", err);
+            });
+          }
         } else {
-          videoRef.current?.pause();
+          if (videoRef.current) {
+            videoRef.current.pause();
+          }
         }
       });
     }, options);
@@ -45,8 +53,22 @@ export const ReelVideoPlayer = ({
         observer.unobserve(videoRef.current);
       }
     };
-  }, []);
+  }, [isPlaying]);
 
+  // Handle play/pause state changes
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.play().catch(err => {
+          console.log("Video play failed:", err);
+        });
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  // Handle volume and mute changes
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.volume = volume / 100;
@@ -66,18 +88,16 @@ export const ReelVideoPlayer = ({
         onClick={onVideoClick}
       />
       
-      {/* 재생/일시정지 버튼 중앙에 배치 */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      {/* Play/pause button in center */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         {!isPlaying && (
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full bg-black/50 hover:bg-black/70 text-white w-16 h-16"
+            className="rounded-full bg-black/50 hover:bg-black/70 text-white w-16 h-16 pointer-events-auto"
             onClick={onVideoClick}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-              <path d="M8 5.14v14l11-7-11-7z" />
-            </svg>
+            <Play className="w-8 h-8" />
           </Button>
         )}
       </div>

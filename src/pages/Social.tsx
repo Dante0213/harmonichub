@@ -24,22 +24,24 @@ const Social = () => {
   
   return (
     <Layout>
-      <div className="flex">
-        {/* 사이드바 */}
+      <div className="flex h-full w-full">
+        {/* Sidebar */}
         <SocialSidebar />
 
-        {/* 메인 콘텐츠 */}
-        <div className="flex-1 md:ml-64">
-          <div className="container px-4 py-10 mx-auto">
+        {/* Main content */}
+        <div className="flex-1 md:ml-64 overflow-hidden">
+          <div className="container px-4 py-10 mx-auto max-w-[1400px]">
             <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-2/3">
+              <div className="md:w-2/3 lg:w-2/3">
                 <SocialReelsFeed onUserClick={handleUserClick} />
               </div>
               
-              <div className="md:w-1/3">
-                <AdBanner />
-                <ProfilePanel />
-                <RecommendedUsersPanel />
+              <div className="hidden md:block md:w-1/3 lg:w-1/3">
+                <div className="sticky top-20">
+                  <AdBanner />
+                  <ProfilePanel />
+                  <RecommendedUsersPanel />
+                </div>
               </div>
             </div>
           </div>
