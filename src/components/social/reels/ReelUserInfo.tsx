@@ -62,18 +62,16 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
             {reel.userHandle}
           </p>
           {reel.isTeacher && (
-            <>
-              <Music className="h-4 w-4 text-purple-500" />
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-xs h-6 text-white hover:bg-white/10 hover:text-white border border-white/20 rounded-full px-3 py-0"
-                onClick={handleFollowToggle}
-              >
-                {following ? "팔로잉" : "팔로우"}
-              </Button>
-            </>
+            <Music className="h-4 w-4 text-purple-500" />
           )}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-xs h-6 text-white hover:bg-white/10 hover:text-white border border-white/20 rounded-full px-3 py-0"
+            onClick={handleFollowToggle}
+          >
+            {following ? "팔로잉" : "팔로우"}
+          </Button>
         </div>
         <p className="text-xs text-gray-300">{reel.followers || "0"} 팔로워</p>
       </div>
