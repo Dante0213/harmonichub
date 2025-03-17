@@ -38,12 +38,6 @@ cssLinks.forEach((link, index) => {
   console.log(`CSS #${index + 1}:`, link.getAttribute('href'));
 });
 
-// MIME 타입 확인 로그 추가
-console.log('=============================================');
-console.log('MIME 타입 확인');
-console.log('=============================================');
-console.log('현재 script 태그 type:', document.currentScript?.type || 'unknown');
-
 // 앱이 실제로 마운트되었는지 확인
 console.log('=============================================');
 console.log('React DOM 마운트 시작');
@@ -56,7 +50,6 @@ if (rootElement) {
     console.log('React DOM 마운트 성공');
   } catch (error) {
     console.error('React DOM 마운트 실패:', error);
-    console.error('오류 세부 정보:', error instanceof Error ? error.message : String(error));
   }
 } else {
   console.error('치명적 오류: root 요소를 찾을 수 없음!');

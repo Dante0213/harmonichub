@@ -6,25 +6,31 @@ import { componentTagger } from "lovable-tagger";
 
 // GitHub Pages 배포를 위한 설정
 export default defineConfig(({ mode }) => ({
-  // GitHub Pages 레포지토리 경로 설정
-  base: "/music-learn-connect/",
+  // 개발 환경에서는 base를 설정하지 않고, 프로덕션에서만 base 경로 설정
+  base: mode === 'production' ? "/music-learn-connect/" : "/",
   build: {
     outDir: "dist",
+    // 빌드 성능 개선을 위해 소스맵 비활성화
     sourcemap: false,
     emptyOutDir: true,
+    // 최적화 설정
     minify: 'terser',
     terserOptions: {
+      format: {
+        comments: false,
+      },
       compress: {
-        drop_console: false, // 디버깅을 위해 콘솔 로그 유지
+        drop_console: false, // 콘솔 로그 유지 (디버깅 목적)
       },
     },
-    // 최적화된 청크 설정
+    // 청크 사이즈 최적화
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['@radix-ui', 'class-variance-authority', 'clsx', 'tailwind-merge'],
         },
-        // GitHub Pages 호환성을 위한 상대 경로 사용
+        // 모든 에셋에 상대 경로 사용
         assetFileNames: 'assets/[name].[hash].[ext]',
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',
@@ -34,10 +40,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    headers: {
-      // 모든 JavaScript 파일에 적절한 MIME 타입 설정
-      "Content-Type": "application/javascript; charset=utf-8"
-    }
   },
   plugins: [
     react(),
@@ -48,8 +50,5 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
   },
 }));

@@ -8,42 +8,68 @@
     <meta name="description" content="Lovable Generated Project" />
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="./og-image.png" />
-    <!-- GitHub Pages 배포를 위한 기본 설정 - 고정 base 사용 -->
-    <base href="/music-learn-connect/" />
+    <!-- GitHub Pages 배포 환경에서만 base 태그 적용 - 향상된 버전 -->
     <script>
-      // 디버깅 정보
-      console.log('문서 로드 시작');
-      console.log('현재 URL:', window.location.href);
-      
-      // 리디렉션 처리
-      var redirectPath = sessionStorage.getItem('redirect_path');
-      if (redirectPath) {
-        console.log('리디렉션 경로 발견:', redirectPath);
-        sessionStorage.removeItem('redirect_path');
-        
-        // 해시 설정 (앞의 슬래시 제거)
-        if (redirectPath.startsWith('/')) redirectPath = redirectPath.substring(1);
-        if (redirectPath && !window.location.hash) {
-          window.location.hash = redirectPath;
-          console.log('리디렉션 완료:', window.location.href);
-        }
+      if (window.location.hostname.includes('github.io')) {
+        // base 태그 추가
+        var baseElement = document.createElement('base');
+        baseElement.href = '/music-learn-connect/';
+        document.head.appendChild(baseElement);
+        console.log('GitHub Pages 환경 감지: base 태그 추가됨');
       }
     </script>
-    <!-- 정적 리소스 로드 디버깅 -->
     <script>
-      window.addEventListener('error', function(e) {
-        if (e.target && (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT' || e.target.tagName === 'IMG')) {
-          console.error('리소스 로드 실패:', e.target.src || e.target.href);
+      // 리다이렉션 처리 강화
+      (function() {
+        try {
+          // 디버깅 정보 출력
+          console.log('현재 URL:', window.location.href);
+          console.log('Hostname:', window.location.hostname);
+          console.log('Pathname:', window.location.pathname);
+          
+          // GitHub Pages 환경 확인
+          var isGitHubPages = window.location.hostname.includes('github.io');
+          if (isGitHubPages) {
+            console.log('GitHub Pages 환경 감지됨');
+            
+            // 404 리다이렉션을 위한 경로 저장
+            if (window.location.pathname.indexOf('/music-learn-connect') === 0 && 
+                window.location.pathname !== '/music-learn-connect/' && 
+                window.location.pathname !== '/music-learn-connect/index.html') {
+              var path = window.location.pathname;
+              sessionStorage.setItem('redirect_path', path);
+              console.log('리다이렉션 경로 저장:', path);
+            }
+          }
+          
+          // 리다이렉션에서 왔는지 확인
+          var redirectPath = sessionStorage.getItem('redirect_path');
+          console.log('리다이렉션 경로 찾음:', redirectPath);
+          
+          if (redirectPath) {
+            // 리다이렉션 경로 초기화
+            sessionStorage.removeItem('redirect_path');
+            
+            // 경로에서 레포지토리 이름 제거 (이미 base href로 처리됨)
+            if (redirectPath.indexOf('/music-learn-connect/') === 0) {
+              redirectPath = redirectPath.replace('/music-learn-connect/', '/');
+              console.log('수정된 리다이렉션 경로:', redirectPath);
+            }
+            
+            // 리액트 라우터가 처리할 수 있도록 경로 설정
+            history.replaceState(null, null, redirectPath);
+            console.log('리다이렉션 완료:', window.location.href);
+          }
+        } catch (error) {
+          console.error('리다이렉션 처리 중 오류 발생:', error);
         }
-      }, true);
+      })();
     </script>
-    <!-- Lovable script tag -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   </head>
 
   <body>
     <div id="root"></div>
-    <!-- JavaScript 모듈 로드 방식 수정 -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

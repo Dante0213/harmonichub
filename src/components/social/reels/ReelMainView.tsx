@@ -1,4 +1,3 @@
-
 import { ReelUserInfo } from "./ReelUserInfo";
 import { Reel } from "./ReelsData";
 import { useState } from "react";
@@ -54,7 +53,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
   };
 
   return (
-    <div className="relative h-full w-full bg-black rounded-lg overflow-hidden shadow-pastel">
+    <div className="relative h-full w-full bg-black rounded-lg overflow-hidden">
       <ReelVideoPlayer
         videoUrl={reel.videoUrl || "https://example.com/placeholder.mp4"}
         isMuted={isMuted}
@@ -84,7 +83,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
             <p className="text-base mb-2">{reel.description || reel.content}</p>
             <div className="flex flex-wrap gap-2">
               {reel.hashtags && reel.hashtags.map((tag, index) => (
-                <span key={index} className="text-sm text-blue-200">
+                <span key={index} className="text-sm text-blue-300">
                   {tag}
                 </span>
               ))}

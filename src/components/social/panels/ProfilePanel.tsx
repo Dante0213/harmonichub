@@ -12,14 +12,14 @@ export const ProfilePanel = () => {
   };
   
   return (
-    <Card className="mb-6 pastel-card">
+    <Card className="mb-6">
       <CardContent className="pt-6">
-        <Link to="/profile" className="flex items-center gap-3 hover:bg-pastel-purple/10 p-2 rounded-md transition-colors">
-          <Avatar className="h-12 w-12 border-2 border-pastel-purple/30">
+        <Link to="/profile" className="flex items-center gap-3 hover:bg-muted p-2 rounded-md transition-colors">
+          <Avatar className="h-12 w-12">
             {currentUser.image ? (
               <AvatarImage src={currentUser.image} alt={currentUser.name} />
             ) : (
-              <AvatarFallback className="text-lg bg-pastel-purple/20">{currentUser.name[0]}</AvatarFallback>
+              <AvatarFallback className="text-lg">{currentUser.name[0]}</AvatarFallback>
             )}
           </Avatar>
           <div>

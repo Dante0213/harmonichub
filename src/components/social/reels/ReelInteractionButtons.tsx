@@ -38,7 +38,7 @@ export const ReelInteractionButtons = ({
       <Button
         variant="ghost"
         size="icon"
-        className={`rounded-full bg-black/40 hover:bg-black/60 text-white ${isLiked ? 'text-pastel-pink' : ''}`}
+        className={`rounded-full bg-black/50 hover:bg-black/70 text-white ${isLiked ? 'text-red-500' : ''}`}
         onClick={onLikeToggle}
       >
         <Heart className="w-5 h-5" fill={isLiked ? "currentColor" : "none"} />
@@ -48,7 +48,7 @@ export const ReelInteractionButtons = ({
       <Button
         variant="ghost"
         size="icon"
-        className="rounded-full bg-black/40 hover:bg-black/60 text-white"
+        className="rounded-full bg-black/50 hover:bg-black/70 text-white"
         onClick={onCommentToggle}
       >
         <MessageSquare className="w-5 h-5" />
@@ -60,12 +60,12 @@ export const ReelInteractionButtons = ({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full bg-black/40 hover:bg-black/60 text-white"
+            className="rounded-full bg-black/50 hover:bg-black/70 text-white"
           >
             <Share2 className="w-5 h-5" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-2 bg-black/80 border-none text-white glass-effect">
+        <PopoverContent className="w-auto p-2 bg-black/90 border-none text-white">
           <div className="flex flex-col gap-2">
             <Button 
               variant="ghost" 
@@ -93,13 +93,13 @@ export const ReelInteractionButtons = ({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full bg-black/40 hover:bg-black/60 text-white"
+            className="rounded-full bg-black/50 hover:bg-black/70 text-white"
             onClick={onMuteToggle}
           >
             {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-4 bg-black/80 border-none glass-effect">
+        <PopoverContent className="w-auto p-4 bg-black/90 border-none">
           <div className="h-24 flex flex-col items-center justify-center">
             <Slider
               orientation="vertical"
