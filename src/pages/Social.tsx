@@ -26,8 +26,6 @@ const Social = () => {
         {/* 메인 콘텐츠 */}
         <div className="flex-1 md:ml-64">
           <div className="container px-4 py-10 mx-auto">
-            <h1 className="mb-6 text-3xl font-bold">SNS</h1>
-            
             <div className="flex flex-col md:flex-row gap-6">
               <div className="md:w-2/3">
                 <div className="mb-6">

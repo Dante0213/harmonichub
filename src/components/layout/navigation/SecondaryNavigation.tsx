@@ -1,6 +1,5 @@
 
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuLink,
@@ -9,6 +8,8 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { FileQuestion, Bell, Info } from "lucide-react";
+import { ThemeToggle } from "../theme/ThemeToggle";
+import { UserProfileDropdown } from "../profile/UserProfileDropdown";
 
 export function SecondaryNavigation() {
   return (
@@ -51,12 +52,8 @@ export function SecondaryNavigation() {
       </NavigationMenu>
       
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" asChild>
-          <Link to="/sign-in">로그인</Link>
-        </Button>
-        <Button size="sm" asChild>
-          <Link to="/sign-up">회원가입</Link>
-        </Button>
+        <ThemeToggle />
+        <UserProfileDropdown />
       </div>
     </div>
   );

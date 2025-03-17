@@ -18,22 +18,22 @@ const sidebarItems = [
     ]
   },
   {
-    title: "My 카테고리",
+    title: "My",
     items: [
-      { name: "최근 본 영상", icon: Video, link: "#recent-videos" },
-      { name: "좋아요 한 영상", icon: Heart, link: "#liked-videos" },
-      { name: "저장 한 영상", icon: Save, link: "#saved-videos" },
-      { name: "나중에 볼 영상", icon: Clock, link: "#watch-later" }
+      { name: "최근 본 영상", icon: Video, link: "/my/recent-videos" },
+      { name: "좋아요 한 영상", icon: Heart, link: "/my/liked-videos" },
+      { name: "저장 한 영상", icon: Save, link: "/my/saved-videos" },
+      { name: "나중에 볼 영상", icon: Clock, link: "/my/watch-later" }
     ]
   },
   {
     title: "새로운 소식",
     items: [
-      { name: "하모닉TOP100", icon: List, link: "#top-100" },
-      { name: "공연소식", icon: Theater, link: "#performances" },
-      { name: "뉴스소식", icon: Newspaper, link: "#news" },
-      { name: "사업소식", icon: Briefcase, link: "#business" },
-      { name: "더 많은 영상 찾아보기", icon: Search, link: "#more-videos" }
+      { name: "하모닉TOP100", icon: List, link: "/news/top-100" },
+      { name: "공연소식", icon: Theater, link: "/news/performances" },
+      { name: "뉴스소식", icon: Newspaper, link: "/news/news" },
+      { name: "사업소식", icon: Briefcase, link: "/news/business" },
+      { name: "더 많은 영상 찾아보기", icon: Search, link: "/news/more-videos" }
     ]
   }
 ];

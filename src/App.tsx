@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeProvider";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
 import Store from "./pages/Store";
@@ -15,29 +16,58 @@ import SignIn from "./pages/SignIn";
 import Teachers from "./pages/Teachers";
 import { Chatbot } from "./components/chatbot/Chatbot";
 
+// My 카테고리 페이지들
+import RecentVideos from "./pages/my/RecentVideos";
+import LikedVideos from "./pages/my/LikedVideos";
+import SavedVideos from "./pages/my/SavedVideos";
+import WatchLater from "./pages/my/WatchLater";
+
+// 새로운 소식 페이지들
+import Top100 from "./pages/news/Top100";
+import Performances from "./pages/news/Performances";
+import News from "./pages/news/News";
+import Business from "./pages/news/Business";
+import MoreVideos from "./pages/news/MoreVideos";
+
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/lesson-room" element={<LessonRoom />} />
-          <Route path="/store" element={<Store />} />
-          <Route path="/social" element={<Social />} />
-          <Route path="/learning" element={<Learning />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/teachers" element={<Teachers />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Chatbot />
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider defaultTheme="light">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/lesson-room" element={<LessonRoom />} />
+            <Route path="/store" element={<Store />} />
+            <Route path="/social" element={<Social />} />
+            <Route path="/learning" element={<Learning />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/teachers" element={<Teachers />} />
+            
+            {/* My 카테고리 페이지들 */}
+            <Route path="/my/recent-videos" element={<RecentVideos />} />
+            <Route path="/my/liked-videos" element={<LikedVideos />} />
+            <Route path="/my/saved-videos" element={<SavedVideos />} />
+            <Route path="/my/watch-later" element={<WatchLater />} />
+            
+            {/* 새로운 소식 페이지들 */}
+            <Route path="/news/top-100" element={<Top100 />} />
+            <Route path="/news/performances" element={<Performances />} />
+            <Route path="/news/news" element={<News />} />
+            <Route path="/news/business" element={<Business />} />
+            <Route path="/news/more-videos" element={<MoreVideos />} />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Chatbot />
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
