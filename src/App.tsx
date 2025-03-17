@@ -54,7 +54,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// 고정된 basename - 반드시 뒤에 슬래시(/)로 끝나야 함
+// GitHub Pages에 맞는 basename 설정
+// 개발 환경에서는 빈 문자열, 프로덕션 환경에서는 /music-learn-connect/
 const BASENAME = '/music-learn-connect/';
 console.log('앱 초기화 - 설정된 basename:', BASENAME);
 

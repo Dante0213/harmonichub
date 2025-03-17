@@ -9,23 +9,17 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <script>
-      // SPA router handling for GitHub Pages
+      // Simple SPA router handling for GitHub Pages
       (function() {
-        var redirectPath = sessionStorage.getItem('redirect-path');
+        var redirectPath = sessionStorage.getItem('spa-path');
         if (redirectPath) {
-          sessionStorage.removeItem('redirect-path');
-          
-          // Make sure path starts with / and remove base path if present
+          sessionStorage.removeItem('spa-path');
+          // Remove the repo name from the path if it exists
           if (redirectPath.indexOf('/music-learn-connect') === 0) {
             redirectPath = redirectPath.replace('/music-learn-connect', '');
           }
-          
-          if (redirectPath.charAt(0) !== '/') {
-            redirectPath = '/' + redirectPath;
-          }
-          
-          console.log('Restoring path:', redirectPath);
-          history.replaceState(null, null, redirectPath);
+          history.replaceState(null, null, redirectPath || '/');
+          console.log('SPA navigation restored to:', redirectPath);
         }
       })();
     </script>

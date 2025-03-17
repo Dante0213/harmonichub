@@ -29,18 +29,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: List files before build
+      - name: Check environment
         run: |
-          echo "Repository content before build:"
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          echo "Working directory: $(pwd)"
+          echo "Repository content:"
           ls -la
           
       - name: Build
         run: npm run build
         
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+        
       - name: List built files
         run: |
           echo "Build output content:"
           ls -la dist/
+          echo "Build output structure:"
+          find dist -type f | sort
           
       - name: Prepare for GitHub Pages
         run: |
@@ -52,8 +60,28 @@ jobs:
           cp dist/index.html dist/404.html
           echo "Copied index.html to 404.html"
           
+          # Create a simple redirect script to handle SPA routing
+          cat > dist/404.html << 'EOL'
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    sessionStorage.setItem('spa-path', window.location.pathname);
+    window.location.href = '/music-learn-connect/';
+  </script>
+</head>
+<body>
+  <p>Redirecting to homepage...</p>
+</body>
+</html>
+EOL
+          echo "Created simple 404.html redirect"
+          
           # Verify the files were created correctly
           ls -la dist/
+          cat dist/404.html
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
