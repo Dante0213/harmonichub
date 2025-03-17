@@ -38,7 +38,6 @@ export const ReelUserInfo = ({ reel, onUserClick }: ReelUserInfoProps) => {
         size="sm" 
         variant="secondary" 
         className="ml-auto"
-        onClick={() => onUserClick && onUserClick(reel)}
       >
         팔로우
       </Button>

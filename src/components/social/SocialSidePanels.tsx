@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -164,9 +163,8 @@ export const RecommendedUsersPanel = () => {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => handleUserClick(user)}
                 >
-                  프로필
+                  팔로우
                 </Button>
               </li>
             ))}
