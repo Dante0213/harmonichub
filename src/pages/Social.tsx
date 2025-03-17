@@ -28,7 +28,7 @@ const Social = () => {
 
         {/* 메인 콘텐츠 */}
         <div className="flex-1 md:ml-64 overflow-hidden">
-          <div className="container px-4 py-10 mx-auto max-w-[1400px]">
+          <div className="container px-4 py-6 mx-auto max-w-[1400px]">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="md:w-2/3 lg:w-2/3">
                 <SocialReelsFeed onUserClick={handleUserClick} />

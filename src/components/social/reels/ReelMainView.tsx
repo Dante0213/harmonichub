@@ -80,7 +80,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
           
           <ReelUserInfo reel={reel} onUserClick={() => onUserClick && onUserClick(reel)} />
           
-          <div className="mb-4">
+          <div className="mb-12">
             <p className="text-base mb-2">{reel.description || reel.content}</p>
             <div className="flex flex-wrap gap-2">
               {reel.hashtags && reel.hashtags.map((tag, index) => (

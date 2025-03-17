@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface ReelVideoPlayerProps {
   videoUrl: string;
@@ -20,6 +21,9 @@ export const ReelVideoPlayer = ({
 }: ReelVideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
 
   // IntersectionObserver를 사용하여 화면에 보이는지 여부에 따라 비디오 재생 관리
   useEffect(() => {
@@ -85,6 +89,32 @@ export const ReelVideoPlayer = ({
     setError(true);
   };
 
+  // 비디오 타임라인 업데이트
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      const currentTime = videoRef.current.currentTime;
+      const duration = videoRef.current.duration;
+      if (duration) {
+        setProgress((currentTime / duration) * 100);
+        setCurrentTime(currentTime);
+      }
+    }
+  };
+
+  // 비디오 메타데이터 로드 시 실행 - 동영상 길이 설정
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  // 시간을 분:초 형식으로 변환
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
   return (
     <>
       {error ? (
@@ -104,6 +134,8 @@ export const ReelVideoPlayer = ({
           playsInline
           onClick={onVideoClick}
           onError={handleVideoError}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
         />
       )}
       
@@ -119,6 +151,15 @@ export const ReelVideoPlayer = ({
             <Play className="w-8 h-8" />
           </Button>
         )}
+      </div>
+
+      {/* 비디오 타임라인 */}
+      <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 pointer-events-none z-10">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-white text-xs">{formatTime(currentTime)}</span>
+          <Progress value={progress} className="h-1 flex-1" />
+          <span className="text-white text-xs">{formatTime(duration)}</span>
+        </div>
       </div>
     </>
   );

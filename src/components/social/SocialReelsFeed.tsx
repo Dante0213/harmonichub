@@ -28,9 +28,9 @@ export const SocialReelsFeed = ({ onUserClick }: SocialReelsFeedProps) => {
   return (
     <div className="w-full">
       <Card className="overflow-hidden border-none shadow-none bg-transparent">
-        <CardContent className="p-0 space-y-6">
+        <CardContent className="p-0 space-y-12">
           {reels.slice(0, visibleReels).map((reel) => (
-            <div key={reel.id} className="h-[calc(100vh-200px)] min-h-[500px] max-h-[800px] relative rounded-lg overflow-hidden mb-6">
+            <div key={reel.id} className="h-[calc(100vh-100px)] min-h-[600px] max-h-[800px] relative rounded-lg overflow-hidden mb-12">
               <ReelMainView reel={reel} onUserClick={onUserClick ? () => onUserClick(reel) : undefined} />
             </div>
           ))}
