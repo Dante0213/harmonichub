@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Music, Phone, MapPin, UserPlus, GraduationCap, Briefcase, Award, Minus, PenSquare } from "lucide-react";
+import { Music, Phone, MapPin, UserPlus, GraduationCap, Briefcase, Award, Minus, PenSquare, Bookmark } from "lucide-react";
 
 interface UserInfoCardProps {
   userData: any;
@@ -15,6 +15,7 @@ export function UserInfoCard({ userData, onUpgradeClick, onProfileEditClick }: U
 
   // 데이터 확인 함수 - 배열이 비어있거나 존재하지 않으면 true 반환
   const isEmpty = (data: any[] | undefined | null) => !data || data.length === 0;
+  const isEmptyString = (data: string | undefined | null) => !data || data.trim() === '';
 
   return (
     <Card>
@@ -68,6 +69,24 @@ export function UserInfoCard({ userData, onUpgradeClick, onProfileEditClick }: U
             <p className="text-sm text-muted-foreground">
               {isProfessional ? "전문가 회원" : "일반 회원"}
             </p>
+          </div>
+          
+          {/* 전공 정보 */}
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Bookmark className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">전공</p>
+            </div>
+            {isEmptyString(userData?.specialization) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-6">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 전공 정보가 없습니다</span>
+              </div>
+            ) : (
+              <div className="pl-6 text-sm">
+                {userData.specialization}
+              </div>
+            )}
           </div>
           
           {/* 악기 정보 */}

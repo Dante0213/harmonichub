@@ -17,6 +17,7 @@ export function useMyPage() {
         isProfessional: status,
         // 전문가 데이터가 제공된 경우 해당 데이터 추가
         ...(professionalData && {
+          specialization: professionalData.specialization || userData.specialization,
           instruments: professionalData.instruments || userData.instruments,
           genres: professionalData.genres || userData.genres,
           education: professionalData.education || userData.education,
@@ -60,6 +61,7 @@ export function useMyPage() {
       bio: updatedData.bio || "",
       imageUrl: updatedData.imageUrl || "",
       isProfessional: updatedData.isProfessional,
+      specialization: updatedData.specialization || "",
       instruments: updatedData.instruments || [],
       genres: updatedData.genres || [],
       education: updatedData.education || [],
@@ -99,6 +101,7 @@ export function useMyPage() {
         if (profileData) {
           const syncedData = {
             ...parsedUserData,
+            specialization: profileData.specialization || parsedUserData.specialization,
             instruments: profileData.instruments || parsedUserData.instruments,
             genres: profileData.genres || parsedUserData.genres,
             education: profileData.education || parsedUserData.education,
@@ -127,6 +130,7 @@ export function useMyPage() {
         address: "서울시 강남구",
         joinDate: "2023년 3월 15일",
         isProfessional: false,
+        specialization: "",
         bio: "음악을 사랑하는 기타리스트입니다. 취미로 작곡도 하고 있어요.",
         instruments: [], 
         genres: [], 

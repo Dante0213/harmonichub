@@ -12,6 +12,14 @@ import { ProfileEducationSection } from "@/components/profile/ProfileEducationSe
 import { ProfileExperienceSection } from "@/components/profile/ProfileExperienceSection";
 import { ProfileCertificatesSection } from "@/components/profile/ProfileCertificatesSection";
 import { v4 as uuidv4 } from "uuid";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { FormLabel } from "@/components/ui/form";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
@@ -22,6 +30,9 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
   const { toast } = useToast();
   const { updateProfessionalStatus } = useMyPage();
 
+  // 전공 상태 관리
+  const [specialization, setSpecialization] = useState<string>("");
+  
   // 악기 상태 관리
   const [instruments, setInstruments] = useState<string[]>([]);
   const [newInstrument, setNewInstrument] = useState("");
@@ -52,6 +63,15 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
   
   // 검증 처리 함수
   const handleVerification = () => {
+    if (specialization === "") {
+      toast({
+        title: "전공 정보 필요",
+        description: "전공 정보를 선택해주세요.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     if (instruments.length === 0) {
       toast({
         title: "악기 정보 필요",
@@ -79,6 +99,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
       
       // 필요한 프로필 데이터 수집
       const professionalData = {
+        specialization,
         instruments,
         genres,
         education: education.filter(edu => edu.institution && edu.degree),
@@ -98,6 +119,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
       setTimeout(() => {
         onOpenChange(false);
         // 입력 필드 초기화
+        setSpecialization("");
         setInstruments([]);
         setGenres([]);
         setEducation([{ id: uuidv4(), institution: "", degree: "", year: "" }]);
@@ -132,6 +154,24 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
             </div>
           ) : (
             <>
+              {/* 전공 선택 섹션 */}
+              <div className="space-y-2">
+                <FormLabel>전공</FormLabel>
+                <Select onValueChange={setSpecialization} value={specialization}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="전공 선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="piano">피아노</SelectItem>
+                    <SelectItem value="guitar">기타</SelectItem>
+                    <SelectItem value="violin">바이올린</SelectItem>
+                    <SelectItem value="vocal">보컬</SelectItem>
+                    <SelectItem value="composition">작곡</SelectItem>
+                    <SelectItem value="other">기타</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
               {/* 악기 선택 섹션 */}
               <ProfileTagsSection
                 title="악기"

@@ -12,6 +12,13 @@ import { ProfileTagsSection } from "./ProfileTagsSection";
 import { ProfileEducationSection } from "./ProfileEducationSection";
 import { ProfileExperienceSection } from "./ProfileExperienceSection";
 import { ProfileCertificatesSection } from "./ProfileCertificatesSection";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 
 interface ProfileEditModalProps {
   isOpen: boolean;
@@ -22,6 +29,7 @@ interface ProfileEditModalProps {
 
 interface ProfileFormData {
   bio: string;
+  specialization: string;
   instruments: string[];
   genres: string[];
   education: {id: string; institution: string; degree: string; year: string}[];
@@ -32,6 +40,7 @@ interface ProfileFormData {
 export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: ProfileEditModalProps) => {
   const defaultValues: ProfileFormData = {
     bio: userData.bio || "",
+    specialization: userData.specialization || "",
     instruments: userData.instruments || [],
     genres: userData.genres || [],
     education: userData.education || [],
@@ -43,6 +52,7 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
     defaultValues
   });
 
+  const [specialization, setSpecialization] = useState<string>(defaultValues.specialization);
   const [instruments, setInstruments] = useState<string[]>(defaultValues.instruments);
   const [newInstrument, setNewInstrument] = useState("");
   
@@ -64,6 +74,7 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
     const updatedData = {
       ...userData,
       bio: data.bio,
+      specialization,
       instruments,
       genres,
       education,
@@ -105,6 +116,38 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
                       {...field} 
                       className="min-h-[100px]"
                     />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* Specialization */}
+            <FormField
+              control={form.control}
+              name="specialization"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>전공</FormLabel>
+                  <FormControl>
+                    <Select 
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setSpecialization(value);
+                      }}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="전공 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="piano">피아노</SelectItem>
+                        <SelectItem value="guitar">기타</SelectItem>
+                        <SelectItem value="violin">바이올린</SelectItem>
+                        <SelectItem value="vocal">보컬</SelectItem>
+                        <SelectItem value="composition">작곡</SelectItem>
+                        <SelectItem value="other">기타</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                 </FormItem>
               )}

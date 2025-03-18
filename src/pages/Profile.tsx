@@ -20,6 +20,7 @@ const Profile = () => {
     likes: 0,
     comments: 0,
     isProfessional: true,
+    specialization: "guitar",
     instruments: ["기타", "피아노", "우쿨렐레"],
     genres: ["어쿠스틱", "재즈", "팝"],
     education: [
@@ -58,6 +59,7 @@ const Profile = () => {
         const syncedData = {
           ...myPageData,
           bio: updatedData.bio,
+          specialization: updatedData.specialization,
           instruments: updatedData.instruments,
           genres: updatedData.genres,
           education: updatedData.education,

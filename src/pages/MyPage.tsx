@@ -27,6 +27,7 @@ export default function MyPage() {
   const handleProfileUpdate = (updatedData: any) => {
     const profileData = {
       bio: updatedData.bio,
+      specialization: updatedData.specialization,
       instruments: updatedData.instruments,
       genres: updatedData.genres,
       education: updatedData.education,
@@ -79,6 +80,7 @@ export default function MyPage() {
             bio: userData.bio || "",
             imageUrl: userData.imageUrl || "",
             isProfessional: userData.isProfessional,
+            specialization: userData.specialization || "",
             instruments: userData.instruments || [],
             genres: userData.genres || [],
             education: userData.education || [],
