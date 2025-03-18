@@ -18,10 +18,10 @@ export function Footer() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">서비스</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/lesson-room" className="hover:underline hover:text-primary transition-colors">레슨실</Link></li>
-              <li><Link to="/store" className="hover:underline hover:text-primary transition-colors">스토어</Link></li>
+              <li><Link to="/teachers" className="hover:underline hover:text-primary transition-colors">선생님</Link></li>
               <li><Link to="/social" className="hover:underline hover:text-primary transition-colors">SNS</Link></li>
               <li><Link to="/learning" className="hover:underline hover:text-primary transition-colors">학습실</Link></li>
+              <li><Link to="/store" className="hover:underline hover:text-primary transition-colors">스토어</Link></li>
             </ul>
           </div>
           
