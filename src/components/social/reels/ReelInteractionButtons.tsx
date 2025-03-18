@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Heart, MessageSquare, Share2, Volume2, VolumeX, Link, Send } from "lucide-react";
+import { Heart, MessageSquare, Share2, Volume2, VolumeX, Link, Send, Plus } from "lucide-react";
 import { 
   Popover, 
   PopoverContent, 
@@ -19,6 +19,7 @@ interface ReelInteractionButtonsProps {
   onVolumeChange: (value: number[]) => void;
   onMuteToggle: () => void;
   onCopyLink: () => void;
+  onUploadClick: () => void;
 }
 
 export const ReelInteractionButtons = ({
@@ -31,7 +32,8 @@ export const ReelInteractionButtons = ({
   onCommentToggle,
   onVolumeChange,
   onMuteToggle,
-  onCopyLink
+  onCopyLink,
+  onUploadClick
 }: ReelInteractionButtonsProps) => {
   return (
     <div className="flex items-center gap-2 mb-2">
@@ -112,6 +114,15 @@ export const ReelInteractionButtons = ({
           </div>
         </PopoverContent>
       </Popover>
+      
+      <Button
+        variant="ghost"
+        size="icon"
+        className="rounded-full bg-black/40 hover:bg-black/60 text-white"
+        onClick={onUploadClick}
+      >
+        <Plus className="w-5 h-5" />
+      </Button>
     </div>
   );
 };

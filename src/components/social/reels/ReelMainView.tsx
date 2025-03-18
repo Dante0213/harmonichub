@@ -6,6 +6,14 @@ import { ReelVideoPlayer } from "./ReelVideoPlayer";
 import { ReelInteractionButtons } from "./ReelInteractionButtons";
 import { ReelComments } from "./ReelComments";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  DialogDescription
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface ReelMainViewProps {
   reel: Reel;
@@ -19,6 +27,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState(50);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
   const { toast } = useToast();
 
   const togglePlay = () => {
@@ -53,6 +62,22 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
     });
   };
 
+  const handleUploadClick = () => {
+    setIsUploadOpen(true);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      // 실제 업로드 로직은 여기에 구현
+      toast({
+        title: "영상이 업로드되었습니다",
+        description: "잠시 후 릴스에 반영됩니다",
+        duration: 3000
+      });
+      setIsUploadOpen(false);
+    }
+  };
+
   return (
     <div className="relative h-full w-full bg-black rounded-lg overflow-hidden shadow-pastel">
       <ReelVideoPlayer
@@ -76,6 +101,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
             onVolumeChange={handleVolumeChange}
             onMuteToggle={toggleMute}
             onCopyLink={copyLinkToClipboard}
+            onUploadClick={handleUploadClick}
           />
           
           <ReelUserInfo reel={reel} onUserClick={onUserClick} />
@@ -98,6 +124,40 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
         isOpen={isCommentsOpen} 
         onOpenChange={setIsCommentsOpen} 
       />
+
+      <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>릴스 영상 업로드</DialogTitle>
+            <DialogDescription>
+              15초에서 60초 사이의 짧은 영상을 업로드해보세요
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4">
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <label htmlFor="video-upload" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                영상 선택
+              </label>
+              <input
+                id="video-upload"
+                type="file"
+                accept="video/*"
+                className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium"
+                onChange={handleFileSelect}
+              />
+              <p className="text-xs text-muted-foreground">
+                MP4, MOV 형식의 파일 (최대 100MB)
+              </p>
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setIsUploadOpen(false)}>
+                취소
+              </Button>
+              <Button type="submit">업로드</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
