@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Bell } from "lucide-react";
+import { MessageDialog } from "./MessageDialog";
 
 type DirectMessage = {
   id: number;
@@ -32,6 +33,17 @@ export function MessagesTab({
   setNotificationSetting, 
   markAsRead 
 }: MessagesTabProps) {
+  const [selectedMessage, setSelectedMessage] = useState<DirectMessage | null>(null);
+  
+  const handleMessageClick = (message: DirectMessage) => {
+    markAsRead(message.id);
+    setSelectedMessage(message);
+  };
+  
+  const handleCloseDialog = () => {
+    setSelectedMessage(null);
+  };
+
   return (
     <>
       <div className="px-3 py-2 border-b flex items-center justify-between">
@@ -69,7 +81,7 @@ export function MessagesTab({
               <button
                 key={dm.id}
                 className={`w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-muted/50 transition-colors ${!dm.read ? 'bg-muted/20' : ''}`}
-                onClick={() => markAsRead(dm.id)}
+                onClick={() => handleMessageClick(dm)}
               >
                 <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                   {dm.senderAvatar}
@@ -89,6 +101,14 @@ export function MessagesTab({
           </div>
         )}
       </ScrollArea>
+      
+      {selectedMessage && (
+        <MessageDialog 
+          isOpen={!!selectedMessage}
+          onClose={handleCloseDialog}
+          message={selectedMessage}
+        />
+      )}
     </>
   );
 }
