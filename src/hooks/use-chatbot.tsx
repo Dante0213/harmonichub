@@ -7,7 +7,7 @@ import createChatbotActions from "./chatbot/use-chatbot-actions";
 // 타입 내보내기 (다른 컴포넌트에서 사용할 수 있도록)
 export type { ChatMessage, Message, DirectMessage, NotificationSetting } from "@/types/chatbot.types";
 
-export const useChatbot = create<ChatbotState>((set, get) => {
+export const useChatbot = create<ChatbotState>()((set, get) => {
   // 원포인트 레슨 요청 이벤트 리스너 설정
   if (typeof window !== 'undefined') {
     window.addEventListener('onePointLessonRequest', (event: Event) => {
