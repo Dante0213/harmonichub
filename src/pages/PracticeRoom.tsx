@@ -2,18 +2,18 @@
 import { Layout } from "@/components/layout/Layout";
 import { useState, useRef, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info } from "lucide-react";
+import { Info, Library, Music2, Timer } from "lucide-react";
 import { PracticeArea } from "@/components/lesson-room/PracticeArea";
 import { ControlBar } from "@/components/lesson-room/ControlBar";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MidiConnectionPanel } from "@/components/lesson-room/MidiConnectionPanel";
 import { createMetronomeClick } from "@/components/lesson-room/metronomeUtils";
 import { SheetLibrary } from "@/components/lesson-room/SheetLibrary";
 import { MetronomePanel } from "@/components/lesson-room/MetronomePanel";
+import { Button } from "@/components/ui/button";
 
 const PracticeRoom = () => {
-  const [activeTab, setActiveTab] = useState("library");
+  const [activePanel, setActivePanel] = useState<string | null>(null);
   const [metronomeActive, setMetronomeActive] = useState(false);
   const [metronomeTempo, setMetronomeTempo] = useState(120);
   const [metronomeVolume, setMetronomeVolume] = useState(50);
@@ -106,6 +106,14 @@ const PracticeRoom = () => {
     setMetronomeVolume(value);
   };
 
+  const togglePanel = (panelName: string) => {
+    if (activePanel === panelName) {
+      setActivePanel(null);
+    } else {
+      setActivePanel(panelName);
+    }
+  };
+
   return (
     <Layout>
       <div className="container mx-auto py-6 px-4">
@@ -119,16 +127,72 @@ const PracticeRoom = () => {
           </AlertDescription>
         </Alert>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-[calc(100vh-16rem)]">
-          {/* 메인 영역 - 3/4 */}
-          <div className="col-span-1 md:col-span-3 h-full flex flex-col border rounded-lg overflow-hidden">
-            {/* 연습 영역 (악보 및 피아노 건반) */}
+        <div className="relative h-[calc(100vh-16rem)]">
+          {/* 메인 영역 */}
+          <div className="h-full border rounded-lg overflow-hidden">
+            {/* 연습 영역 (악보 및 플레이어 컨트롤) */}
             <PracticeArea 
               onTogglePracticeMode={() => {}} 
               practiceMode={practiceMode}
               selectedSheet={selectedSheet}
               sheetFile={sheetFile}
             />
+            
+            {/* 패널 버튼 */}
+            <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
+              <Button
+                variant={activePanel === "library" ? "default" : "outline"}
+                size="icon"
+                onClick={() => togglePanel("library")}
+                className="h-10 w-10 rounded-full"
+              >
+                <Library className="h-5 w-5" />
+              </Button>
+              <Button
+                variant={activePanel === "midi" ? "default" : "outline"}
+                size="icon"
+                onClick={() => togglePanel("midi")}
+                className="h-10 w-10 rounded-full"
+              >
+                <Music2 className="h-5 w-5" />
+              </Button>
+              <Button
+                variant={activePanel === "metronome" ? "default" : "outline"}
+                size="icon"
+                onClick={() => togglePanel("metronome")}
+                className="h-10 w-10 rounded-full"
+              >
+                <Timer className="h-5 w-5" />
+              </Button>
+            </div>
+            
+            {/* 활성화된 패널 */}
+            {activePanel && (
+              <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[90%] max-w-md bg-white border rounded-lg shadow-lg p-4">
+                {activePanel === "library" && (
+                  <SheetLibrary 
+                    selectedSheet={selectedSheet}
+                    onSheetSelect={handleSheetSelect}
+                    onFileUpload={handleFileUpload}
+                    fileInputRef={fileInputRef}
+                    onFileChange={handleFileChange}
+                  />
+                )}
+                {activePanel === "midi" && (
+                  <MidiConnectionPanel />
+                )}
+                {activePanel === "metronome" && (
+                  <MetronomePanel 
+                    isActive={metronomeActive}
+                    tempo={metronomeTempo}
+                    volume={metronomeVolume}
+                    onToggle={handleToggleMetronome}
+                    onTempoChange={handleMetronomeTempoChange}
+                    onVolumeChange={handleMetronomeVolumeChange}
+                  />
+                )}
+              </div>
+            )}
             
             {/* 컨트롤 바 */}
             <ControlBar 
@@ -142,50 +206,14 @@ const PracticeRoom = () => {
               onShareScreen={() => {}}
               onFileUpload={handleFileUpload}
               onEndLesson={handleEndSession}
-              setActiveTab={setActiveTab}
+              setActiveTab={() => {}}
               setMetronomeTempo={setMetronomeTempo}
               setMetronomeVolume={setMetronomeVolume}
               onToggleMetronome={handleToggleMetronome}
-              onToggleMidiPanel={() => setActiveTab('midi')}
+              onToggleMidiPanel={() => togglePanel("midi")}
               practiceMode={practiceMode}
               onTogglePracticeMode={() => {}}
             />
-          </div>
-          
-          {/* 사이드바 - 1/4 */}
-          <div className="col-span-1 h-full border rounded-lg">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-              <TabsList className="grid grid-cols-3 w-full rounded-none border-b">
-                <TabsTrigger value="library">라이브러리</TabsTrigger>
-                <TabsTrigger value="midi">MIDI</TabsTrigger>
-                <TabsTrigger value="metronome">메트로놈</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="library" className="flex-1 overflow-y-auto p-4">
-                <SheetLibrary 
-                  selectedSheet={selectedSheet}
-                  onSheetSelect={handleSheetSelect}
-                  onFileUpload={handleFileUpload}
-                  fileInputRef={fileInputRef}
-                  onFileChange={handleFileChange}
-                />
-              </TabsContent>
-              
-              <TabsContent value="midi" className="flex-1 overflow-y-auto p-4">
-                <MidiConnectionPanel />
-              </TabsContent>
-              
-              <TabsContent value="metronome" className="flex-1 overflow-y-auto p-4">
-                <MetronomePanel 
-                  isActive={metronomeActive}
-                  tempo={metronomeTempo}
-                  volume={metronomeVolume}
-                  onToggle={handleToggleMetronome}
-                  onTempoChange={handleMetronomeTempoChange}
-                  onVolumeChange={handleMetronomeVolumeChange}
-                />
-              </TabsContent>
-            </Tabs>
           </div>
         </div>
       </div>
