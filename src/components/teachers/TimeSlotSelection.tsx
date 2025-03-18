@@ -22,7 +22,7 @@ export function TimeSlotSelection({
         <Clock className="w-4 h-4 mr-2" /> 시간 선택
       </div>
       <div className="space-y-2">
-        {timeSlots.length > 0 ? (
+        {timeSlots && timeSlots.length > 0 ? (
           timeSlots.map((slot, index) => (
             <Button
               key={index}
