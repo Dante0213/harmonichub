@@ -5,15 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SendHorizontal, X } from "lucide-react";
-
-type DirectMessage = {
-  id: number;
-  sender: string;
-  senderAvatar: string;
-  text: string;
-  timestamp: Date;
-  read: boolean;
-};
+import { DirectMessage } from "@/hooks/use-chatbot";
 
 interface ChatMessage {
   id: number;

@@ -1,17 +1,10 @@
 
-import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { SendHorizontal } from "lucide-react";
 import { CardFooter } from "@/components/ui/card";
-
-type Message = {
-  id: number;
-  sender: 'user' | 'bot';
-  text: string;
-  timestamp: Date;
-};
+import { SendHorizontal } from "lucide-react";
+import { Message } from "@/hooks/use-chatbot";
 
 interface ChatTabProps {
   messages: Message[];

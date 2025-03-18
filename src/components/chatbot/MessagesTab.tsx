@@ -5,20 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Bell } from "lucide-react";
 import { MessageDialog } from "./MessageDialog";
-
-type DirectMessage = {
-  id: number;
-  sender: string;
-  senderAvatar: string;
-  text: string;
-  timestamp: Date;
-  read: boolean;
-};
-
-type NotificationSetting = {
-  toastEnabled: boolean;
-  badgeEnabled: boolean;
-};
+import { DirectMessage, NotificationSetting } from "@/hooks/use-chatbot";
 
 interface MessagesTabProps {
   directMessages: DirectMessage[];
