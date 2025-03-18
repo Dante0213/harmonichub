@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { UserPlus, UserCheck, MessageSquare, PenSquare } from "lucide-react";
+import { UserPlus, UserCheck, MessageSquare, PenSquare, Heart } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { useSocial } from "@/pages/Social";
 import { useToast } from "@/hooks/use-toast";
@@ -18,8 +18,9 @@ export const ProfileActionButtons = ({
   onEditClick,
   onChatOpen
 }: ProfileActionButtonsProps) => {
-  const { isFollowing, followUser, unfollowUser } = useSocial();
+  const { isFollowing, followUser, unfollowUser, isFavoriteTeacher, addFavoriteTeacher, removeFavoriteTeacher } = useSocial();
   const following = isFollowing(userData.id);
+  const isFavorite = isFavoriteTeacher(userData.id);
   const { toast } = useToast();
   
   const handleFollowToggle = () => {
@@ -40,6 +41,24 @@ export const ProfileActionButtons = ({
     }
   };
 
+  const handleFavoriteToggle = () => {
+    if (isFavorite) {
+      removeFavoriteTeacher(userData.id);
+      toast({
+        title: "찜 취소됨",
+        description: `${userData.userHandle}님을 찜 목록에서 제거했습니다.`,
+        duration: 1000
+      });
+    } else {
+      addFavoriteTeacher(userData);
+      toast({
+        title: "찜 추가됨",
+        description: `${userData.userHandle}님을 찜 목록에 추가했습니다.`,
+        duration: 1000
+      });
+    }
+  };
+
   if (isCurrentUser) {
     return (
       <Button 
@@ -53,8 +72,11 @@ export const ProfileActionButtons = ({
     );
   }
 
+  // 전문가 사용자 여부 확인 (실제 구현 시 사용자 데이터에서 가져와야 함)
+  const isProfessional = userData.isProfessional || false;
+
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 flex-wrap">
       <Button 
         className="flex-1 h-10"
         onClick={handleFollowToggle}
@@ -72,6 +94,18 @@ export const ProfileActionButtons = ({
           </>
         )}
       </Button>
+      
+      {isProfessional && (
+        <Button 
+          variant={isFavorite ? "outline" : "secondary"} 
+          className="flex-1 h-10"
+          onClick={handleFavoriteToggle}
+        >
+          <Heart className={`h-4 w-4 mr-2 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+          {isFavorite ? '찜 취소' : '찜하기'}
+        </Button>
+      )}
+      
       <Button 
         variant="outline" 
         className="flex-1 h-10"

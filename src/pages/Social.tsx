@@ -11,17 +11,25 @@ import { useState, createContext, useContext } from "react";
 import { UserProfileModal } from "@/components/social/UserProfileModal";
 import { Reel } from "@/components/social/reels/ReelsData";
 
-// 팔로우 기능을 위한 컨텍스트 생성
+// 팔로우 및 찜 기능을 위한 컨텍스트 생성
 export const SocialContext = createContext<{
   followedUsers: Reel[];
   followUser: (user: Reel) => void;
   unfollowUser: (userId: string | number) => void;
   isFollowing: (userId: string | number) => boolean;
+  favoriteTeachers: Reel[];
+  addFavoriteTeacher: (user: Reel) => void;
+  removeFavoriteTeacher: (userId: string | number) => void;
+  isFavoriteTeacher: (userId: string | number) => boolean;
 }>({
   followedUsers: [],
   followUser: () => {},
   unfollowUser: () => {},
   isFollowing: () => false,
+  favoriteTeachers: [],
+  addFavoriteTeacher: () => {},
+  removeFavoriteTeacher: () => {},
+  isFavoriteTeacher: () => false
 });
 
 export const useSocial = () => useContext(SocialContext);
@@ -30,6 +38,7 @@ const Social = () => {
   const [selectedUser, setSelectedUser] = useState<Reel | null>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [followedUsers, setFollowedUsers] = useState<Reel[]>([]);
+  const [favoriteTeachers, setFavoriteTeachers] = useState<Reel[]>([]);
   
   const handleUserClick = (user: Reel) => {
     setSelectedUser(user);
@@ -50,8 +59,32 @@ const Social = () => {
     return followedUsers.some(u => u.id === userId);
   };
   
+  // 찜한 선생님 관련 함수
+  const addFavoriteTeacher = (user: Reel) => {
+    if (!favoriteTeachers.some(u => u.id === user.id)) {
+      setFavoriteTeachers([...favoriteTeachers, user]);
+    }
+  };
+
+  const removeFavoriteTeacher = (userId: string | number) => {
+    setFavoriteTeachers(favoriteTeachers.filter(u => u.id !== userId));
+  };
+
+  const isFavoriteTeacher = (userId: string | number) => {
+    return favoriteTeachers.some(u => u.id === userId);
+  };
+  
   return (
-    <SocialContext.Provider value={{ followedUsers, followUser, unfollowUser, isFollowing }}>
+    <SocialContext.Provider value={{ 
+      followedUsers, 
+      followUser, 
+      unfollowUser, 
+      isFollowing,
+      favoriteTeachers,
+      addFavoriteTeacher,
+      removeFavoriteTeacher,
+      isFavoriteTeacher
+    }}>
       <Layout>
         <div className="flex h-full w-full">
           {/* 사이드바 */}

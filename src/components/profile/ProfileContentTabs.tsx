@@ -1,13 +1,14 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Music, Users, Heart, Bookmark, FileText } from "lucide-react";
+import { Music, Users, Heart, Bookmark, FileText, GraduationCap } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useSocial } from "@/pages/Social";
 
 export const ProfileContentTabs = () => {
   // 사용자가 전공자인지 여부를 확인 (실제 데이터에서는 사용자 정보를 가져와야 함)
   const [isProfessional, setIsProfessional] = useState(false); // 예시 상태
+  const { favoriteTeachers } = useSocial();
 
   const assignmentTabLabel = isProfessional ? "과제함" : "보낸 과제함";
 
@@ -29,6 +30,10 @@ export const ProfileContentTabs = () => {
         <TabsTrigger value="saved" className="flex-1">
           <Bookmark className="h-4 w-4 mr-2" />
           저장소
+        </TabsTrigger>
+        <TabsTrigger value="favoriteTeachers" className="flex-1">
+          <GraduationCap className="h-4 w-4 mr-2" />
+          찜한 선생님
         </TabsTrigger>
         <TabsTrigger value="assignments" className="flex-1">
           <FileText className="h-4 w-4 mr-2" />
@@ -91,6 +96,32 @@ export const ProfileContentTabs = () => {
               <Bookmark className="h-10 w-10 text-muted-foreground" fill="currentColor" />
             </div>
           ))}
+        </div>
+      </TabsContent>
+      
+      <TabsContent value="favoriteTeachers" className="mt-6">
+        <div className="space-y-4">
+          {favoriteTeachers.length === 0 ? (
+            <p className="text-center py-8 text-muted-foreground">찜한 선생님이 없습니다.</p>
+          ) : (
+            favoriteTeachers.map((teacher, i) => (
+              <div key={teacher.id} className="flex items-center justify-between p-3 hover:bg-muted rounded-md">
+                <div className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarFallback>{teacher.user[0]}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium">{teacher.user}</p>
+                    <p className="text-xs text-muted-foreground">@{teacher.userHandle}</p>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm">
+                  <Heart className="h-4 w-4 mr-2 fill-red-500 text-red-500" />
+                  찜 취소
+                </Button>
+              </div>
+            ))
+          )}
         </div>
       </TabsContent>
       

@@ -4,6 +4,10 @@ import { Reel } from "../reels/ReelsData";
 import { ProfileInfo } from "@/components/profile/ProfileInfo";
 import { UserProfileSection } from "@/components/profile/UserProfileSection";
 import { ProfileActionButtons } from "@/components/profile/ProfileActionButtons";
+import { useState } from "react";
+import { FavoriteTeachersView } from "./FavoriteTeachersView";
+import { FollowingView } from "./FollowingView";
+import { FollowersView } from "./FollowersView";
 
 interface ProfileModalInfoProps {
   user: Reel;
@@ -11,12 +15,43 @@ interface ProfileModalInfoProps {
 }
 
 export const ProfileModalInfo = ({ user, onChatOpen }: ProfileModalInfoProps) => {
+  const [activeView, setActiveView] = useState<'profile' | 'followers' | 'following' | 'favorites'>('profile');
+  
+  const handleFollowersClick = () => {
+    setActiveView('followers');
+  };
+  
+  const handleFollowingClick = () => {
+    setActiveView('following');
+  };
+  
+  const handleFavoritesClick = () => {
+    setActiveView('favorites');
+  };
+  
+  if (activeView === 'followers') {
+    return <FollowersView onBack={() => setActiveView('profile')} />;
+  }
+  
+  if (activeView === 'following') {
+    return <FollowingView onBack={() => setActiveView('profile')} />;
+  }
+  
+  if (activeView === 'favorites') {
+    return <FavoriteTeachersView onBack={() => setActiveView('profile')} />;
+  }
+  
   return (
     <>
       <div className="mb-4">
         <Card>
           <CardHeader className="relative pb-0">
-            <UserProfileSection userData={user} />
+            <UserProfileSection 
+              userData={user}
+              onFollowersClick={handleFollowersClick}
+              onFollowingClick={handleFollowingClick}
+              onFavoritesClick={handleFavoritesClick}
+            />
           </CardHeader>
           
           <CardContent className="pt-6">
