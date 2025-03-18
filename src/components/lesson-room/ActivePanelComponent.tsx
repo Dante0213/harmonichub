@@ -2,7 +2,6 @@
 import { SheetLibrary } from "./SheetLibrary";
 import { MidiConnectionPanel } from "./MidiConnectionPanel";
 import { MetronomePanel } from "./MetronomePanel";
-import { AudioPlayerPanel } from "./AudioPlayerPanel";
 import { ActivePanelType } from "./PanelButton";
 
 // 패널 영역 컴포넌트
@@ -60,9 +59,6 @@ export function ActivePanelComponent({
           onTempoChange={onMetronomeTempoChange}
           onVolumeChange={onMetronomeVolumeChange}
         />
-      )}
-      {activePanel === "player" && (
-        <AudioPlayerPanel />
       )}
     </div>
   );
