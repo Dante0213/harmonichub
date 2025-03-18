@@ -75,8 +75,11 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
       
       const userData = JSON.parse(userDataStr);
       
-      // 현재 비밀번호 검증 (실제로는 백엔드에서 처리)
-      if (userData.password !== values.currentPassword) {
+      // 현재 비밀번호 검증 - 디버깅용 콘솔 로그 추가
+      console.log("입력된 현재 비밀번호:", values.currentPassword);
+      console.log("저장된 비밀번호:", userData.password);
+      
+      if (values.currentPassword !== userData.password) {
         toast({
           title: "비밀번호 오류",
           description: "현재 비밀번호가 일치하지 않습니다.",
