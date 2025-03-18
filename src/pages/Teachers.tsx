@@ -29,8 +29,8 @@ const Teachers = () => {
     <Layout>
       <div className="container px-4 mx-auto py-8">
         <div className="flex justify-between items-center mb-6">
-          <div></div>
           <TeacherRegisterButton />
+          <div></div>
         </div>
         <TeacherFeatured onlyProfessional={true} />
         <TeacherGrid />
