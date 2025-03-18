@@ -28,8 +28,13 @@ jobs:
           node-version: "18"
           cache: 'npm'
       
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      
       - name: Update browserslist DB
-        run: npx update-browserslist-db@latest
+        run: bun update caniuse-lite
       
       - name: Install dependencies
         run: |
@@ -41,6 +46,7 @@ jobs:
         run: |
           echo "Node version: $(node -v)"
           echo "NPM version: $(npm -v)"
+          echo "Bun version: $(bun --version)"
           echo "Directory contents:"
           ls -la
           
