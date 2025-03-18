@@ -38,7 +38,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          npm ci --legacy-peer-deps
+          npm install --no-package-lock
           npm install terser --no-save
           echo "Dependencies installed successfully"
         
