@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LessonSchedule } from "@/components/learning/LessonSchedule";
 import { VodProgress } from "@/components/learning/VodProgress";
 import { HomeworkSubmission } from "@/components/learning/HomeworkSubmission";
-import { LessonRooms } from "@/components/learning/LessonRooms";
 import { HomeworkHistory } from "@/components/learning/HomeworkHistory";
 import { LessonHistory } from "@/components/learning/LessonHistory";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -35,16 +34,11 @@ const Learning = () => {
           <HomeworkSubmission />
         </div>
         
-        <Tabs defaultValue="lessonroom" className="w-full">
-          <TabsList className="mb-4 grid w-full grid-cols-3">
-            <TabsTrigger value="lessonroom">레슨룸 입장</TabsTrigger>
+        <Tabs defaultValue="homework" className="w-full">
+          <TabsList className="mb-4 grid w-full grid-cols-2">
             <TabsTrigger value="homework">지난 숙제</TabsTrigger>
             <TabsTrigger value="history">레슨 기록</TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="lessonroom">
-            <LessonRooms />
-          </TabsContent>
           
           <TabsContent value="homework">
             <HomeworkHistory />
