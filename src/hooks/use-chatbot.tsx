@@ -1,5 +1,4 @@
-
-import { create } from "zustand";
+import { create as createStore } from "zustand";
 import { toast } from "sonner";
 
 export type ChatMessage = {
@@ -120,7 +119,7 @@ const initialNotificationSetting: NotificationSetting = {
   badgeEnabled: true
 };
 
-export const useChatbot = create<ChatbotState>((set, get) => {
+export const useChatbot = createStore<ChatbotState>((set, get) => {
   // 원포인트 레슨 요청 이벤트 리스너 설정
   if (typeof window !== 'undefined') {
     window.addEventListener('onePointLessonRequest', (event: Event) => {
