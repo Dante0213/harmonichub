@@ -20,7 +20,7 @@ const Profile = () => {
     likes: 0,
     comments: 0,
     isProfessional: true,
-    specialization: "guitar",
+    specialization: "guitar", // 이미 존재하는 값 유지
     instruments: ["기타", "피아노", "우쿨렐레"],
     genres: ["어쿠스틱", "재즈", "팝"],
     education: [

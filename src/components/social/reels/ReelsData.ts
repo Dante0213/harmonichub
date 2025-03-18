@@ -1,4 +1,3 @@
-
 export interface Reel {
   id: number | string;
   user: string;
@@ -6,9 +5,10 @@ export interface Reel {
   avatar: string;
   imageUrl?: string;
   isTeacher?: boolean;
-  isVerified?: boolean; // 추가된 필드
-  followers?: string; // 추가된 필드
-  isProfessional?: boolean; // 추가된 속성
+  isVerified?: boolean;
+  followers?: string;
+  isProfessional?: boolean;
+  specialization?: string; // 필수 속성으로 추가
   time: string;
   content: string;
   likes: number;
@@ -72,7 +72,8 @@ export const reelsData: Reel[] = [
     ],
     certificates: [
       {id: "cert1", name: "피아노 연주자격증", issuer: "한국음악협회", year: "2020"}
-    ]
+    ],
+    specialization: "피아노"
   },
   {
     id: 102,
@@ -107,7 +108,8 @@ export const reelsData: Reel[] = [
     ],
     certificates: [
       {id: "cert1", name: "기타 연주 자격증", issuer: "한국기타협회", year: "2021"}
-    ]
+    ],
+    specialization: "기타"
   },
   {
     id: 103,
@@ -142,6 +144,7 @@ export const reelsData: Reel[] = [
     ],
     certificates: [
       {id: "cert1", name: "드럼 전문가 자격증", issuer: "한국드럼협회", year: "2019"}
-    ]
+    ],
+    specialization: "드럼"
   }
 ];

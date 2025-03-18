@@ -80,7 +80,7 @@ export default function MyPage() {
             bio: userData.bio || "",
             imageUrl: userData.imageUrl || "",
             isProfessional: userData.isProfessional,
-            specialization: userData.specialization || "",
+            specialization: userData.specialization || "", // 타입이 맞도록 수정
             instruments: userData.instruments || [],
             genres: userData.genres || [],
             education: userData.education || [],
