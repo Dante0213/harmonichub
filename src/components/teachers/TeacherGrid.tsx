@@ -210,6 +210,6 @@ export function TeacherGrid() {
           teacherId={selectedTeacher.id}
         />
       )}
-    </div>
+    </section>
   );
 }
