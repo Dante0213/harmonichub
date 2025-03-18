@@ -1,13 +1,14 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dog, X, SendHorizontal, PlusCircle, Bell, BellOff, Mail } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Dog, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { ChatTab } from "./ChatTab";
+import { MessagesTab } from "./MessagesTab";
+import { RecommendTab } from "./RecommendTab";
 
 type Message = {
   id: number;
@@ -24,6 +25,11 @@ type DirectMessage = {
   timestamp: Date;
   read: boolean;
 }
+
+type NotificationSetting = {
+  toastEnabled: boolean;
+  badgeEnabled: boolean;
+};
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +69,7 @@ export function Chatbot() {
       read: true
     }
   ]);
-  const [notificationSetting, setNotificationSetting] = useState({
+  const [notificationSetting, setNotificationSetting] = useState<NotificationSetting>({
     toastEnabled: true,
     badgeEnabled: true
   });
@@ -172,128 +178,29 @@ export function Chatbot() {
               </TabsList>
               
               <TabsContent value="chat" className="m-0">
-                <ScrollArea className="h-[320px] p-4">
-                  {messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`mb-3 flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                          msg.sender === 'user'
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-muted'
-                        }`}
-                      >
-                        <p className="text-sm">{msg.text}</p>
-                        <span className="text-xs opacity-70">
-                          {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </ScrollArea>
-                
-                <CardFooter className="p-3 pt-0">
-                  <div className="flex w-full gap-2">
-                    <Input
-                      placeholder="메시지를 입력하세요..."
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                      className="flex-1"
-                    />
-                    <Button size="icon" onClick={handleSendMessage}>
-                      <SendHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardFooter>
+                <ChatTab 
+                  messages={messages}
+                  message={message}
+                  setMessage={setMessage}
+                  handleSendMessage={handleSendMessage}
+                />
               </TabsContent>
               
               <TabsContent value="messages" className="m-0">
-                <div className="px-3 py-2 border-b flex items-center justify-between">
-                  <h3 className="text-sm font-medium">알림 설정</h3>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
-                      <Bell className="h-3.5 w-3.5 text-muted-foreground" />
-                      <Switch 
-                        checked={notificationSetting.toastEnabled}
-                        onCheckedChange={(checked) => setNotificationSetting(prev => ({...prev, toastEnabled: checked}))}
-                        className="scale-75"
-                      />
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Badge variant="outline" className="h-3.5 w-3.5 p-0 flex items-center justify-center">
-                        <span className="text-[10px]">1</span>
-                      </Badge>
-                      <Switch 
-                        checked={notificationSetting.badgeEnabled}
-                        onCheckedChange={(checked) => setNotificationSetting(prev => ({...prev, badgeEnabled: checked}))}
-                        className="scale-75"
-                      />
-                    </div>
-                  </div>
-                </div>
-                
-                <ScrollArea className="h-[280px]">
-                  {directMessages.length === 0 ? (
-                    <div className="flex items-center justify-center h-full text-muted-foreground">
-                      <p className="text-sm">메시지가 없습니다</p>
-                    </div>
-                  ) : (
-                    <div className="divide-y">
-                      {directMessages.map((dm) => (
-                        <button
-                          key={dm.id}
-                          className={`w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-muted/50 transition-colors ${!dm.read ? 'bg-muted/20' : ''}`}
-                          onClick={() => markAsRead(dm.id)}
-                        >
-                          <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                            {dm.senderAvatar}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm font-medium truncate">{dm.sender}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {formatMessageTime(dm.timestamp)}
-                              </p>
-                            </div>
-                            <p className="text-sm truncate text-muted-foreground">{dm.text}</p>
-                          </div>
-                          {!dm.read && <span className="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></span>}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </ScrollArea>
+                <MessagesTab 
+                  directMessages={directMessages}
+                  notificationSetting={notificationSetting}
+                  setNotificationSetting={setNotificationSetting}
+                  markAsRead={markAsRead}
+                />
               </TabsContent>
               
               <TabsContent value="recommend" className="m-0">
-                <ScrollArea className="h-[320px]">
-                  <div className="p-4 space-y-4">
-                    {recommendationItems.map((category, idx) => (
-                      <div key={idx}>
-                        <h3 className="text-sm font-medium mb-2">{category.title}</h3>
-                        <div className="space-y-1">
-                          {category.items.map((item, itemIdx) => (
-                            <Button 
-                              key={itemIdx} 
-                              variant="ghost" 
-                              className="w-full justify-start text-left h-auto py-1.5 px-2 text-sm"
-                              onClick={() => {
-                                setActiveTab("chat");
-                                setMessage(`${category.title}: ${item}`);
-                              }}
-                            >
-                              <PlusCircle className="h-3.5 w-3.5 mr-2 opacity-70" />
-                              {item}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
+                <RecommendTab 
+                  recommendationItems={recommendationItems}
+                  setActiveTab={setActiveTab}
+                  setMessage={setMessage}
+                />
               </TabsContent>
             </Tabs>
           </Card>
@@ -317,21 +224,4 @@ export function Chatbot() {
       </div>
     </>
   );
-}
-
-// 메시지 시간 포맷팅 함수
-function formatMessageTime(timestamp: Date): string {
-  const now = new Date();
-  const diffMinutes = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60));
-  
-  if (diffMinutes < 1) return '방금 전';
-  if (diffMinutes < 60) return `${diffMinutes}분 전`;
-  
-  const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours}시간 전`;
-  
-  const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays}일 전`;
-  
-  return timestamp.toLocaleDateString();
 }
