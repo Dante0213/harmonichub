@@ -80,9 +80,13 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
       console.log("입력된 현재 비밀번호:", values.currentPassword);
       console.log("저장된 비밀번호:", userData.password);
       
-      // 문자열로 저장된 비밀번호 비교
-      // 회원가입 시 저장된 형식으로 비교
-      if (!userData.password || values.currentPassword !== userData.password) {
+      // 비밀번호 객체가 아닌 문자열 확인
+      const storedPassword = typeof userData.password === 'object' && userData.password !== null
+        ? userData.password.value || ''
+        : userData.password || '';
+      
+      // 비밀번호 비교
+      if (!storedPassword || values.currentPassword !== storedPassword) {
         toast({
           title: "비밀번호 오류",
           description: "현재 비밀번호가 일치하지 않습니다.",
@@ -93,7 +97,7 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
         return;
       }
       
-      // 비밀번호 업데이트
+      // 비밀번호 업데이트 - 문자열로 저장
       userData.password = values.newPassword;
       
       // 세션 스토리지 업데이트
