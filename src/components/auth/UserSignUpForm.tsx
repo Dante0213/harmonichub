@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { AddressSearch } from "@/components/common/AddressSearch";
+import { AgreementCheckboxes } from "./AgreementCheckboxes";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
@@ -19,7 +19,10 @@ const formSchema = z.object({
   phone: z.string().min(10, { message: "연락처는 10자 이상이어야 합니다." }),
   address: z.string().min(5, { message: "주소는 5자 이상이어야 합니다." }),
   password: z.string().min(8, { message: "비밀번호는 8자 이상이어야 합니다." }),
-  confirmPassword: z.string()
+  confirmPassword: z.string(),
+  termsAgreed: z.boolean().refine(val => val === true, { message: "이용약관에 동의해주세요." }),
+  privacyAgreed: z.boolean().refine(val => val === true, { message: "개인정보처리방침에 동의해주세요." }),
+  marketingAgreed: z.boolean()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "비밀번호가 일치하지 않습니다.",
   path: ["confirmPassword"],
@@ -31,6 +34,9 @@ export default function UserSignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isVerified, setIsVerified] = useState(false);  // 본인인증 상태
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -43,7 +49,10 @@ export default function UserSignUpForm() {
       phone: "",
       address: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      termsAgreed: false,
+      privacyAgreed: false,
+      marketingAgreed: false
     }
   });
 
@@ -52,6 +61,16 @@ export default function UserSignUpForm() {
       toast({
         title: "본인인증 필요",
         description: "회원가입을 위해 본인인증이 필요합니다.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (!values.termsAgreed || !values.privacyAgreed) {
+      toast({
+        title: "필수 약관 동의 필요",
+        description: "필수 약관에 모두 동의해주세요.",
         variant: "destructive",
         duration: 3000,
       });
@@ -74,6 +93,7 @@ export default function UserSignUpForm() {
         address: values.address,
         password: values.password,
         isProfessional: false,
+        marketingAgreed: values.marketingAgreed,
         joinDate: new Date().toLocaleDateString('ko-KR', {
           year: 'numeric',
           month: 'long',
@@ -123,6 +143,22 @@ export default function UserSignUpForm() {
         duration: 3000,
       });
     }, 2000);
+  };
+
+  // 약관 동의 변경 핸들러
+  const handleTermsChange = (checked: boolean) => {
+    setTermsAgreed(checked);
+    form.setValue('termsAgreed', checked);
+  };
+
+  const handlePrivacyChange = (checked: boolean) => {
+    setPrivacyAgreed(checked);
+    form.setValue('privacyAgreed', checked);
+  };
+
+  const handleMarketingChange = (checked: boolean) => {
+    setMarketingAgreed(checked);
+    form.setValue('marketingAgreed', checked);
   };
 
   return (
@@ -301,6 +337,16 @@ export default function UserSignUpForm() {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+            
+            {/* 약관 동의 섹션 */}
+            <AgreementCheckboxes
+              termsAgreed={termsAgreed}
+              privacyAgreed={privacyAgreed}
+              marketingAgreed={marketingAgreed}
+              onTermsChange={handleTermsChange}
+              onPrivacyChange={handlePrivacyChange}
+              onMarketingChange={handleMarketingChange}
             />
             
             <Button type="submit" className="w-full" disabled={isLoading || !isVerified}>

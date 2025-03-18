@@ -12,6 +12,7 @@ import { Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import BasicInfoForm from "./BasicInfoForm";
 import ProfessionalInfoForm from "./ProfessionalInfoForm";
+import { AgreementCheckboxes } from "./AgreementCheckboxes";
 
 const professionalFormSchema = z.object({
   // 일반 사용자 정보
@@ -30,6 +31,11 @@ const professionalFormSchema = z.object({
   education: z.string().min(2, { message: "학력 정보를 입력해주세요." }),
   experience: z.string().min(10, { message: "경력은 10자 이상 자세히 기재해주세요." }),
   certification: z.string().optional(),
+  
+  // 약관 동의
+  termsAgreed: z.boolean().refine(val => val === true, { message: "이용약관에 동의해주세요." }),
+  privacyAgreed: z.boolean().refine(val => val === true, { message: "개인정보처리방침에 동의해주세요." }),
+  marketingAgreed: z.boolean()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "비밀번호가 일치하지 않습니다.",
   path: ["confirmPassword"],
@@ -42,6 +48,9 @@ export default function ProfessionalSignUpForm() {
   const [fileList, setFileList] = useState<File[]>([]);
   const [fileError, setFileError] = useState<string | null>(null);
   const [isVerified, setIsVerified] = useState(false);  // 본인인증 상태
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -59,6 +68,9 @@ export default function ProfessionalSignUpForm() {
       education: "",
       experience: "",
       certification: "",
+      termsAgreed: false,
+      privacyAgreed: false,
+      marketingAgreed: false
     }
   });
 
@@ -67,6 +79,16 @@ export default function ProfessionalSignUpForm() {
       toast({
         title: "본인인증 필요",
         description: "회원가입을 위해 본인인증이 필요합니다.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (!values.termsAgreed || !values.privacyAgreed) {
+      toast({
+        title: "필수 약관 동의 필요",
+        description: "필수 약관에 모두 동의해주세요.",
         variant: "destructive",
         duration: 3000,
       });
@@ -89,7 +111,8 @@ export default function ProfessionalSignUpForm() {
         phone: values.phone,
         address: values.address,
         isProfessional: true,
-        specialization: values.specialization
+        specialization: values.specialization,
+        marketingAgreed: values.marketingAgreed
       }));
       
       // 파일 분석 시뮬레이션
@@ -154,6 +177,22 @@ export default function ProfessionalSignUpForm() {
     }, 2000);
   };
 
+  // 약관 동의 변경 핸들러
+  const handleTermsChange = (checked: boolean) => {
+    setTermsAgreed(checked);
+    form.setValue('termsAgreed', checked);
+  };
+
+  const handlePrivacyChange = (checked: boolean) => {
+    setPrivacyAgreed(checked);
+    form.setValue('privacyAgreed', checked);
+  };
+
+  const handleMarketingChange = (checked: boolean) => {
+    setMarketingAgreed(checked);
+    form.setValue('marketingAgreed', checked);
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -212,6 +251,16 @@ export default function ProfessionalSignUpForm() {
               setFileList={setFileList}
               fileError={fileError}
               setFileError={setFileError}
+            />
+            
+            {/* 약관 동의 섹션 */}
+            <AgreementCheckboxes
+              termsAgreed={termsAgreed}
+              privacyAgreed={privacyAgreed}
+              marketingAgreed={marketingAgreed}
+              onTermsChange={handleTermsChange}
+              onPrivacyChange={handlePrivacyChange}
+              onMarketingChange={handleMarketingChange}
             />
             
             <Button type="submit" className="w-full" disabled={isLoading || !isVerified}>
