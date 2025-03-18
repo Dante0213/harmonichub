@@ -1,53 +1,85 @@
 
+import { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { Clock } from "lucide-react";
-import { TimeSlot } from "./types";
+import { TimeSlot, ScheduleItem } from "./types";
+import { getTimeSlotsForDate } from "./scheduleUtils";
+import { ko } from "date-fns/locale";
+import { format } from "date-fns";
 
 interface TimeSlotSelectionProps {
-  timeSlots: TimeSlot[];
-  selectedTimeSlot: string | null;
-  setSelectedTimeSlot: (time: string) => void;
+  schedule: ScheduleItem[];
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
+  selectedTime: string | null;
+  setSelectedTime: (time: string | null) => void;
+  onOnePointLessonClick: () => void;
 }
 
-export function TimeSlotSelection({ 
-  timeSlots, 
-  selectedTimeSlot, 
-  setSelectedTimeSlot 
+export function TimeSlotSelection({
+  schedule,
+  selectedDate,
+  setSelectedDate,
+  selectedTime,
+  setSelectedTime,
+  onOnePointLessonClick
 }: TimeSlotSelectionProps) {
+  const timeSlots = getTimeSlotsForDate(schedule, selectedDate);
+
+  const handleTimeSelection = (time: string, isBooked: boolean) => {
+    if (!isBooked) {
+      setSelectedTime(time);
+    }
+  };
+
   return (
     <div>
-      <div className="text-sm font-medium mb-2 flex items-center">
-        <Clock className="w-4 h-4 mr-2" /> 시간 선택
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex-1">
+          <h3 className="font-medium mb-2">날짜 선택</h3>
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={(date) => date && setSelectedDate(date)}
+            locale={ko}
+            className="border rounded-md"
+          />
+        </div>
+
+        <div className="flex-1">
+          <h3 className="font-medium mb-2">시간 선택</h3>
+          {timeSlots.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2">
+              {timeSlots.map((slot: TimeSlot) => (
+                <Button
+                  key={slot.time}
+                  variant={selectedTime === slot.time ? "default" : "outline"}
+                  disabled={slot.isBooked}
+                  className={`${
+                    slot.isBooked ? "bg-gray-100 text-gray-400" : ""
+                  }`}
+                  onClick={() => handleTimeSelection(slot.time, slot.isBooked)}
+                >
+                  {slot.time}
+                  {slot.isBooked && " (예약됨)"}
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground">선택한 날짜에 예약 가능한 시간이 없습니다.</p>
+          )}
+        </div>
       </div>
-      <div className="space-y-2">
-        {timeSlots && timeSlots.length > 0 ? (
-          timeSlots.map((slot, index) => (
-            <Button
-              key={index}
-              variant={selectedTimeSlot === slot.time ? "default" : "outline"}
-              className={cn(
-                "w-full mb-2",
-                slot.isBooked ? "opacity-50 cursor-not-allowed" : "",
-                selectedTimeSlot === slot.time ? "bg-primary" : ""
-              )}
-              onClick={() => !slot.isBooked && setSelectedTimeSlot(slot.time)}
-              disabled={slot.isBooked}
-            >
-              {slot.time}
-              {slot.isBooked && (
-                <Badge variant="outline" className="ml-2 bg-red-100 text-red-800 border-red-200">
-                  예약됨
-                </Badge>
-              )}
-            </Button>
-          ))
-        ) : (
-          <p className="text-center text-muted-foreground py-4">
-            선택한 날짜에 예약 가능한 시간이 없습니다
-          </p>
-        )}
+
+      <div className="mt-4">
+        <Button 
+          type="button" 
+          variant="outline" 
+          className="w-full"
+          onClick={onOnePointLessonClick}
+        >
+          5~10분 단위 원포인트 레슨 원해요
+        </Button>
       </div>
     </div>
   );
