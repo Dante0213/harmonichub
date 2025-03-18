@@ -1,12 +1,16 @@
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ReelUploadButton } from "../reels/ReelUploadButton";
 
 export const AdBanner = () => {
   return (
     <Card className="mb-6 overflow-hidden pastel-card">
-      <CardHeader>
-        <h3 className="text-lg font-semibold">광고</h3>
+      <CardHeader className="pb-3">
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-semibold">광고</h3>
+          <ReelUploadButton />
+        </div>
       </CardHeader>
       <CardContent className="p-0">
         <div className="relative aspect-[16/9] bg-gradient-to-r from-pastel-purple/20 to-pastel-pink/20 flex items-center justify-center">

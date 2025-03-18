@@ -55,11 +55,12 @@ export const ReelUploadButton = () => {
   return (
     <>
       <Button 
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+        onClick={() => setOpen(true)} 
+        size="sm"
+        className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
       >
-        <Upload className="h-5 w-5" />
-        릴스 업로드
+        <Upload className="h-4 w-4" />
+        릴스 올리기
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
