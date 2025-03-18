@@ -17,6 +17,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { VodRegistrationForm } from "./VodRegistrationForm";
 import { InstrumentRegistrationForm } from "./InstrumentRegistrationForm";
+import { BookRegistrationForm } from "./BookRegistrationForm";
+import { AccessoryRegistrationForm } from "./AccessoryRegistrationForm";
 
 interface ProductRegistrationDialogProps {
   isOpen: boolean;
@@ -80,25 +82,51 @@ export function ProductRegistrationDialog({ isOpen, onClose }: ProductRegistrati
     }
   };
 
-  const handleGenericSubmit = async (data: any) => {
+  const handleBookSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      // 여기에 실제 상품 등록 API 호출 로직이 들어갈 수 있습니다.
-      console.log(`${category} 등록 데이터:`, data);
+      // 여기에 실제 교재 등록 API 호출 로직이 들어갈 수 있습니다.
+      console.log("교재 등록 데이터:", data);
       
       // 성공 메시지를 표시합니다
       toast({
-        title: "상품 등록 성공",
-        description: "상품이 성공적으로 등록되었습니다.",
+        title: "교재 등록 성공",
+        description: "교재가 성공적으로 등록되었습니다.",
       });
       
       // 대화상자를 닫습니다
       onClose();
     } catch (error) {
-      console.error("상품 등록 실패:", error);
+      console.error("교재 등록 실패:", error);
       toast({
-        title: "상품 등록 실패",
-        description: "상품 등록에 실패했습니다. 다시 시도해주세요.",
+        title: "교재 등록 실패",
+        description: "교재 등록에 실패했습니다. 다시 시도해주세요.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleAccessorySubmit = async (data: any) => {
+    setIsSubmitting(true);
+    try {
+      // 여기에 실제 악세서리 등록 API 호출 로직이 들어갈 수 있습니다.
+      console.log("악세서리 등록 데이터:", data);
+      
+      // 성공 메시지를 표시합니다
+      toast({
+        title: "악세서리 등록 성공",
+        description: "악세서리가 성공적으로 등록되었습니다.",
+      });
+      
+      // 대화상자를 닫습니다
+      onClose();
+    } catch (error) {
+      console.error("악세서리 등록 실패:", error);
+      toast({
+        title: "악세서리 등록 실패",
+        description: "악세서리 등록에 실패했습니다. 다시 시도해주세요.",
         variant: "destructive",
       });
     } finally {
@@ -136,37 +164,17 @@ export function ProductRegistrationDialog({ isOpen, onClose }: ProductRegistrati
           </TabsContent>
           
           <TabsContent value="books">
-            <div className="p-4 border rounded-md">
-              <h3 className="text-lg font-medium mb-4">교재 등록</h3>
-              <p className="text-muted-foreground">
-                교재 등록 양식은 개발 중입니다. 
-                지금은 기본 상품으로 등록하고, 나중에 세부 정보를 업데이트하세요.
-              </p>
-              <Button 
-                className="mt-4" 
-                onClick={() => handleGenericSubmit({category: "books"})}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "등록 중..." : "교재 등록하기"}
-              </Button>
-            </div>
+            <BookRegistrationForm 
+              onSubmit={handleBookSubmit} 
+              isSubmitting={isSubmitting} 
+            />
           </TabsContent>
           
           <TabsContent value="accessories">
-            <div className="p-4 border rounded-md">
-              <h3 className="text-lg font-medium mb-4">악세서리 등록</h3>
-              <p className="text-muted-foreground">
-                악세서리 등록 양식은 개발 중입니다.
-                지금은 기본 상품으로 등록하고, 나중에 세부 정보를 업데이트하세요.
-              </p>
-              <Button 
-                className="mt-4" 
-                onClick={() => handleGenericSubmit({category: "accessories"})}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "등록 중..." : "악세서리 등록하기"}
-              </Button>
-            </div>
+            <AccessoryRegistrationForm 
+              onSubmit={handleAccessorySubmit} 
+              isSubmitting={isSubmitting} 
+            />
           </TabsContent>
         </Tabs>
         
