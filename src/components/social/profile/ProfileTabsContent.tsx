@@ -1,6 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, Music } from "lucide-react";
+import { Heart, Music, Bookmark } from "lucide-react";
 import { Reel } from "../reels/ReelsData";
 
 interface ProfileTabsContentProps {
@@ -18,6 +18,10 @@ export const ProfileTabsContent = ({ user }: ProfileTabsContentProps) => {
         <TabsTrigger value="likes" className="flex-1">
           <Heart className="h-4 w-4 mr-2" />
           좋아요
+        </TabsTrigger>
+        <TabsTrigger value="saved" className="flex-1">
+          <Bookmark className="h-4 w-4 mr-2" />
+          저장소
         </TabsTrigger>
       </TabsList>
       
@@ -39,6 +43,16 @@ export const ProfileTabsContent = ({ user }: ProfileTabsContentProps) => {
           {[...Array(6)].map((_, i) => (
             <div key={i} className="aspect-square bg-muted rounded-md flex items-center justify-center">
               <Heart className="h-8 w-8 text-red-500" />
+            </div>
+          ))}
+        </div>
+      </TabsContent>
+      
+      <TabsContent value="saved" className="mt-6">
+        <div className="grid grid-cols-3 gap-2">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="aspect-square bg-muted rounded-md flex items-center justify-center">
+              <Bookmark className="h-8 w-8 text-muted-foreground" fill="currentColor" />
             </div>
           ))}
         </div>

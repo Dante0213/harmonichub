@@ -54,7 +54,7 @@ export const UserProfileSection = ({
             onClick={onFavoritesClick}
           >
             <p className="font-bold">42</p>
-            <p className="text-sm text-muted-foreground">찜한 사람</p>
+            <p className="text-sm text-muted-foreground">찜한 선생님</p>
           </Button>
         )}
       </div>
