@@ -68,6 +68,7 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
           title: "오류",
           description: "사용자 정보를 찾을 수 없습니다.",
           variant: "destructive",
+          duration: 1000, // 1초 후 자동으로 사라짐
         });
         setIsSubmitting(false);
         return;
@@ -79,11 +80,14 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
       console.log("입력된 현재 비밀번호:", values.currentPassword);
       console.log("저장된 비밀번호:", userData.password);
       
-      if (values.currentPassword !== userData.password) {
+      // 문자열로 저장된 비밀번호 비교
+      // 회원가입 시 저장된 형식으로 비교
+      if (!userData.password || values.currentPassword !== userData.password) {
         toast({
           title: "비밀번호 오류",
           description: "현재 비밀번호가 일치하지 않습니다.",
           variant: "destructive",
+          duration: 1000, // 1초 후 자동으로 사라짐
         });
         setIsSubmitting(false);
         return;
@@ -99,6 +103,7 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
       toast({
         title: "비밀번호 변경 완료",
         description: "비밀번호가 성공적으로 변경되었습니다.",
+        duration: 1000, // 1초 후 자동으로 사라짐
       });
       
       // 모달 닫기
@@ -113,6 +118,7 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
         title: "오류 발생",
         description: "비밀번호 변경 중 오류가 발생했습니다.",
         variant: "destructive",
+        duration: 1000, // 1초 후 자동으로 사라짐
       });
     } finally {
       setIsSubmitting(false);
