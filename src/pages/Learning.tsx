@@ -30,28 +30,6 @@ const Learning = () => {
           {/* 일정 관리 */}
           <LessonSchedule />
           
-          {/* 연습실 버튼 카드 */}
-          <Card>
-            <CardHeader>
-              <CardTitle>연습실</CardTitle>
-              <CardDescription>혼자서 연습하고 싶을 때</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col space-y-4">
-              <p className="text-sm text-muted-foreground">
-                연습실에서는 자유롭게 악기를 연습하고, 녹음하고, 재생할 수 있습니다.
-                메트로놈과 같은 도구를 활용하여 더 효과적인 연습이 가능합니다.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Link to="/lesson-room" className="w-full">
-                <Button className="w-full flex items-center gap-2">
-                  <Music className="h-4 w-4" />
-                  <span>연습실 입장하기</span>
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
-          
           {/* VOD 진도율 */}
           <VodProgress />
           

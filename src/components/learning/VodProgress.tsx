@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Music } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface VodCourse {
@@ -44,6 +44,23 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
         <CardDescription>현재 학습 중인 VOD 강의</CardDescription>
       </CardHeader>
       <CardContent>
+        {/* 상단 버튼 영역 - 2분할 */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <Link to="/lesson-room" className="w-full">
+            <Button className="w-full flex items-center gap-2">
+              <Music className="h-4 w-4" />
+              <span>연습실 입장하기</span>
+            </Button>
+          </Link>
+          <Link to="/store">
+            <Button variant="outline" className="w-full flex items-center gap-2">
+              <PlusCircle className="h-4 w-4" />
+              <span>스토어에서 더 보기</span>
+            </Button>
+          </Link>
+        </div>
+
+        {/* VOD 리스트 */}
         <div className="space-y-4">
           {myVods.map((vod, i) => (
             <div key={i} className="space-y-2">
@@ -72,14 +89,7 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
           ))}
         </div>
       </CardContent>
-      <CardFooter>
-        <Link to="/store">
-          <Button variant="outline" className="w-full flex items-center gap-2">
-            <PlusCircle className="h-4 w-4" />
-            <span>스토어에서 더 보기</span>
-          </Button>
-        </Link>
-      </CardFooter>
+      {/* 푸터 제거 - 버튼을 상단으로 이동했기 때문에 */}
     </Card>
   );
 };
