@@ -125,7 +125,10 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
           <div className="col-span-1 md:col-span-3 h-full flex flex-col">
             {/* 비디오 영역 또는 연습 영역 */}
             {practiceMode ? (
-              <PracticeArea />
+              <PracticeArea 
+                onTogglePracticeMode={handleTogglePracticeMode} 
+                practiceMode={practiceMode} 
+              />
             ) : (
               <VideoArea videoEnabled={videoEnabled} micEnabled={micEnabled} />
             )}
