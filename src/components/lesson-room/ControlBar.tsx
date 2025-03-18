@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Mic, MicOff, Video, VideoOff, ScreenShare, FileUp, MessageSquare, Bluetooth } from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, ScreenShare, FileUp, MessageSquare, Music } from "lucide-react";
 import { MetronomePopover } from "./MetronomePopover";
 import { ControlBarProps } from "./types";
 
@@ -10,6 +10,8 @@ interface ControlBarExtendedProps extends ControlBarProps {
   setMetronomeTempo: (tempo: number) => void;
   setMetronomeVolume: (volume: number) => void;
   onToggleMetronome: () => void;
+  practiceMode: boolean;
+  onTogglePracticeMode: () => void;
 }
 
 export function ControlBar({
@@ -27,7 +29,9 @@ export function ControlBar({
   setMetronomeTempo,
   setMetronomeVolume,
   onToggleMetronome,
-  onToggleMidiPanel
+  onToggleMidiPanel,
+  practiceMode,
+  onTogglePracticeMode
 }: ControlBarExtendedProps) {
   return (
     <div className="h-16 bg-background border-t flex items-center justify-between px-4">
@@ -51,6 +55,17 @@ export function ControlBar({
       </div>
       
       <div className="flex items-center space-x-2">
+        {/* 연습모드 전환 버튼 */}
+        <Button 
+          variant={practiceMode ? "secondary" : "outline"}
+          size="sm"
+          onClick={onTogglePracticeMode}
+          className="flex items-center gap-1"
+        >
+          <Music className="h-4 w-4" />
+          <span>{practiceMode ? "연습 모드" : "레슨 모드"}</span>
+        </Button>
+        
         <Button variant="outline" size="icon" onClick={onShareScreen}>
           <ScreenShare className="h-5 w-5" />
         </Button>
@@ -67,11 +82,6 @@ export function ControlBar({
           setMetronomeVolume={setMetronomeVolume}
           onToggleMetronome={onToggleMetronome}
         />
-        
-        {/* MIDI 연결 버튼 추가 */}
-        <Button variant="outline" size="icon" onClick={onToggleMidiPanel}>
-          <Bluetooth className="h-5 w-5" />
-        </Button>
         
         <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
           <MessageSquare className="h-5 w-5" />

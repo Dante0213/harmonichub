@@ -9,6 +9,7 @@ import { ChatPanel } from "./ChatPanel";
 import { MidiConnectionPanel } from "./MidiConnectionPanel";
 import { VideoLessonRoomProps, ChatMessage } from "./types";
 import { createMetronomeClick } from "./metronomeUtils";
+import { PracticeArea } from "./PracticeArea";
 
 export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoomProps) {
   const [micEnabled, setMicEnabled] = useState(true);
@@ -18,6 +19,7 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
   const [metronomeTempo, setMetronomeTempo] = useState(120);
   const [metronomeVolume, setMetronomeVolume] = useState(50);
   const [showMidiPanel, setShowMidiPanel] = useState(false);
+  const [practiceMode, setPracticeMode] = useState(false);
   const metronomeIntervalRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
 
@@ -77,6 +79,11 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
     }
   };
 
+  const handleTogglePracticeMode = () => {
+    setPracticeMode(prev => !prev);
+    toast.info(practiceMode ? "레슨 모드로 전환합니다." : "연습 모드로 전환합니다.");
+  };
+
   const handleToggleMetronome = () => {
     if (metronomeActive) {
       if (metronomeIntervalRef.current) {
@@ -96,7 +103,7 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
   };
 
   const handleEndLesson = () => {
-    if (confirm("정말 레슨을a 종료하시겠습니까?")) {
+    if (confirm("정말 레슨을 종료하시겠습니까?")) {
       toast.info("레슨이 종료되었습니다.");
       onClose();
     }
@@ -116,8 +123,12 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
         <div className="grid grid-cols-1 md:grid-cols-4 h-[calc(90vh-4rem)]">
           {/* 메인 화상 영역 - 3/4 */}
           <div className="col-span-1 md:col-span-3 h-full flex flex-col">
-            {/* 비디오 영역 */}
-            <VideoArea videoEnabled={videoEnabled} micEnabled={micEnabled} />
+            {/* 비디오 영역 또는 연습 영역 */}
+            {practiceMode ? (
+              <PracticeArea />
+            ) : (
+              <VideoArea videoEnabled={videoEnabled} micEnabled={micEnabled} />
+            )}
             
             {/* 컨트롤 바 */}
             <ControlBar 
@@ -136,6 +147,8 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
               setMetronomeVolume={setMetronomeVolume}
               onToggleMetronome={handleToggleMetronome}
               onToggleMidiPanel={handleToggleMidiPanel}
+              practiceMode={practiceMode}
+              onTogglePracticeMode={handleTogglePracticeMode}
             />
           </div>
           
@@ -149,7 +162,7 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
               </TabsList>
               
               <TabsContent value="video" className="flex-1 overflow-y-auto p-4">
-                {/* 라이브러리 내용 - 이전에는 MIDI 연결 패널이었지만 이제 비어있음 */}
+                {/* 라이브러리 내용 */}
                 <div className="w-full">
                   <h3 className="text-sm font-medium mb-2">라이브러리</h3>
                   <p className="text-xs text-muted-foreground">

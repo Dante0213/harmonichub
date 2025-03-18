@@ -26,5 +26,7 @@ export interface ControlBarProps {
   onFileUpload: () => void;
   onEndLesson: () => void;
   setActiveTab: (tab: string) => void;
-  onToggleMidiPanel: () => void; // MIDI 패널 토글 함수 추가
+  onToggleMidiPanel: () => void; 
+  practiceMode: boolean;
+  onTogglePracticeMode: () => void;
 }
