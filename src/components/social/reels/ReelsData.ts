@@ -8,6 +8,7 @@ export interface Reel {
   isTeacher?: boolean;
   isVerified?: boolean; // 추가된 필드
   followers?: string; // 추가된 필드
+  isProfessional?: boolean; // 추가된 속성
   time: string;
   content: string;
   likes: number;

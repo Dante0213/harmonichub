@@ -19,6 +19,7 @@ const Profile = () => {
     content: "",
     likes: 0,
     comments: 0,
+    isProfessional: true, // 속성 추가
     instruments: ["기타", "피아노", "우쿨렐레"],
     genres: ["어쿠스틱", "재즈", "팝"],
     education: [
