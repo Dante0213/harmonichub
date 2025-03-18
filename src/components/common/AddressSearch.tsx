@@ -1,109 +1,115 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { MapPin, Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AddressSearchProps {
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }
 
-export function AddressSearch({ value, onChange }: AddressSearchProps) {
-  const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+export function AddressSearch({ value, onChange, className }: AddressSearchProps) {
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // 테스트 주소 목록 (실제 구현에서는 카카오/네이버 주소 API 등을 사용)
-  const testAddresses = [
-    "서울특별시 강남구 테헤란로 152",
-    "서울특별시 서초구 반포대로 58",
-    "서울특별시 마포구 와우산로 94",
-    "경기도 성남시 분당구 판교역로 235",
-    "부산광역시 해운대구 센텀중앙로 79"
-  ];
-
-  const handleSearch = () => {
-    if (!searchTerm) return;
-    
-    setLoading(true);
-    
-    // 실제 구현에서는 여기에 API 호출 코드가 들어갑니다
-    // 여기서는 테스트 데이터로 대체합니다
-    setTimeout(() => {
-      const results = testAddresses.filter(addr => 
-        addr.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setSearchResults(results);
-      setLoading(false);
-    }, 500);
+  // 검색 모달 토글
+  const toggleSearchModal = () => {
+    setIsSearchModalOpen(!isSearchModalOpen);
+    if (!isSearchModalOpen) {
+      setSearchTerm("");
+      setSearchResults([]);
+    }
   };
 
-  const handleSelect = (address: string) => {
+  // 주소 검색 시뮬레이션
+  const searchAddress = () => {
+    if (searchTerm.trim() === "") return;
+
+    // 실제로는 API 호출
+    setTimeout(() => {
+      const mockResults = [
+        `${searchTerm} 관련 주소 1`,
+        `${searchTerm} 관련 주소 2`,
+        `${searchTerm} 중앙로 123`,
+        `${searchTerm} 번화가 456`,
+        `${searchTerm} 건물 사거리`
+      ];
+      setSearchResults(mockResults);
+    }, 300);
+  };
+
+  // 주소 선택 핸들러
+  const selectAddress = (address: string) => {
     onChange(address);
-    setOpen(false);
+    setIsSearchModalOpen(false);
+  };
+
+  // 직접 입력 값 변경 핸들러 (추가된 부분)
+  const handleDirectInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("relative", className)}>
       <div className="flex gap-2">
-        <Input value={value} disabled placeholder="주소 검색 버튼을 클릭하세요" />
-        <Button type="button" onClick={() => setOpen(true)}>
-          주소 검색
+        <div className="relative flex-1">
+          <Input
+            ref={inputRef}
+            placeholder="주소를 입력하세요"
+            value={value}
+            onChange={handleDirectInput}
+            className="pr-10"
+          />
+          <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        </div>
+        <Button type="button" variant="outline" onClick={toggleSearchModal}>
+          <Search className="h-4 w-4 mr-1" /> 검색
         </Button>
       </div>
-      
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>주소 검색</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4 py-4">
+
+      {isSearchModalOpen && (
+        <div className="absolute z-10 mt-1 w-full bg-background border rounded-md shadow-lg">
+          <div className="p-3 border-b">
             <div className="flex gap-2">
-              <Input 
-                placeholder="도로명, 지번 주소를 입력하세요" 
+              <Input
+                placeholder="지역명, 도로명, 건물명 검색"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleSearch();
-                  }
-                }}
+                className="flex-1"
+                autoFocus
               />
-              <Button type="button" onClick={handleSearch} disabled={loading}>
-                {loading ? "검색 중..." : "검색"}
+              <Button type="button" variant="default" onClick={searchAddress}>
+                검색
               </Button>
             </div>
-            
-            <div className="border rounded h-60 overflow-y-auto">
-              {searchResults.length === 0 ? (
-                <div className="p-4 text-center text-muted-foreground">
-                  {loading ? "검색 중..." : "검색 결과가 표시됩니다"}
-                </div>
-              ) : (
-                <ul className="divide-y">
-                  {searchResults.map((address, index) => (
-                    <li 
-                      key={index} 
-                      className="p-3 cursor-pointer hover:bg-muted transition-colors"
-                      onClick={() => handleSelect(address)}
-                    >
-                      {address}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            
-            <p className="text-sm text-muted-foreground">
-              실제 서비스에서는 카카오 또는 네이버 주소 API를 연동하여 정확한 주소 검색이 가능합니다.
-            </p>
           </div>
-        </DialogContent>
-      </Dialog>
+          
+          <div className="max-h-[200px] overflow-y-auto">
+            {searchResults.length > 0 ? (
+              <ul>
+                {searchResults.map((address, index) => (
+                  <li
+                    key={index}
+                    className="p-2 hover:bg-accent cursor-pointer"
+                    onClick={() => selectAddress(address)}
+                  >
+                    {address}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="p-3 text-center text-muted-foreground">
+                {searchTerm ? "검색 결과가 없습니다" : "검색어를 입력해주세요"}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
