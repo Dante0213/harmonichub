@@ -9,11 +9,16 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180); // 3분 (예시)
   const [volume, setVolume] = useState([50]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
   };
 
   return (
@@ -72,6 +77,14 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
                   onValueChange={setVolume}
                 />
               </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={togglePlay}
+                className="flex items-center gap-1"
+              >
+                {isPlaying ? "일시정지" : "재생"}
+              </Button>
             </div>
           </div>
         </div>

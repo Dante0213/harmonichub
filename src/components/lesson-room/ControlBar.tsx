@@ -108,11 +108,11 @@ export function ControlBar({
         )}
         
         {/* 레슨 모드에서만 채팅 아이콘 표시 */}
-        {!practiceMode && (
+        {!practiceMode ? (
           <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
             <MessageSquare className="h-5 w-5" />
           </Button>
-        )}
+        ) : null}
       </div>
       
       <div>
