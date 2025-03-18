@@ -26,4 +26,5 @@ export interface ControlBarProps {
   onFileUpload: () => void;
   onEndLesson: () => void;
   setActiveTab: (tab: string) => void;
+  onOpenMidiPanel: () => void;
 }
