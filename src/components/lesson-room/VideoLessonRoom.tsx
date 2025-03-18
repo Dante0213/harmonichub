@@ -1,93 +1,30 @@
 
-import { useEffect, useRef, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Mic, MicOff, Video, VideoOff, Share, MessageSquare, FileUp, Volume2, ScreenShare } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-
-interface VideoLessonRoomProps {
-  isOpen: boolean;
-  onClose: () => void;
-  lessonInfo: {
-    title: string;
-    teacherName: string;
-    time: string;
-  };
-}
+import { VideoArea } from "./VideoArea";
+import { ControlBar } from "./ControlBar";
+import { ChatPanel } from "./ChatPanel";
+import { MidiConnectionPanel } from "./MidiConnectionPanel";
+import { VideoLessonRoomProps, ChatMessage } from "./types";
+import { createMetronomeClick } from "./metronomeUtils";
 
 export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoomProps) {
   const [micEnabled, setMicEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
   const [activeTab, setActiveTab] = useState("video");
-  const [chatMessages, setChatMessages] = useState<{sender: string, text: string}[]>([
-    {sender: "시스템", text: "레슨이 시작되었습니다. 화상 통화 및 다양한 기능을 사용할 수 있습니다."},
-    {sender: lessonInfo.teacherName, text: "안녕하세요! 오늘 레슨을 시작하겠습니다."}
-  ]);
-  const [newMessage, setNewMessage] = useState("");
   const [metronomeActive, setMetronomeActive] = useState(false);
   const [metronomeTempo, setMetronomeTempo] = useState(120);
   const [metronomeVolume, setMetronomeVolume] = useState(50);
-  const localVideoRef = useRef<HTMLVideoElement>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const pianoContainerRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
   const metronomeIntervalRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
 
-  // 로컬 비디오 스트림 가져오기
-  useEffect(() => {
-    if (isOpen && videoEnabled) {
-      const getMedia = async () => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ 
-            video: true, 
-            audio: micEnabled 
-          });
-          
-          if (localVideoRef.current) {
-            localVideoRef.current.srcObject = stream;
-          }
-          
-          // 실제 WebRTC 구현에서는 여기서 RTCPeerConnection을 설정하고
-          // 스트림을 연결해야 합니다
-          
-          toast.success("카메라 및 마이크에 연결되었습니다.");
-        } catch (err) {
-          console.error("미디어 장치에 접근할 수 없습니다:", err);
-          toast.error("카메라나 마이크에 접근할 수 없습니다.");
-          setVideoEnabled(false);
-        }
-      };
-      
-      getMedia();
-      
-      // 컴포넌트가 언마운트될 때 미디어 스트림 정리
-      return () => {
-        if (localVideoRef.current && localVideoRef.current.srcObject) {
-          const stream = localVideoRef.current.srcObject as MediaStream;
-          stream.getTracks().forEach(track => track.stop());
-        }
-      };
-    }
-  }, [isOpen, videoEnabled, micEnabled]);
-
-  // 가상 피아노 건반 생성
-  useEffect(() => {
-    if (pianoContainerRef.current) {
-      renderVirtualPiano();
-    }
-  }, []);
-
-  // 메시지가 추가될 때 채팅창 스크롤 맨 아래로 이동
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }, [chatMessages]);
+  // 초기 채팅 메시지
+  const initialChatMessages: ChatMessage[] = [
+    {sender: "시스템", text: "레슨이 시작되었습니다. 화상 통화 및 다양한 기능을 사용할 수 있습니다."},
+    {sender: lessonInfo.teacherName, text: "안녕하세요! 오늘 레슨을 시작하겠습니다."}
+  ];
 
   // 메트로놈 관련 효과
   useEffect(() => {
@@ -102,35 +39,14 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
     };
   }, []);
 
-  const renderVirtualPiano = () => {
-    // 이 부분은 실제로 다양한 건반을 생성하고 이벤트를 연결해야 합니다
-    // 간단한 구현을 위해 정적 HTML로 표현합니다
-  };
-
   const handleToggleMic = () => {
     setMicEnabled(prev => !prev);
     toast(micEnabled ? "마이크가 꺼졌습니다." : "마이크가 켜졌습니다.");
-    
-    // 실제 구현에서는 미디어 스트림의 오디오 트랙 활성화/비활성화
-    if (localVideoRef.current && localVideoRef.current.srcObject) {
-      const stream = localVideoRef.current.srcObject as MediaStream;
-      stream.getAudioTracks().forEach(track => {
-        track.enabled = !micEnabled;
-      });
-    }
   };
 
   const handleToggleVideo = () => {
     setVideoEnabled(prev => !prev);
     toast(videoEnabled ? "카메라가 꺼졌습니다." : "카메라가 켜졌습니다.");
-    
-    // 실제 구현에서는 미디어 스트림의 비디오 트랙 활성화/비활성화
-    if (localVideoRef.current && localVideoRef.current.srcObject) {
-      const stream = localVideoRef.current.srcObject as MediaStream;
-      stream.getVideoTracks().forEach(track => {
-        track.enabled = !videoEnabled;
-      });
-    }
   };
 
   const handleShareScreen = () => {
@@ -153,41 +69,6 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
     input.click();
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newMessage.trim()) return;
-    
-    const message = {
-      sender: "나",
-      text: newMessage
-    };
-    
-    setChatMessages(prev => [...prev, message]);
-    setNewMessage("");
-    
-    // 실제 구현에서는 WebRTC 데이터 채널을 통해 메시지 전송
-  };
-
-  const createMetronomeClick = () => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-    }
-    
-    const audioContext = audioContextRef.current;
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.type = 'sine';
-    oscillator.frequency.value = 800;
-    gainNode.gain.value = metronomeVolume / 100;
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.05);
-  };
-
   const handleToggleMetronome = () => {
     if (metronomeActive) {
       if (metronomeIntervalRef.current) {
@@ -199,7 +80,7 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
     } else {
       const intervalTime = 60000 / metronomeTempo;
       metronomeIntervalRef.current = window.setInterval(() => {
-        createMetronomeClick();
+        createMetronomeClick(audioContextRef, metronomeVolume);
       }, intervalTime);
       setMetronomeActive(true);
       toast.info("메트로놈이 시작되었습니다.");
@@ -207,7 +88,7 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
   };
 
   const handleEndLesson = () => {
-    if (confirm("정말 레슨을 종료하시겠습니까?")) {
+    if (confirm("정말 레슨을a 종료하시겠습니까?")) {
       toast.info("레슨이 종료되었습니다.");
       onClose();
     }
@@ -221,7 +102,6 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
         <DialogHeader className="p-4 border-b">
           <DialogTitle className="flex justify-between items-center">
             <span>{lessonInfo.title} - {lessonInfo.teacherName} 선생님</span>
-            {/* 시간 표시 제거 */}
           </DialogTitle>
         </DialogHeader>
         
@@ -229,187 +109,25 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
           {/* 메인 화상 영역 - 3/4 */}
           <div className="col-span-1 md:col-span-3 h-full flex flex-col">
             {/* 비디오 영역 */}
-            <div className="flex-1 bg-gray-900 relative">
-              {/* 원격 비디오 (선생님) */}
-              <div className="w-full h-full">
-                <video 
-                  ref={remoteVideoRef}
-                  autoPlay 
-                  playsInline
-                  className="w-full h-full object-cover"
-                >
-                  <source src="/placeholder-teacher-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-              
-              {/* 로컬 비디오 (학생) */}
-              <div className="absolute bottom-4 right-4 w-1/4 h-1/4 border-2 border-white rounded-lg overflow-hidden shadow-lg">
-                <video 
-                  ref={localVideoRef}
-                  autoPlay 
-                  playsInline 
-                  muted 
-                  className="w-full h-full object-cover"
-                />
-                {!videoEnabled && (
-                  <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
-                    <p className="text-white text-sm">카메라 꺼짐</p>
-                  </div>
-                )}
-              </div>
-              
-              {/* 피아노 건반 - 비디오 화면 하단에 위치 */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm py-2">
-                <div className="flex relative h-20 mx-2">
-                  {/* 하얀 건반 */}
-                  {['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'A', 'B'].map((note, i) => (
-                    <div 
-                      key={`${note}-${i}`} 
-                      className="flex-1 bg-white border border-gray-300 flex items-end justify-center pb-1 rounded-b-sm cursor-pointer hover:bg-gray-100 active:bg-gray-200"
-                    >
-                      <span className="text-xs text-gray-500">{note}</span>
-                    </div>
-                  ))}
-                  
-                  {/* 검은 건반 */}
-                  {[0, 1, 3, 4, 5, 7, 8, 10, 11, 13].map((i) => {
-                    // 이 위치에는 검은 건반이 없음 (E-F, B-C 사이)
-                    if (i === 2 || i === 6 || i === 9 || i === 13) return null;
-                    const leftPosition = (i * 7.14) + 3.57; // 14개 건반에 맞춘 위치 계산
-                    return (
-                      <div 
-                        key={`black-${i}`} 
-                        className="absolute top-0 w-[4%] h-[65%] bg-black rounded-b-sm cursor-pointer hover:bg-gray-800 active:bg-gray-700"
-                        style={{ left: `${leftPosition}%` }}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+            <VideoArea videoEnabled={videoEnabled} micEnabled={micEnabled} />
             
             {/* 컨트롤 바 */}
-            <div className="h-16 bg-background border-t flex items-center justify-between px-4">
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleToggleMic}
-                  className={!micEnabled ? "bg-red-100 text-red-500 border-red-200" : ""}
-                >
-                  {micEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleToggleVideo}
-                  className={!videoEnabled ? "bg-red-100 text-red-500 border-red-200" : ""}
-                >
-                  {videoEnabled ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
-                </Button>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" size="icon" onClick={handleShareScreen}>
-                  <ScreenShare className="h-5 w-5" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleFileUpload}>
-                  <FileUp className="h-5 w-5" />
-                </Button>
-                
-                {/* 메트로놈 팝오버 */}
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className={metronomeActive ? "bg-primary/20" : ""}
-                    >
-                      {/* 메트로놈 아이콘 SVG */}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="m8 2 4 10h8a2 2 0 0 1 2 2c0 1.5-1.5 2-2 2h-8l-4 8" />
-                        <path d="M18 6 7 10" />
-                      </svg>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent side="top" className="w-80">
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-medium mb-2">메트로놈</h4>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm">템포: {metronomeTempo} BPM</span>
-                          <Button 
-                            variant={metronomeActive ? "destructive" : "default"} 
-                            size="sm" 
-                            onClick={handleToggleMetronome}
-                          >
-                            {metronomeActive ? "중지" : "시작"}
-                          </Button>
-                        </div>
-                        <div className="space-y-4">
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-sm">
-                              <span>템포</span>
-                              <span>{metronomeTempo} BPM</span>
-                            </div>
-                            <Slider 
-                              min={40} 
-                              max={208} 
-                              step={1} 
-                              value={[metronomeTempo]} 
-                              onValueChange={(value) => {
-                                setMetronomeTempo(value[0]);
-                                // 메트로놈이 활성화된 상태라면 간격 재설정
-                                if (metronomeActive && metronomeIntervalRef.current) {
-                                  window.clearInterval(metronomeIntervalRef.current);
-                                  const intervalTime = 60000 / value[0];
-                                  metronomeIntervalRef.current = window.setInterval(() => {
-                                    createMetronomeClick();
-                                  }, intervalTime);
-                                }
-                              }} 
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-sm">
-                              <span>음량</span>
-                              <span>{metronomeVolume}%</span>
-                            </div>
-                            <Slider 
-                              min={0} 
-                              max={100} 
-                              step={1} 
-                              value={[metronomeVolume]} 
-                              onValueChange={(value) => setMetronomeVolume(value[0])} 
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-                
-                <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
-                  <MessageSquare className="h-5 w-5" />
-                </Button>
-              </div>
-              
-              <div>
-                <Button variant="destructive" onClick={handleEndLesson}>
-                  레슨 종료
-                </Button>
-              </div>
-            </div>
+            <ControlBar 
+              micEnabled={micEnabled}
+              videoEnabled={videoEnabled}
+              metronomeActive={metronomeActive}
+              metronomeTempo={metronomeTempo}
+              metronomeVolume={metronomeVolume}
+              onToggleMic={handleToggleMic}
+              onToggleVideo={handleToggleVideo}
+              onShareScreen={handleShareScreen}
+              onFileUpload={handleFileUpload}
+              onEndLesson={handleEndLesson}
+              setActiveTab={setActiveTab}
+              setMetronomeTempo={setMetronomeTempo}
+              setMetronomeVolume={setMetronomeVolume}
+              onToggleMetronome={handleToggleMetronome}
+            />
           </div>
           
           {/* 사이드바 - 1/4 */}
@@ -421,55 +139,14 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
               </TabsList>
               
               <TabsContent value="video" className="flex-1 overflow-y-auto p-4">
-                <div className="w-full">
-                  {/* MIDI 연결 상태 */}
-                  <div className="border rounded-md p-3 mb-4">
-                    <h3 className="text-sm font-medium mb-2">MIDI 장치 연결</h3>
-                    <Button variant="outline" size="sm" className="w-full" onClick={() => toast.info("MIDI 장치 연결을 시도합니다...")}>
-                      MIDI 장치 연결하기
-                    </Button>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      USB로 연결된 MIDI 키보드를 감지합니다
-                    </p>
-                  </div>
-                </div>
+                <MidiConnectionPanel />
               </TabsContent>
               
               <TabsContent value="chat" className="flex-1 flex flex-col h-full">
-                {/* 채팅 메시지 */}
-                <div 
-                  ref={chatContainerRef}
-                  className="flex-1 overflow-y-auto p-4 space-y-2"
-                >
-                  {chatMessages.map((msg, i) => (
-                    <div 
-                      key={i} 
-                      className={`p-2 rounded-lg max-w-[80%] ${
-                        msg.sender === "나" 
-                          ? "bg-primary text-primary-foreground ml-auto" 
-                          : "bg-muted"
-                      }`}
-                    >
-                      <p className="text-xs font-medium">{msg.sender}</p>
-                      <p className="text-sm">{msg.text}</p>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* 메시지 입력 */}
-                <form 
-                  onSubmit={handleSendMessage}
-                  className="p-2 border-t flex items-center"
-                >
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="메시지를 입력하세요..."
-                    className="flex-1 p-2 text-sm border rounded-md mr-2"
-                  />
-                  <Button type="submit" size="sm">전송</Button>
-                </form>
+                <ChatPanel 
+                  initialMessages={initialChatMessages}
+                  teacherName={lessonInfo.teacherName}
+                />
               </TabsContent>
             </Tabs>
           </div>
