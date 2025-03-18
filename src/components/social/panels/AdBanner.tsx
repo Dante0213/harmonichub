@@ -7,9 +7,9 @@ export const AdBanner = () => {
   return (
     <Card className="mb-6 overflow-hidden pastel-card">
       <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">광고</h3>
+        <div className="flex flex-col gap-2">
           <ReelUploadButton />
+          <h3 className="text-lg font-semibold">광고</h3>
         </div>
       </CardHeader>
       <CardContent className="p-0">
