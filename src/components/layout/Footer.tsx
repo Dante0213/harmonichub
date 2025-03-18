@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const isGitHubPages = window.location.hostname.includes('github.io');
   
   return (
     <footer className="py-6 border-t bg-gradient-to-b from-background to-pastel-purple/10 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -45,6 +46,11 @@ export function Footer() {
         
         <div className="pt-8 mt-8 text-sm text-center border-t border-pastel-purple/20">
           <p>&copy; {currentYear} 음악 플랫폼. All rights reserved.</p>
+          {isGitHubPages && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              GitHub Pages URL: {window.location.href} | Base: {document.baseURI}
+            </p>
+          )}
         </div>
       </div>
     </footer>
