@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Music, Phone, MapPin, UserPlus, GraduationCap, Briefcase, Award } from "lucide-react";
+import { Music, Phone, MapPin, UserPlus, GraduationCap, Briefcase, Award, Minus } from "lucide-react";
 
 interface UserInfoCardProps {
   userData: any;
@@ -11,6 +11,9 @@ interface UserInfoCardProps {
 
 export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
   const isProfessional = userData?.isProfessional || false;
+
+  // 데이터 확인 함수 - 배열이 비어있거나 존재하지 않으면 true 반환
+  const isEmpty = (data: any[] | undefined | null) => !data || data.length === 0;
 
   return (
     <Card>
@@ -33,6 +36,7 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          {/* 전문가로 전환하기 버튼 (회원유형 위로 이동) */}
           {!isProfessional && (
             <Button 
               className="w-full" 
@@ -44,6 +48,7 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
             </Button>
           )}
           
+          {/* 회원 유형 */}
           <div>
             <p className="text-sm font-medium">회원 유형</p>
             <p className="text-sm text-muted-foreground">
@@ -52,9 +57,14 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
           </div>
           
           {/* 악기 & 장르 정보 */}
-          {userData?.instruments && userData.instruments.length > 0 && (
-            <div>
-              <p className="text-sm font-medium mb-2">악기</p>
+          <div>
+            <p className="text-sm font-medium mb-2">악기</p>
+            {isEmpty(userData?.instruments) ? (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 악기 정보가 없습니다</span>
+              </div>
+            ) : (
               <div className="flex flex-wrap gap-1 mb-3">
                 {userData.instruments.map((instrument: string, index: number) => (
                   <div key={index} className="bg-secondary px-2 py-1 rounded-full text-xs">
@@ -62,12 +72,17 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
           
-          {userData?.genres && userData.genres.length > 0 && (
-            <div>
-              <p className="text-sm font-medium mb-2">장르</p>
+          <div>
+            <p className="text-sm font-medium mb-2">장르</p>
+            {isEmpty(userData?.genres) ? (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 장르 정보가 없습니다</span>
+              </div>
+            ) : (
               <div className="flex flex-wrap gap-1">
                 {userData.genres.map((genre: string, index: number) => (
                   <div key={index} className="bg-secondary px-2 py-1 rounded-full text-xs">
@@ -75,16 +90,21 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
           
           {/* 학력 정보 */}
-          {userData?.education && userData.education.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                <p className="text-sm font-medium">학력</p>
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <GraduationCap className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">학력</p>
+            </div>
+            {isEmpty(userData?.education) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-6">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 학력 정보가 없습니다</span>
               </div>
+            ) : (
               <div className="space-y-2 pl-6">
                 {userData.education.map((edu: any) => (
                   <div key={edu.id} className="text-xs">
@@ -93,16 +113,21 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
           
           {/* 경력 정보 */}
-          {userData?.experience && userData.experience.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Briefcase className="h-4 w-4 text-muted-foreground" />
-                <p className="text-sm font-medium">경력</p>
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Briefcase className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">경력</p>
+            </div>
+            {isEmpty(userData?.experience) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-6">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 경력 정보가 없습니다</span>
               </div>
+            ) : (
               <div className="space-y-2 pl-6">
                 {userData.experience.map((exp: any) => (
                   <div key={exp.id} className="text-xs">
@@ -111,16 +136,21 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
           
           {/* 자격증 정보 */}
-          {userData?.certificates && userData.certificates.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Award className="h-4 w-4 text-muted-foreground" />
-                <p className="text-sm font-medium">자격증</p>
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Award className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">자격증</p>
+            </div>
+            {isEmpty(userData?.certificates) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-6">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 자격증 정보가 없습니다</span>
               </div>
+            ) : (
               <div className="space-y-2 pl-6">
                 {userData.certificates.map((cert: any) => (
                   <div key={cert.id} className="text-xs">
@@ -129,8 +159,8 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
           
           {userData?.phone && (
             <div className="flex items-center gap-2">

@@ -7,6 +7,28 @@ export function useMyPage() {
   const [isBasicInfoModalOpen, setIsBasicInfoModalOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   
+  // 전문가 상태 변경 함수 추가
+  const updateProfessionalStatus = (status: boolean, professionalData?: any) => {
+    if (userData) {
+      // 기존 사용자 데이터를 바탕으로 업데이트
+      const updatedData = {
+        ...userData,
+        isProfessional: status,
+        // 전문가 데이터가 제공된 경우 해당 데이터 추가
+        ...(professionalData && {
+          instruments: professionalData.instruments || userData.instruments,
+          genres: professionalData.genres || userData.genres,
+          education: professionalData.education || userData.education,
+          experience: professionalData.experience || userData.experience,
+          certificates: professionalData.certificates || userData.certificates,
+        })
+      };
+      
+      setUserData(updatedData);
+      sessionStorage.setItem('userData', JSON.stringify(updatedData));
+    }
+  };
+  
   useEffect(() => {
     // 세션 스토리지에서 사용자 데이터 가져오기
     const userDataStr = sessionStorage.getItem('userData');
@@ -29,17 +51,11 @@ export function useMyPage() {
         joinDate: "2023년 3월 15일",
         isProfessional: false,
         bio: "음악을 사랑하는 기타리스트입니다. 취미로 작곡도 하고 있어요.",
-        instruments: ["기타", "피아노"],
-        genres: ["어쿠스틱", "재즈"],
-        education: [
-          {id: "ed1", institution: "서울음악대학", degree: "음악학과", year: "2018-2022"}
-        ],
-        experience: [
-          {id: "ex1", company: "음악 스튜디오", position: "기타리스트", period: "2022-현재"}
-        ],
-        certificates: [
-          {id: "cert1", name: "음악 지도사 자격증", issuer: "한국음악협회", year: "2021"}
-        ]
+        instruments: [], // 빈 배열로 초기화
+        genres: [], // 빈 배열로 초기화
+        education: [], // 빈 배열로 초기화
+        experience: [], // 빈 배열로 초기화
+        certificates: [] // 빈 배열로 초기화
       };
       setUserData(sampleUserData);
       sessionStorage.setItem('userData', JSON.stringify(sampleUserData));
@@ -53,6 +69,7 @@ export function useMyPage() {
     setIsPasswordModalOpen,
     isBasicInfoModalOpen,
     setIsBasicInfoModalOpen,
-    userData
+    userData,
+    updateProfessionalStatus // 전문가 상태 변경 함수 내보내기
   };
 }
