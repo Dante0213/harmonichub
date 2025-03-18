@@ -2,14 +2,15 @@
 import { Layout } from "@/components/layout/Layout";
 import { useState, useRef, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info, Upload } from "lucide-react";
+import { Info } from "lucide-react";
 import { PracticeArea } from "@/components/lesson-room/PracticeArea";
 import { ControlBar } from "@/components/lesson-room/ControlBar";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MidiConnectionPanel } from "@/components/lesson-room/MidiConnectionPanel";
 import { createMetronomeClick } from "@/components/lesson-room/metronomeUtils";
-import { Button } from "@/components/ui/button";
+import { SheetLibrary } from "@/components/lesson-room/SheetLibrary";
+import { MetronomePanel } from "@/components/lesson-room/MetronomePanel";
 
 const PracticeRoom = () => {
   const [activeTab, setActiveTab] = useState("library");
@@ -89,6 +90,22 @@ const PracticeRoom = () => {
     }
   };
 
+  const handleMetronomeTempoChange = (value: number) => {
+    setMetronomeTempo(value);
+    if (metronomeActive && metronomeIntervalRef.current) {
+      // 템포 변경 시 메트로놈 재시작
+      window.clearInterval(metronomeIntervalRef.current);
+      const intervalTime = 60000 / value;
+      metronomeIntervalRef.current = window.setInterval(() => {
+        createMetronomeClick(audioContextRef, metronomeVolume);
+      }, intervalTime);
+    }
+  };
+
+  const handleMetronomeVolumeChange = (value: number) => {
+    setMetronomeVolume(value);
+  };
+
   return (
     <Layout>
       <div className="container mx-auto py-6 px-4">
@@ -138,75 +155,35 @@ const PracticeRoom = () => {
           {/* 사이드바 - 1/4 */}
           <div className="col-span-1 h-full border rounded-lg">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-              <TabsList className="grid grid-cols-2 w-full rounded-none border-b">
+              <TabsList className="grid grid-cols-3 w-full rounded-none border-b">
                 <TabsTrigger value="library">라이브러리</TabsTrigger>
                 <TabsTrigger value="midi">MIDI</TabsTrigger>
+                <TabsTrigger value="metronome">메트로놈</TabsTrigger>
               </TabsList>
               
               <TabsContent value="library" className="flex-1 overflow-y-auto p-4">
-                {/* 라이브러리 내용 */}
-                <div className="w-full">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-sm font-medium"></h3>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={handleFileUpload}
-                      className="flex items-center gap-1"
-                    >
-                      <Upload className="h-4 w-4" />
-                      <span>파일 업로드</span>
-                    </Button>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      accept=".pdf"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <div 
-                      className={`p-2 border rounded-md cursor-pointer hover:bg-accent ${selectedSheet === "쇼팽 녹턴 Op.9 No.2" ? "bg-accent" : ""}`}
-                      onClick={() => handleSheetSelect("쇼팽 녹턴 Op.9 No.2")}
-                    >
-                      <p className="font-medium">쇼팽 녹턴 Op.9 No.2</p>
-                      <p className="text-xs text-muted-foreground">클래식 | 중급</p>
-                    </div>
-                    <div 
-                      className={`p-2 border rounded-md cursor-pointer hover:bg-accent ${selectedSheet === "베토벤 엘리제를 위하여" ? "bg-accent" : ""}`}
-                      onClick={() => handleSheetSelect("베토벤 엘리제를 위하여")}
-                    >
-                      <p className="font-medium">베토벤 엘리제를 위하여</p>
-                      <p className="text-xs text-muted-foreground">클래식 | 초급</p>
-                    </div>
-                    <div 
-                      className={`p-2 border rounded-md cursor-pointer hover:bg-accent ${selectedSheet === "모차르트 터키 행진곡" ? "bg-accent" : ""}`}
-                      onClick={() => handleSheetSelect("모차르트 터키 행진곡")}
-                    >
-                      <p className="font-medium">모차르트 터키 행진곡</p>
-                      <p className="text-xs text-muted-foreground">클래식 | 중급</p>
-                    </div>
-                    <div 
-                      className={`p-2 border rounded-md cursor-pointer hover:bg-accent ${selectedSheet === "리스트 라 캄파넬라" ? "bg-accent" : ""}`}
-                      onClick={() => handleSheetSelect("리스트 라 캄파넬라")}
-                    >
-                      <p className="font-medium">리스트 라 캄파넬라</p>
-                      <p className="text-xs text-muted-foreground">클래식 | 고급</p>
-                    </div>
-                    <div 
-                      className={`p-2 border rounded-md cursor-pointer hover:bg-accent ${selectedSheet === "드뷔시 달빛" ? "bg-accent" : ""}`}
-                      onClick={() => handleSheetSelect("드뷔시 달빛")}
-                    >
-                      <p className="font-medium">드뷔시 달빛</p>
-                      <p className="text-xs text-muted-foreground">클래식 | 중급</p>
-                    </div>
-                  </div>
-                </div>
+                <SheetLibrary 
+                  selectedSheet={selectedSheet}
+                  onSheetSelect={handleSheetSelect}
+                  onFileUpload={handleFileUpload}
+                  fileInputRef={fileInputRef}
+                  onFileChange={handleFileChange}
+                />
               </TabsContent>
               
               <TabsContent value="midi" className="flex-1 overflow-y-auto p-4">
                 <MidiConnectionPanel />
+              </TabsContent>
+              
+              <TabsContent value="metronome" className="flex-1 overflow-y-auto p-4">
+                <MetronomePanel 
+                  isActive={metronomeActive}
+                  tempo={metronomeTempo}
+                  volume={metronomeVolume}
+                  onToggle={handleToggleMetronome}
+                  onTempoChange={handleMetronomeTempoChange}
+                  onVolumeChange={handleMetronomeVolumeChange}
+                />
               </TabsContent>
             </Tabs>
           </div>

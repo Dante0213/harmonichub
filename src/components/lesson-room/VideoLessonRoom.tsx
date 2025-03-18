@@ -20,6 +20,8 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
   const [metronomeVolume, setMetronomeVolume] = useState(50);
   const [showMidiPanel, setShowMidiPanel] = useState(false);
   const [practiceMode, setPracticeMode] = useState(false);
+  const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
+  const [sheetFile, setSheetFile] = useState<File | null>(null);
   const metronomeIntervalRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
 
@@ -65,8 +67,13 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
       const target = e.target as HTMLInputElement;
       if (target.files && target.files.length > 0) {
         const file = target.files[0];
-        toast.success(`파일 "${file.name}"이(가) 공유 준비되었습니다.`);
-        // 실제 구현에서는 WebRTC 데이터 채널을 통해 파일 전송 구현
+        if (file.type === 'application/pdf') {
+          setSheetFile(file);
+          setSelectedSheet(null);
+          toast.success(`파일 "${file.name}"이(가) 공유 준비되었습니다.`);
+        } else {
+          toast.error("PDF 파일만 업로드 가능합니다.");
+        }
       }
     };
     input.click();
@@ -127,7 +134,9 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
             {practiceMode ? (
               <PracticeArea 
                 onTogglePracticeMode={handleTogglePracticeMode} 
-                practiceMode={practiceMode} 
+                practiceMode={practiceMode}
+                selectedSheet={selectedSheet}
+                sheetFile={sheetFile}
               />
             ) : (
               <VideoArea videoEnabled={videoEnabled} micEnabled={micEnabled} />
