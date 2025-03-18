@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface VodCardProps {
@@ -50,7 +51,12 @@ export const VodCard = ({ name, price, description, instructor, level, duration 
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{name}</CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-lg">{name}</CardTitle>
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => toast({ title: "장바구니에 추가되었습니다" })}>
+              <ShoppingCart className="h-5 w-5" />
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="h-40 mb-4 bg-muted rounded-md flex items-center justify-center">
