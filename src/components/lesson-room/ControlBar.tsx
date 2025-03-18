@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Mic, MicOff, Video, VideoOff, ScreenShare, FileUp, MessageSquare } from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, ScreenShare, FileUp, MessageSquare, Bluetooth } from "lucide-react";
 import { MetronomePopover } from "./MetronomePopover";
 import { ControlBarProps } from "./types";
 
@@ -26,7 +26,8 @@ export function ControlBar({
   setActiveTab,
   setMetronomeTempo,
   setMetronomeVolume,
-  onToggleMetronome
+  onToggleMetronome,
+  onToggleMidiPanel
 }: ControlBarExtendedProps) {
   return (
     <div className="h-16 bg-background border-t flex items-center justify-between px-4">
@@ -66,6 +67,11 @@ export function ControlBar({
           setMetronomeVolume={setMetronomeVolume}
           onToggleMetronome={onToggleMetronome}
         />
+        
+        {/* MIDI 연결 버튼 추가 */}
+        <Button variant="outline" size="icon" onClick={onToggleMidiPanel}>
+          <Bluetooth className="h-5 w-5" />
+        </Button>
         
         <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
           <MessageSquare className="h-5 w-5" />

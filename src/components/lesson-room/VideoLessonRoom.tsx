@@ -17,6 +17,7 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
   const [metronomeActive, setMetronomeActive] = useState(false);
   const [metronomeTempo, setMetronomeTempo] = useState(120);
   const [metronomeVolume, setMetronomeVolume] = useState(50);
+  const [showMidiPanel, setShowMidiPanel] = useState(false);
   const metronomeIntervalRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
 
@@ -67,6 +68,13 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
       }
     };
     input.click();
+  };
+
+  const handleToggleMidiPanel = () => {
+    setShowMidiPanel(prev => !prev);
+    if (!showMidiPanel) {
+      setActiveTab("midi");
+    }
   };
 
   const handleToggleMetronome = () => {
@@ -127,19 +135,27 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
               setMetronomeTempo={setMetronomeTempo}
               setMetronomeVolume={setMetronomeVolume}
               onToggleMetronome={handleToggleMetronome}
+              onToggleMidiPanel={handleToggleMidiPanel}
             />
           </div>
           
           {/* 사이드바 - 1/4 */}
           <div className="col-span-1 h-full border-l">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-              <TabsList className="grid grid-cols-2 w-full rounded-none border-b">
-                <TabsTrigger value="video">MIDI 연결</TabsTrigger>
+              <TabsList className="grid grid-cols-3 w-full rounded-none border-b">
+                <TabsTrigger value="video">라이브러리</TabsTrigger>
                 <TabsTrigger value="chat">채팅</TabsTrigger>
+                <TabsTrigger value="midi">MIDI</TabsTrigger>
               </TabsList>
               
               <TabsContent value="video" className="flex-1 overflow-y-auto p-4">
-                <MidiConnectionPanel />
+                {/* 라이브러리 내용 - 이전에는 MIDI 연결 패널이었지만 이제 비어있음 */}
+                <div className="w-full">
+                  <h3 className="text-sm font-medium mb-2">라이브러리</h3>
+                  <p className="text-xs text-muted-foreground">
+                    여기에 악보, 연습곡 및 교재 자료가 나타납니다.
+                  </p>
+                </div>
               </TabsContent>
               
               <TabsContent value="chat" className="flex-1 flex flex-col h-full">
@@ -147,6 +163,10 @@ export function VideoLessonRoom({ isOpen, onClose, lessonInfo }: VideoLessonRoom
                   initialMessages={initialChatMessages}
                   teacherName={lessonInfo.teacherName}
                 />
+              </TabsContent>
+              
+              <TabsContent value="midi" className="flex-1 overflow-y-auto p-4">
+                <MidiConnectionPanel />
               </TabsContent>
             </Tabs>
           </div>
