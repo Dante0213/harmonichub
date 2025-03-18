@@ -39,9 +39,8 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
 
   return (
     <Card>
-      {/* 카드를 2분할로 나누기 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 왼쪽: 연습실 섹션 */}
+      {/* 위쪽: 연습실 섹션 */}
+      <div className="border-b">
         <div className="p-6">
           <CardTitle className="mb-4">연습실</CardTitle>
           <Link to="/lesson-room" className="w-full">
@@ -51,44 +50,44 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
             </Button>
           </Link>
         </div>
-        
-        {/* 오른쪽: VOD 학습 진도 섹션 */}
-        <div>
-          <CardHeader>
-            <CardTitle>내 VOD 학습 진도</CardTitle>
-            <CardDescription>현재 학습 중인 VOD 강의</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* VOD 리스트 */}
-            <div className="space-y-4">
-              {myVods.map((vod, i) => (
-                <div key={i} className="space-y-2">
-                  <div className="flex justify-between">
-                    <p className="text-sm font-medium">{vod.title}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {vod.completedLessons}/{vod.totalLessons} 레슨
-                    </p>
-                  </div>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary" 
-                      style={{ width: `${vod.progress}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-end">
-                    <Button 
-                      size="sm" 
-                      variant={vod.progress === 100 ? "outline" : "default"}
-                      className="text-xs"
-                    >
-                      {vod.progress === 100 ? "다시 보기" : "계속 학습하기"}
-                    </Button>
-                  </div>
+      </div>
+      
+      {/* 아래쪽: VOD 학습 진도 섹션 */}
+      <div>
+        <CardHeader>
+          <CardTitle>내 VOD 학습 진도</CardTitle>
+          <CardDescription>현재 학습 중인 VOD 강의</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* VOD 리스트 */}
+          <div className="space-y-4">
+            {myVods.map((vod, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between">
+                  <p className="text-sm font-medium">{vod.title}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {vod.completedLessons}/{vod.totalLessons} 레슨
+                  </p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary" 
+                    style={{ width: `${vod.progress}%` }}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <Button 
+                    size="sm" 
+                    variant={vod.progress === 100 ? "outline" : "default"}
+                    className="text-xs"
+                  >
+                    {vod.progress === 100 ? "다시 보기" : "계속 학습하기"}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
       </div>
       
       {/* 스토어 버튼을 카드 맨 아래로 배치 */}
