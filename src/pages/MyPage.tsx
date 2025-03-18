@@ -5,12 +5,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Music, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProfessionalUpgradeModal } from "@/components/mypage/ProfessionalUpgradeModal";
+import { PasswordChangeModal } from "@/components/mypage/PasswordChangeModal";
 
 export default function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isProfessional = false; // 예시: 실제로는 사용자 정보에 따라 변경 (전문가 여부)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  
+  useEffect(() => {
+    // 세션 스토리지에서 사용자 데이터 가져오기
+    const userDataStr = sessionStorage.getItem('userData');
+    if (userDataStr) {
+      try {
+        const parsedUserData = JSON.parse(userDataStr);
+        setUserData(parsedUserData);
+      } catch (error) {
+        console.error('사용자 데이터 파싱 오류:', error);
+      }
+    }
+  }, []);
+  
+  const isProfessional = userData?.isProfessional || false;
   
   return (
     <Layout>
@@ -23,16 +40,16 @@ export default function MyPage() {
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src="/user-avatar.png" alt="사용자 프로필" />
-                    <AvatarFallback>사용자</AvatarFallback>
+                    <AvatarFallback>{userData?.nickname?.charAt(0) || '사'}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center gap-1">
-                      <CardTitle>사용자 이름</CardTitle>
+                      <CardTitle>{userData?.nickname || '사용자 이름'}</CardTitle>
                       {isProfessional && (
                         <Music className="h-4 w-4 text-purple-500" fill="currentColor" />
                       )}
                     </div>
-                    <CardDescription>user@example.com</CardDescription>
+                    <CardDescription>{userData?.email || 'user@example.com'}</CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -47,7 +64,7 @@ export default function MyPage() {
                   <div>
                     <p className="text-sm font-medium">가입일</p>
                     <p className="text-sm text-muted-foreground">
-                      2023년 1월 1일
+                      {userData?.joinDate || '2023년 1월 1일'}
                     </p>
                   </div>
                   {!isProfessional && (
@@ -130,11 +147,17 @@ export default function MyPage() {
                   <CardContent className="space-y-4">
                     <div className="grid gap-2">
                       <p className="text-sm font-medium">이메일</p>
-                      <p className="text-sm text-muted-foreground">user@example.com</p>
+                      <p className="text-sm text-muted-foreground">{userData?.email || 'user@example.com'}</p>
                     </div>
                     <div className="grid gap-2">
                       <p className="text-sm font-medium">비밀번호</p>
-                      <Button variant="outline" size="sm">비밀번호 변경</Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setIsPasswordModalOpen(true)}
+                      >
+                        비밀번호 변경
+                      </Button>
                     </div>
                     <div className="grid gap-2">
                       <p className="text-sm font-medium">알림 설정</p>
@@ -149,6 +172,7 @@ export default function MyPage() {
       </div>
       
       <ProfessionalUpgradeModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+      <PasswordChangeModal open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen} />
     </Layout>
   );
 }
