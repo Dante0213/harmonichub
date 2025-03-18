@@ -42,24 +42,26 @@ export function UserInfoCard({ userData, onUpgradeClick, onProfileEditClick }: U
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {/* 항상 프로필 수정 버튼 표시 (전문가/일반 구분 없이) */}
-          <Button 
-            className="w-full" 
-            variant="outline"
-            onClick={isProfessional ? onProfileEditClick : onUpgradeClick}
-          >
-            {isProfessional ? (
-              <>
-                <PenSquare className="h-4 w-4 mr-2" />
-                프로필 수정
-              </>
-            ) : (
-              <>
-                <UserPlus className="h-4 w-4 mr-2" />
-                전문가로 전환하기
-              </>
-            )}
-          </Button>
+          {/* 전문가로 전환하기 또는 프로필 수정 버튼 */}
+          {isProfessional ? (
+            <Button 
+              className="w-full" 
+              variant="outline"
+              onClick={onProfileEditClick}
+            >
+              <PenSquare className="h-4 w-4 mr-2" />
+              프로필 수정
+            </Button>
+          ) : (
+            <Button 
+              className="w-full" 
+              variant="outline"
+              onClick={onUpgradeClick}
+            >
+              <UserPlus className="h-4 w-4 mr-2" />
+              전문가로 전환하기
+            </Button>
+          )}
           
           {/* 회원 유형 */}
           <div>

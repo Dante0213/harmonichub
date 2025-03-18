@@ -19,6 +19,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { FormLabel } from "@/components/ui/form";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
@@ -62,18 +63,45 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
   
   // 검증 처리 함수
   const handleVerification = () => {
-    // 검증 없이 즉시 승인 처리 (임시 구현)
+    if (specialization === "") {
+      toast({
+        title: "전공 정보 필요",
+        description: "전공 정보를 선택해주세요.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (instruments.length === 0) {
+      toast({
+        title: "악기 정보 필요",
+        description: "최소 하나 이상의 악기를 등록해주세요.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (genres.length === 0) {
+      toast({
+        title: "장르 정보 필요",
+        description: "최소 하나 이상의 장르를 등록해주세요.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setVerifying(true);
     
+    // 검증 진행 시뮬레이션 (실제로는 API 호출 등이 필요)
     setTimeout(() => {
       setVerifying(false);
       setVerified(true);
       
       // 필요한 프로필 데이터 수집
       const professionalData = {
-        specialization: specialization || "기타",
-        instruments: instruments.length > 0 ? instruments : ["기타"],
-        genres: genres.length > 0 ? genres : ["클래식"],
+        specialization,
+        instruments,
+        genres,
         education: education.filter(edu => edu.institution && edu.degree),
         experience: experience.filter(exp => exp.company && exp.position),
         certificates: certificates.filter(cert => cert.name && cert.issuer)
@@ -128,7 +156,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
             <>
               {/* 전공 선택 섹션 */}
               <div className="space-y-2">
-                <Label>전공</Label>
+                <FormLabel>전공</FormLabel>
                 <Select onValueChange={setSpecialization} value={specialization}>
                   <SelectTrigger>
                     <SelectValue placeholder="전공 선택" />
