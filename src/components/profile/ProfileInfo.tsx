@@ -1,6 +1,6 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { GraduationCap, Briefcase, Award, Calendar } from "lucide-react";
+import { GraduationCap, Briefcase, Award, Calendar, BookOpen } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 
 interface ProfileInfoProps {
@@ -10,6 +10,25 @@ interface ProfileInfoProps {
 export const ProfileInfo = ({ userData }: ProfileInfoProps) => {
   return (
     <>
+      {/* 전공 섹션 */}
+      <Card className="mt-6">
+        <CardHeader>
+          <h3 className="font-semibold">전공</h3>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-muted-foreground" />
+            <span className="font-medium">
+              {userData.specialization ? (
+                userData.specialization
+              ) : (
+                <span className="text-muted-foreground">등록된 전공 정보가 없습니다</span>
+              )}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+      
       <Card className="mt-6">
         <CardHeader>
           <h3 className="font-semibold">악기 & 장르</h3>

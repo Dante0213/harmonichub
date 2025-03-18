@@ -1,7 +1,6 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { useState } from "react";
 import { ChatDialog } from "@/components/social/chat/ChatDialog";
@@ -25,13 +24,6 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
     <>
       <Card>
         <CardHeader className="relative pb-0">
-          {isCurrentUser && (
-            <div className="absolute top-4 right-4">
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-            </div>
-          )}
           <UserProfileSection userData={userData} />
         </CardHeader>
         
