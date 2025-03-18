@@ -12,8 +12,92 @@ import { SheetLibrary } from "@/components/lesson-room/SheetLibrary";
 import { MetronomePanel } from "@/components/lesson-room/MetronomePanel";
 import { Button } from "@/components/ui/button";
 
+// 패널 타입 정의
+type ActivePanelType = 'library' | 'midi' | 'metronome' | null;
+
+// 패널 버튼 컴포넌트
+interface PanelButtonProps {
+  panelName: ActivePanelType;
+  activePanel: ActivePanelType;
+  icon: React.ReactNode;
+  onClick: () => void;
+}
+
+const PanelButton = ({ panelName, activePanel, icon, onClick }: PanelButtonProps) => (
+  <Button
+    variant={activePanel === panelName ? "default" : "outline"}
+    size="icon"
+    onClick={onClick}
+    className="h-10 w-10 rounded-full"
+  >
+    {icon}
+  </Button>
+);
+
+// 패널 영역 컴포넌트
+interface ActivePanelProps {
+  activePanel: ActivePanelType;
+  selectedSheet: string | null;
+  onSheetSelect: (sheetTitle: string) => void;
+  onFileUpload: () => void;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  metronomeActive: boolean;
+  metronomeTempo: number;
+  metronomeVolume: number;
+  onToggleMetronome: () => void;
+  onMetronomeTempoChange: (value: number) => void;
+  onMetronomeVolumeChange: (value: number) => void;
+}
+
+const ActivePanelComponent = ({
+  activePanel,
+  selectedSheet,
+  onSheetSelect,
+  onFileUpload,
+  fileInputRef,
+  onFileChange,
+  metronomeActive,
+  metronomeTempo,
+  metronomeVolume,
+  onToggleMetronome,
+  onMetronomeTempoChange,
+  onMetronomeVolumeChange
+}: ActivePanelProps) => {
+  if (!activePanel) return null;
+  
+  return (
+    <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[90%] max-w-md bg-white border rounded-lg shadow-lg p-4">
+      {activePanel === "library" && (
+        <SheetLibrary 
+          selectedSheet={selectedSheet}
+          onSheetSelect={onSheetSelect}
+          onFileUpload={onFileUpload}
+          fileInputRef={fileInputRef}
+          onFileChange={onFileChange}
+        />
+      )}
+      {activePanel === "midi" && (
+        <MidiConnectionPanel />
+      )}
+      {activePanel === "metronome" && (
+        <MetronomePanel 
+          isActive={metronomeActive}
+          tempo={metronomeTempo}
+          volume={metronomeVolume}
+          onToggle={onToggleMetronome}
+          onTempoChange={onMetronomeTempoChange}
+          onVolumeChange={onMetronomeVolumeChange}
+        />
+      )}
+    </div>
+  );
+};
+
+// 메인 컴포넌트
 const PracticeRoom = () => {
-  const [activePanel, setActivePanel] = useState<string | null>(null);
+  // 상태 관리
+  const [activePanel, setActivePanel] = useState<ActivePanelType>(null);
   const [metronomeActive, setMetronomeActive] = useState(false);
   const [metronomeTempo, setMetronomeTempo] = useState(120);
   const [metronomeVolume, setMetronomeVolume] = useState(50);
@@ -36,6 +120,7 @@ const PracticeRoom = () => {
     };
   }, []);
 
+  // 이벤트 핸들러
   const handleToggleMetronome = () => {
     if (metronomeActive) {
       if (metronomeIntervalRef.current) {
@@ -106,7 +191,7 @@ const PracticeRoom = () => {
     setMetronomeVolume(value);
   };
 
-  const togglePanel = (panelName: string) => {
+  const togglePanel = (panelName: ActivePanelType) => {
     if (activePanel === panelName) {
       setActivePanel(null);
     } else {
@@ -114,6 +199,7 @@ const PracticeRoom = () => {
     }
   };
 
+  // 렌더링
   return (
     <Layout>
       <div className="container mx-auto py-6 px-4">
@@ -140,59 +226,41 @@ const PracticeRoom = () => {
             
             {/* 패널 버튼 */}
             <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
-              <Button
-                variant={activePanel === "library" ? "default" : "outline"}
-                size="icon"
+              <PanelButton
+                panelName="library"
+                activePanel={activePanel}
+                icon={<Library className="h-5 w-5" />}
                 onClick={() => togglePanel("library")}
-                className="h-10 w-10 rounded-full"
-              >
-                <Library className="h-5 w-5" />
-              </Button>
-              <Button
-                variant={activePanel === "midi" ? "default" : "outline"}
-                size="icon"
+              />
+              <PanelButton
+                panelName="midi"
+                activePanel={activePanel}
+                icon={<Music2 className="h-5 w-5" />}
                 onClick={() => togglePanel("midi")}
-                className="h-10 w-10 rounded-full"
-              >
-                <Music2 className="h-5 w-5" />
-              </Button>
-              <Button
-                variant={activePanel === "metronome" ? "default" : "outline"}
-                size="icon"
+              />
+              <PanelButton
+                panelName="metronome"
+                activePanel={activePanel}
+                icon={<Timer className="h-5 w-5" />}
                 onClick={() => togglePanel("metronome")}
-                className="h-10 w-10 rounded-full"
-              >
-                <Timer className="h-5 w-5" />
-              </Button>
+              />
             </div>
             
             {/* 활성화된 패널 */}
-            {activePanel && (
-              <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[90%] max-w-md bg-white border rounded-lg shadow-lg p-4">
-                {activePanel === "library" && (
-                  <SheetLibrary 
-                    selectedSheet={selectedSheet}
-                    onSheetSelect={handleSheetSelect}
-                    onFileUpload={handleFileUpload}
-                    fileInputRef={fileInputRef}
-                    onFileChange={handleFileChange}
-                  />
-                )}
-                {activePanel === "midi" && (
-                  <MidiConnectionPanel />
-                )}
-                {activePanel === "metronome" && (
-                  <MetronomePanel 
-                    isActive={metronomeActive}
-                    tempo={metronomeTempo}
-                    volume={metronomeVolume}
-                    onToggle={handleToggleMetronome}
-                    onTempoChange={handleMetronomeTempoChange}
-                    onVolumeChange={handleMetronomeVolumeChange}
-                  />
-                )}
-              </div>
-            )}
+            <ActivePanelComponent
+              activePanel={activePanel}
+              selectedSheet={selectedSheet}
+              onSheetSelect={handleSheetSelect}
+              onFileUpload={handleFileUpload}
+              fileInputRef={fileInputRef}
+              onFileChange={handleFileChange}
+              metronomeActive={metronomeActive}
+              metronomeTempo={metronomeTempo}
+              metronomeVolume={metronomeVolume}
+              onToggleMetronome={handleToggleMetronome}
+              onMetronomeTempoChange={handleMetronomeTempoChange}
+              onMetronomeVolumeChange={handleMetronomeVolumeChange}
+            />
             
             {/* 컨트롤 바 */}
             <ControlBar 
