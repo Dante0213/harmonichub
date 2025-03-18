@@ -18,6 +18,8 @@ const professionalFormSchema = z.object({
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
   nickname: z.string().min(2, { message: "닉네임은 2자 이상이어야 합니다." }),
   email: z.string().email({ message: "유효한 이메일 주소를 입력해주세요." }),
+  phone: z.string().min(10, { message: "연락처는 최소 10자 이상이어야 합니다." }),
+  address: z.string().min(5, { message: "주소는 최소 5자 이상이어야 합니다." }),
   password: z.string().min(8, { message: "비밀번호는 8자 이상이어야 합니다." }),
   confirmPassword: z.string(),
   
@@ -48,6 +50,8 @@ export default function ProfessionalSignUpForm() {
       name: "",
       nickname: "",
       email: "",
+      phone: "",
+      address: "",
       password: "",
       confirmPassword: "",
       specialization: "",
