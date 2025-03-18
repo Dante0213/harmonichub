@@ -2,13 +2,12 @@
 import { create } from "zustand";
 import { toast } from "sonner";
 
-export type ChatMessage = {
+export type Message = {
   id: string;
   text: string;
   sender: string;
   timestamp: Date;
   type?: 'lesson' | 'normal' | 'onepoint';
-  isRead?: boolean;
 };
 
 export type DirectMessage = {
@@ -20,22 +19,43 @@ export type DirectMessage = {
   unreadCount: number;
   avatar?: string;
   isOnePointRequest?: boolean;
+  read?: boolean;
+  text?: string;
+  sender?: string;
+  senderAvatar?: string;
+};
+
+export type NotificationSetting = {
+  toastEnabled: boolean;
+  badgeEnabled: boolean;
 };
 
 interface ChatbotState {
-  // 현재 대화 상태
-  chatOpen: boolean;
-  currentChat: ChatMessage[];
+  // UI States
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  message: string;
+  setMessage: (message: string) => void;
+  
+  // Data States
+  messages: Message[];
+  currentChat: Message[];
   directMessages: DirectMessage[];
   activeUserId: number | null;
+  notificationSetting: NotificationSetting;
+  unreadCount: number;
   
-  // 액션
+  // Actions
   toggleChat: () => void;
-  setChatOpen: (open: boolean) => void;
   sendMessage: (text: string) => void;
+  handleSendMessage: () => void;
   addDirectMessage: (userId: number, userName: string, message: string, avatar?: string, isOnePointRequest?: boolean) => void;
   setActiveUser: (userId: number | null) => void;
+  markAsRead: (id: string) => void;
   markMessagesAsRead: (userId: number) => void;
+  setNotificationSetting: (setting: NotificationSetting) => void;
   addOnePointRequest: (teacherId: number, teacherName: string, message: string) => void;
 }
 
@@ -57,13 +77,12 @@ const generateBotResponse = (userMessage: string): string => {
 };
 
 // 초기 주요 채팅 메시지 (시스템 메시지)
-const initialChatMessages: ChatMessage[] = [
+const initialChatMessages: Message[] = [
   {
     id: "1",
     text: "안녕하세요! 하모닉허브입니다. 무엇을 도와드릴까요?",
     sender: "system",
-    timestamp: new Date(),
-    isRead: true
+    timestamp: new Date()
   }
 ];
 
@@ -76,7 +95,8 @@ const initialDirectMessages: DirectMessage[] = [
     lastMessage: "안녕하세요! 레슨 문의 주셔서 감사합니다.",
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2시간 전
     unreadCount: 1,
-    avatar: "KJ"
+    avatar: "KJ",
+    read: false
   },
   {
     id: "dm2",
@@ -85,9 +105,15 @@ const initialDirectMessages: DirectMessage[] = [
     lastMessage: "네, 그 시간에 레슨 가능합니다.",
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 하루 전
     unreadCount: 0,
-    avatar: "PH"
+    avatar: "PH",
+    read: true
   }
 ];
+
+const initialNotificationSetting: NotificationSetting = {
+  toastEnabled: true,
+  badgeEnabled: true
+};
 
 export const useChatbot = create<ChatbotState>((set, get) => {
   // 원포인트 레슨 요청 이벤트 리스너 설정
@@ -102,37 +128,54 @@ export const useChatbot = create<ChatbotState>((set, get) => {
   }
   
   return {
-    chatOpen: false,
+    // UI States
+    isOpen: false,
+    setIsOpen: (open) => set({ isOpen: open }),
+    activeTab: "chat",
+    setActiveTab: (tab) => set({ activeTab: tab }),
+    message: "",
+    setMessage: (message) => set({ message }),
+    
+    // Data States
+    messages: [...initialChatMessages],
     currentChat: [...initialChatMessages],
     directMessages: [...initialDirectMessages],
     activeUserId: null,
+    notificationSetting: initialNotificationSetting,
+    unreadCount: initialDirectMessages.reduce((count, dm) => count + dm.unreadCount, 0),
     
-    toggleChat: () => set((state) => ({ chatOpen: !state.chatOpen })),
+    // Action Methods
+    toggleChat: () => set((state) => ({ isOpen: !state.isOpen })),
     
-    setChatOpen: (open) => set({ chatOpen: open }),
+    handleSendMessage: () => {
+      const { message, sendMessage } = get();
+      if (message.trim()) {
+        sendMessage(message);
+        set({ message: "" });
+      }
+    },
     
     sendMessage: (text) => set((state) => {
       // 사용자 메시지 추가
-      const userMessage: ChatMessage = {
+      const userMessage: Message = {
         id: `user-${Date.now()}`,
         text,
         sender: "user",
-        timestamp: new Date(),
-        isRead: true
+        timestamp: new Date()
       };
       
-      let updatedChat = [...state.currentChat, userMessage];
+      let updatedMessages = [...state.messages, userMessage];
+      let updatedCurrentChat = [...state.currentChat, userMessage];
       
       // activeUserId가 있으면 DM, 없으면 챗봇
       if (state.activeUserId !== null) {
         // DM 응답 (실제로는 API 호출)
         setTimeout(() => {
-          const teacherResponse: ChatMessage = {
+          const teacherResponse: Message = {
             id: `teacher-${Date.now()}`,
             text: `[자동 응답] "${text}"에 대한 답변은 곧 선생님이 확인 후 답변드릴 예정입니다.`,
             sender: "teacher",
-            timestamp: new Date(),
-            isRead: true
+            timestamp: new Date()
           };
           
           set((state) => ({
@@ -154,21 +197,24 @@ export const useChatbot = create<ChatbotState>((set, get) => {
       } else {
         // 챗봇 응답
         setTimeout(() => {
-          const botResponse: ChatMessage = {
+          const botResponse: Message = {
             id: `bot-${Date.now()}`,
             text: generateBotResponse(text),
             sender: "system",
-            timestamp: new Date(),
-            isRead: true
+            timestamp: new Date()
           };
           
           set((state) => ({
+            messages: [...state.messages, botResponse],
             currentChat: [...state.currentChat, botResponse]
           }));
         }, 1000);
       }
       
-      return { currentChat: updatedChat };
+      return { 
+        messages: updatedMessages,
+        currentChat: updatedCurrentChat 
+      };
     }),
     
     addDirectMessage: (userId, userName, message, avatar, isOnePointRequest = false) => set((state) => {
@@ -183,10 +229,17 @@ export const useChatbot = create<ChatbotState>((set, get) => {
           lastMessage: message,
           timestamp: new Date(),
           unreadCount: updatedDms[existingDmIndex].unreadCount + 1,
-          isOnePointRequest: isOnePointRequest || updatedDms[existingDmIndex].isOnePointRequest
+          isOnePointRequest: isOnePointRequest || updatedDms[existingDmIndex].isOnePointRequest,
+          read: false
         };
         
-        return { directMessages: updatedDms };
+        // 읽지 않은 메시지 총 개수 업데이트
+        const unreadCount = updatedDms.reduce((count, dm) => count + dm.unreadCount, 0);
+        
+        return { 
+          directMessages: updatedDms,
+          unreadCount
+        };
       } else {
         // 새 DM 추가
         const newDm: DirectMessage = {
@@ -197,11 +250,16 @@ export const useChatbot = create<ChatbotState>((set, get) => {
           timestamp: new Date(),
           unreadCount: 1,
           avatar: avatar || userName.charAt(0),
-          isOnePointRequest
+          isOnePointRequest,
+          read: false
         };
         
+        const updatedDms = [newDm, ...state.directMessages];
+        const unreadCount = updatedDms.reduce((count, dm) => count + dm.unreadCount, 0);
+        
         return { 
-          directMessages: [newDm, ...state.directMessages]
+          directMessages: updatedDms,
+          unreadCount
         };
       }
     }),
@@ -215,8 +273,7 @@ export const useChatbot = create<ChatbotState>((set, get) => {
               id: `welcome-${userId}`,
               text: `${state.directMessages.find(dm => dm.userId === userId)?.userName || '선생님'}과의 대화입니다.`,
               sender: "system",
-              timestamp: new Date(),
-              isRead: true
+              timestamp: new Date()
             }
           ];
           
@@ -231,26 +288,46 @@ export const useChatbot = create<ChatbotState>((set, get) => {
       };
     }),
     
-    markMessagesAsRead: (userId) => set((state) => ({
+    markAsRead: (id) => set((state) => ({
       directMessages: state.directMessages.map(dm => 
-        dm.userId === userId 
-          ? {...dm, unreadCount: 0}
+        dm.id === id 
+          ? {...dm, read: true, unreadCount: 0}
           : dm
-      )
+      ),
+      unreadCount: state.directMessages.reduce((count, dm) => 
+        dm.id === id ? count : count + dm.unreadCount, 0)
     })),
+    
+    markMessagesAsRead: (userId) => set((state) => {
+      const updatedDms = state.directMessages.map(dm => 
+        dm.userId === userId 
+          ? {...dm, unreadCount: 0, read: true}
+          : dm
+      );
+      
+      const unreadCount = updatedDms.reduce((count, dm) => count + dm.unreadCount, 0);
+      
+      return {
+        directMessages: updatedDms,
+        unreadCount
+      };
+    }),
+    
+    setNotificationSetting: (setting) => set({
+      notificationSetting: setting
+    }),
     
     addOnePointRequest: (teacherId, teacherName, message) => {
       // 원포인트 레슨 요청을 DM에 추가
       get().addDirectMessage(teacherId, teacherName, message, undefined, true);
       
       // 현재 DM 대화창이 열려있는지 확인
-      const { activeUserId, chatOpen } = get();
+      const { activeUserId, isOpen } = get();
       
       // 해당 선생님과 대화 중이지 않거나 채팅이 닫혀있는 경우 토스트 알림
-      if (activeUserId !== teacherId || !chatOpen) {
+      if (activeUserId !== teacherId || !isOpen) {
         toast({
-          title: "새 원포인트 레슨 요청",
-          description: `학생으로부터 원포인트 레슨 요청이 도착했습니다.`,
+          description: "학생으로부터 원포인트 레슨 요청이 도착했습니다.",
           duration: 1000, // 1초 후 자동으로 사라짐
         });
       }

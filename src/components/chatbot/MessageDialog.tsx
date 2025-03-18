@@ -32,7 +32,7 @@ export function MessageDialog({ isOpen, onClose, message }: MessageDialogProps) 
         {
           id: Date.now(),
           sender: 'teacher',
-          content: message.text,
+          content: message.lastMessage,
           timestamp: message.timestamp
         }
       ]);
@@ -80,10 +80,10 @@ export function MessageDialog({ isOpen, onClose, message }: MessageDialogProps) 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-                {message.senderAvatar}
+                {message.avatar}
               </div>
               <div className="flex flex-col">
-                <DialogTitle>{message.sender}</DialogTitle>
+                <DialogTitle>{message.userName}</DialogTitle>
                 {message.isOnePointRequest && (
                   <span className="text-xs flex items-center text-blue-500 font-medium">
                     <Zap className="h-3 w-3 mr-1" /> 원포인트 레슨 요청
@@ -104,7 +104,7 @@ export function MessageDialog({ isOpen, onClose, message }: MessageDialogProps) 
               >
                 {msg.sender === 'teacher' && (
                   <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-2 mt-1">
-                    {message.senderAvatar}
+                    {message.avatar}
                   </div>
                 )}
                 <div

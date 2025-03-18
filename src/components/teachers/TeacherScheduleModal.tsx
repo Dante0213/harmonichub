@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
 import {
   Dialog,
@@ -53,9 +53,7 @@ export function TeacherScheduleModal({
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!selectedTime) {
       toast({
-        title: "시간 선택 필요",
         description: "레슨 시간을 선택해주세요.",
-        variant: "destructive",
         duration: 1000,
       });
       return;
@@ -71,7 +69,6 @@ export function TeacherScheduleModal({
     });
 
     toast({
-      title: "예약이 완료되었습니다",
       description: `${teacherName} 선생님과 ${format(selectedDate, "yyyy-MM-dd")} ${selectedTime}에 레슨이 예약되었습니다.`,
       duration: 1000,
     });
@@ -93,7 +90,7 @@ export function TeacherScheduleModal({
             <DialogTitle>{teacherName} 선생님 레슨 예약</DialogTitle>
           </DialogHeader>
 
-          <Form {...form}>
+          <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <TimeSlotSelection
                 schedule={schedule}
@@ -113,7 +110,7 @@ export function TeacherScheduleModal({
                 <Button type="submit">예약하기</Button>
               </DialogFooter>
             </form>
-          </Form>
+          </FormProvider>
         </DialogContent>
       </Dialog>
 

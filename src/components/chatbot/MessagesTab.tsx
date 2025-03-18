@@ -11,7 +11,7 @@ interface MessagesTabProps {
   directMessages: DirectMessage[];
   notificationSetting: NotificationSetting;
   setNotificationSetting: (setting: NotificationSetting) => void;
-  markAsRead: (id: number) => void;
+  markAsRead: (id: string) => void;
 }
 
 export function MessagesTab({ 
@@ -71,16 +71,16 @@ export function MessagesTab({
                 onClick={() => handleMessageClick(dm)}
               >
                 <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                  {dm.senderAvatar}
+                  {dm.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium truncate">{dm.sender}</p>
+                    <p className="text-sm font-medium truncate">{dm.userName}</p>
                     <p className="text-xs text-muted-foreground">
                       {formatMessageTime(dm.timestamp)}
                     </p>
                   </div>
-                  <p className="text-sm truncate text-muted-foreground">{dm.text}</p>
+                  <p className="text-sm truncate text-muted-foreground">{dm.lastMessage}</p>
                 </div>
                 {!dm.read && <span className="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></span>}
               </button>

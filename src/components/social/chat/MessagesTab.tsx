@@ -16,7 +16,8 @@ export function MessagesTab() {
     dm.userName.toLowerCase().includes(searchQuery.toLowerCase())
   );
   
-  const formatTime = (date: Date) => {
+  // 시간 포맷팅 함수
+  const formatMessageTime = (date: Date) => {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     
@@ -62,6 +63,7 @@ export function MessagesTab() {
                 message={dm} 
                 isActive={activeUserId === dm.userId}
                 onClick={() => setActiveUser(dm.userId)} 
+                formatTime={formatMessageTime}
               />
             ))}
           </ul>
@@ -75,9 +77,10 @@ interface MessageItemProps {
   message: DirectMessage;
   isActive: boolean;
   onClick: () => void;
+  formatTime: (date: Date) => string;
 }
 
-function MessageItem({ message, isActive, onClick }: MessageItemProps) {
+function MessageItem({ message, isActive, onClick, formatTime }: MessageItemProps) {
   return (
     <li>
       <Button
