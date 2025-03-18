@@ -43,7 +43,7 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
       <div className="border-b">
         <div className="p-6">
           <CardTitle className="mb-4">연습실</CardTitle>
-          <Link to="/lesson-room" className="w-full">
+          <Link to="/practice-room" className="w-full">
             <Button className="w-full flex items-center gap-2">
               <Music className="h-4 w-4" />
               <span>연습실 입장하기</span>

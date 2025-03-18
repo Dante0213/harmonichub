@@ -7,6 +7,7 @@ import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
+import PracticeRoom from "./pages/PracticeRoom";
 import Store from "./pages/Store";
 import Social from "./pages/Social";
 import Learning from "./pages/Learning";
@@ -69,6 +70,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/lesson-room" element={<LessonRoom />} />
+              <Route path="/practice-room" element={<PracticeRoom />} />
               <Route path="/store" element={<Store />} />
               <Route path="/social" element={<Social />} />
               <Route path="/learning" element={<Learning />} />
