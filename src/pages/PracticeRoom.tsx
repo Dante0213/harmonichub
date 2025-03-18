@@ -2,7 +2,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { useState, useRef, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info, Library, Music2, Timer } from "lucide-react";
+import { Info, Library, Music2, Timer, Play } from "lucide-react";
 import { PracticeArea } from "@/components/lesson-room/PracticeArea";
 import { ControlBar } from "@/components/lesson-room/ControlBar";
 import { toast } from "sonner";
@@ -159,6 +159,12 @@ const PracticeRoom = () => {
                 activePanel={activePanel}
                 icon={<Timer className="h-5 w-5" />}
                 onClick={() => togglePanel("metronome")}
+              />
+              <PanelButton
+                panelName="player"
+                activePanel={activePanel}
+                icon={<Play className="h-5 w-5" />}
+                onClick={() => togglePanel("player")}
               />
             </div>
             

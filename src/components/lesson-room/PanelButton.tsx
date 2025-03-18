@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 
 // 패널 타입 정의
-export type ActivePanelType = 'library' | 'midi' | 'metronome' | null;
+export type ActivePanelType = 'library' | 'midi' | 'metronome' | 'player' | null;
 
 // 패널 버튼 컴포넌트
 interface PanelButtonProps {
