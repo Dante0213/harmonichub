@@ -66,7 +66,7 @@ const Social = () => {
                 </div>
                 
                 <div className="hidden md:block md:w-1/3 lg:w-1/3">
-                  <div className="sticky top-20">
+                  <div className="sticky top-20 space-y-5">
                     <AdBanner />
                     <ProfilePanel />
                     <RecommendedUsersPanel />
