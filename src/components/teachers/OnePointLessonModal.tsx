@@ -27,6 +27,7 @@ import * as z from "zod";
 import { format } from "date-fns";
 import { AdditionalInfoForm } from "./AdditionalInfoForm";
 import { useOnePointLesson } from "@/hooks/use-one-point-lesson";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const onePointSchema = z.object({
   time: z.string().min(1, "시간을 입력해주세요."),
@@ -89,55 +90,57 @@ export function OnePointLessonModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[480px] max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>5~10분 단위 원포인트 레슨 요청</DialogTitle>
         </DialogHeader>
         
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium mb-2">날짜 선택</h3>
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={(date) => date && setSelectedDate(date)}
-                  locale={ko}
-                  className="border rounded-md mx-auto"
+        <ScrollArea className="max-h-[60vh] pr-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-medium mb-2">날짜 선택</h3>
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={(date) => date && setSelectedDate(date)}
+                    locale={ko}
+                    className="border rounded-md mx-auto"
+                  />
+                </div>
+                
+                <FormField
+                  control={form.control}
+                  name="time"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>선호하는 시간</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="예: 14:00, 오후 2시, 2시~3시 사이 등" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        원하는 시간대를 자유롭게 입력해주세요.
+                      </FormDescription>
+                    </FormItem>
+                  )}
                 />
+                
+                <AdditionalInfoForm form={form} />
               </div>
               
-              <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>선호하는 시간</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="예: 14:00, 오후 2시, 2시~3시 사이 등" 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      원하는 시간대를 자유롭게 입력해주세요.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              
-              <AdditionalInfoForm form={form} />
-            </div>
-            
-            <DialogFooter className="flex gap-2">
-              <Button type="button" variant="outline" onClick={onClose}>
-                취소
-              </Button>
-              <Button type="submit">요청하기</Button>
-            </DialogFooter>
-          </form>
-        </Form>
+              <DialogFooter className="flex gap-2">
+                <Button type="button" variant="outline" onClick={onClose}>
+                  취소
+                </Button>
+                <Button type="submit">요청하기</Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

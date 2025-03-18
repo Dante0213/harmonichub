@@ -5,22 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, MessageCircle, Video } from "lucide-react";
+import { Calendar, GraduationCap, MessageCircle, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { TeacherScheduleModal } from "./TeacherScheduleModal";
 import { TeacherChatModal } from "./TeacherChatModal";
 import { TeacherVodModal } from "./TeacherVodModal";
 
-export function TeacherFeatured() {
+interface TeacherFeaturedProps {
+  onlyProfessional?: boolean;
+}
+
+export function TeacherFeatured({ onlyProfessional = false }: TeacherFeaturedProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedTeacher, setSelectedTeacher] = useState<typeof topTeachers[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const [isVodModalOpen, setIsVodModalOpen] = useState(false);
+  const [teachers, setTeachers] = useState<any[]>([]);
   
-  // Mock data for top teachers
+  // 전체 교사 데이터 (Mock data)
   const topTeachers = [
     { 
       id: 1, 
@@ -30,7 +35,8 @@ export function TeacherFeatured() {
       education: "서울대학교 음악대학",
       experience: "10년 경력",
       certificates: "음악교육 자격증",
-      introduction: "반갑습니다. 피아노를 가르치고 있습니다."
+      introduction: "반갑습니다. 피아노를 가르치고 있습니다.",
+      isProfessional: true,
     },
     { 
       id: 2, 
@@ -40,7 +46,8 @@ export function TeacherFeatured() {
       education: "한양대학교 음악대학",
       experience: "8년 경력",
       certificates: "기타 지도사 자격증",
-      introduction: "기타를 쉽고 재미있게 가르칩니다."
+      introduction: "기타를 쉽고 재미있게 가르칩니다.",
+      isProfessional: true,
     },
     { 
       id: 3, 
@@ -50,9 +57,27 @@ export function TeacherFeatured() {
       education: "연세대학교 음악대학",
       experience: "12년 경력",
       certificates: "바이올린 마스터 자격증",
-      introduction: "바이올린의 아름다움을 전달합니다."
+      introduction: "바이올린의 아름다움을 전달합니다.",
+      isProfessional: false,
     },
   ];
+  
+  // 등록된 교사 가져오기
+  useEffect(() => {
+    // 로컬 스토리지에서 등록된 선생님 가져오기
+    const storedTeachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+    
+    // 전문가만 필터링해서 표시
+    let filteredTeachers = [...topTeachers];
+    
+    if (onlyProfessional) {
+      filteredTeachers = filteredTeachers.filter(teacher => teacher.isProfessional);
+    }
+    
+    // 등록된 선생님들 추가
+    const allTeachers = [...filteredTeachers, ...storedTeachers].slice(0, 3);
+    setTeachers(allTeachers);
+  }, [onlyProfessional]);
   
   // Mock data for ads
   const advertisements = [
@@ -106,7 +131,7 @@ export function TeacherFeatured() {
         <CardContent className="p-6">
           <h2 className="text-xl font-bold mb-4">이번달 최고 인기 강사 Top3</h2>
           <div className="space-y-4">
-            {topTeachers.map((teacher) => (
+            {teachers.map((teacher) => (
               <div key={teacher.id} className="flex items-center gap-4">
                 <Avatar className="w-16 h-16 rounded-md border">
                   <AvatarImage src={teacher.image} alt={teacher.name} />
@@ -115,6 +140,12 @@ export function TeacherFeatured() {
                 <div className="flex-1">
                   <h3 className="font-medium">{teacher.name}</h3>
                   <p className="text-sm text-muted-foreground">{teacher.specialty}</p>
+                  {teacher.isProfessional && (
+                    <span className="inline-flex items-center text-xs font-medium text-blue-600">
+                      <GraduationCap className="h-3 w-3 mr-1" />
+                      전문가
+                    </span>
+                  )}
                 </div>
                 <Button 
                   variant="outline" 
@@ -169,6 +200,12 @@ export function TeacherFeatured() {
                 <div>
                   <h3 className="text-xl font-medium">{selectedTeacher.name}</h3>
                   <p className="text-muted-foreground">{selectedTeacher.specialty}</p>
+                  {selectedTeacher.isProfessional && (
+                    <span className="inline-flex items-center text-xs font-medium text-blue-600">
+                      <GraduationCap className="h-3 w-3 mr-1" />
+                      전문가
+                    </span>
+                  )}
                 </div>
               </div>
               
