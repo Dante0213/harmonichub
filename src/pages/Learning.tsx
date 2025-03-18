@@ -34,14 +34,14 @@ const Learning = () => {
           <HomeworkSubmission />
         </div>
         
-        <Tabs defaultValue="homework" className="w-full">
+        <Tabs defaultValue="received" className="w-full">
           <TabsList className="mb-4 grid w-full grid-cols-2">
-            <TabsTrigger value="homework">지난 숙제</TabsTrigger>
-            <TabsTrigger value="history">레슨 기록</TabsTrigger>
+            <TabsTrigger value="received">받은 과제</TabsTrigger>
+            <TabsTrigger value="history">지난 과제</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="homework">
-            <HomeworkHistory />
+          <TabsContent value="received">
+            <HomeworkHistory showSubmitted={false} />
           </TabsContent>
           
           <TabsContent value="history">
