@@ -1,289 +1,208 @@
 
-import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import { useMyPage } from "@/hooks/use-my-page";
+import { useToast } from "@/hooks/use-toast";
+import { ProfileTagsSection } from "@/components/profile/ProfileTagsSection";
+import { ProfileEducationSection } from "@/components/profile/ProfileEducationSection";
+import { ProfileExperienceSection } from "@/components/profile/ProfileExperienceSection";
+import { ProfileCertificatesSection } from "@/components/profile/ProfileCertificatesSection";
+import { v4 as uuidv4 } from "uuid";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-interface ProfessionalFormData {
-  education: {
-    institution: string;
-    degree: string;
-    year: string;
-  };
-  experience: {
-    company: string;
-    position: string;
-    period: string;
-  };
-  certificate: {
-    name: string;
-    issuer: string;
-    year: string;
-  };
-  instruments: string;
-  genres: string;
-}
-
 export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpgradeModalProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { updateProfessionalStatus } = useMyPage();
+
+  // 악기 상태 관리
+  const [instruments, setInstruments] = useState<string[]>([]);
+  const [newInstrument, setNewInstrument] = useState("");
   
-  const form = useForm<ProfessionalFormData>({
-    defaultValues: {
-      education: {
-        institution: "",
-        degree: "",
-        year: "",
-      },
-      experience: {
-        company: "",
-        position: "",
-        period: "",
-      },
-      certificate: {
-        name: "",
-        issuer: "",
-        year: "",
-      },
-      instruments: "",
-      genres: "",
-    },
-  });
+  // 장르 상태 관리
+  const [genres, setGenres] = useState<string[]>([]);
+  const [newGenre, setNewGenre] = useState("");
+  
+  // 학력, 경력, 자격증 상태 관리
+  const [education, setEducation] = useState([
+    { id: uuidv4(), institution: "", degree: "", year: "" }
+  ]);
+  
+  const [experience, setExperience] = useState([
+    { id: uuidv4(), company: "", position: "", period: "" }
+  ]);
+  
+  const [certificates, setCertificates] = useState([
+    { id: uuidv4(), name: "", issuer: "", year: "" }
+  ]);
 
-  const onSubmit = (data: ProfessionalFormData) => {
-    setIsSubmitting(true);
+  // 사업자 등록 증명 파일 상태
+  const [businessFile, setBusinessFile] = useState<File | null>(null);
+  
+  // 검증 진행 상태
+  const [verifying, setVerifying] = useState(false);
+  const [verified, setVerified] = useState(false);
+  
+  // 검증 처리 함수
+  const handleVerification = () => {
+    if (instruments.length === 0) {
+      toast({
+        title: "악기 정보 필요",
+        description: "최소 하나 이상의 악기를 등록해주세요.",
+        variant: "destructive"
+      });
+      return;
+    }
     
-    // 전문가 데이터 준비
-    const professionalData = {
-      instruments: data.instruments.split(',').map(item => item.trim()),
-      genres: data.genres.split(',').map(item => item.trim()),
-      education: [{
-        id: `ed${Date.now()}`,
-        institution: data.education.institution,
-        degree: data.education.degree,
-        year: data.education.year
-      }],
-      experience: [{
-        id: `exp${Date.now()}`,
-        company: data.experience.company,
-        position: data.experience.position,
-        period: data.experience.period
-      }],
-      certificates: [{
-        id: `cert${Date.now()}`,
-        name: data.certificate.name,
-        issuer: data.certificate.issuer,
-        year: data.certificate.year
-      }]
-    };
-
-    // 검증 시뮬레이션 (실제 앱에서는 서버 API로 검증 요청)
+    if (genres.length === 0) {
+      toast({
+        title: "장르 정보 필요",
+        description: "최소 하나 이상의 장르를 등록해주세요.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setVerifying(true);
+    
+    // 검증 진행 시뮬레이션 (실제로는 API 호출 등이 필요)
     setTimeout(() => {
+      setVerifying(false);
+      setVerified(true);
+      
+      // 필요한 프로필 데이터 수집
+      const professionalData = {
+        instruments,
+        genres,
+        education: education.filter(edu => edu.institution && edu.degree),
+        experience: experience.filter(exp => exp.company && exp.position),
+        certificates: certificates.filter(cert => cert.name && cert.issuer)
+      };
+      
       // 전문가 상태 업데이트
       updateProfessionalStatus(true, professionalData);
       
-      // 완료 토스트 메시지
       toast({
-        title: "전문가 전환 완료",
+        title: "검증 완료",
         description: "전문가 회원으로 전환되었습니다.",
       });
       
-      setIsSubmitting(false);
-      onOpenChange(false); // 모달 닫기
-    }, 1500);
+      // 3초 후 모달 닫기
+      setTimeout(() => {
+        onOpenChange(false);
+        // 입력 필드 초기화
+        setInstruments([]);
+        setGenres([]);
+        setEducation([{ id: uuidv4(), institution: "", degree: "", year: "" }]);
+        setExperience([{ id: uuidv4(), company: "", position: "", period: "" }]);
+        setCertificates([{ id: uuidv4(), name: "", issuer: "", year: "" }]);
+        setBusinessFile(null);
+        setVerified(false);
+      }, 3000);
+    }, 2000);
   };
-
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[800px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>전문가 회원 전환</DialogTitle>
-          <DialogDescription>
-            전문가 회원이 되기 위한 정보를 입력해주세요. 검증 후 전문가 회원으로 전환됩니다.
+          <DialogTitle className="text-center text-xl">전문가 회원 전환</DialogTitle>
+          <DialogDescription className="text-center">
+            전문가 회원으로 전환하려면 아래 정보를 입력해주세요.
           </DialogDescription>
         </DialogHeader>
         
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">악기 & 장르</h3>
-              
-              <FormField
-                control={form.control}
-                name="instruments"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>악기 (쉼표로 구분)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="기타, 피아노, 드럼" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="genres"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>장르 (쉼표로 구분)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="클래식, 재즈, 락" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+        <div className="space-y-6 py-4">
+          {verified ? (
+            <div className="text-center py-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-medium mb-2">검증이 완료되었습니다</h3>
+              <p className="text-gray-500">전문가 회원으로 전환이 성공적으로 완료되었습니다.</p>
             </div>
-            
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">학력</h3>
-              
-              <FormField
-                control={form.control}
-                name="education.institution"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>학교명</FormLabel>
-                    <FormControl>
-                      <Input placeholder="서울음악대학" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+          ) : (
+            <>
+              {/* 악기 선택 섹션 */}
+              <ProfileTagsSection
+                title="악기"
+                tags={instruments}
+                setTags={setInstruments}
+                newTag={newInstrument}
+                setNewTag={setNewInstrument}
+                placeholder="악기 추가"
               />
               
-              <FormField
-                control={form.control}
-                name="education.degree"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>학과/전공</FormLabel>
-                    <FormControl>
-                      <Input placeholder="음악학과" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+              {/* 장르 선택 섹션 */}
+              <ProfileTagsSection
+                title="장르"
+                tags={genres}
+                setTags={setGenres}
+                newTag={newGenre}
+                setNewTag={setNewGenre}
+                placeholder="장르 추가"
               />
               
-              <FormField
-                control={form.control}
-                name="education.year"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>재학기간</FormLabel>
-                    <FormControl>
-                      <Input placeholder="2018-2022" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">경력</h3>
-              
-              <FormField
-                control={form.control}
-                name="experience.company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>회사/기관명</FormLabel>
-                    <FormControl>
-                      <Input placeholder="음악 스튜디오" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+              {/* 학력 섹션 */}
+              <ProfileEducationSection
+                education={education}
+                setEducation={setEducation}
               />
               
-              <FormField
-                control={form.control}
-                name="experience.position"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>직책/역할</FormLabel>
-                    <FormControl>
-                      <Input placeholder="기타리스트" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+              {/* 경력 섹션 */}
+              <ProfileExperienceSection
+                experience={experience}
+                setExperience={setExperience}
               />
               
-              <FormField
-                control={form.control}
-                name="experience.period"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>근무기간</FormLabel>
-                    <FormControl>
-                      <Input placeholder="2022-현재" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">자격증</h3>
-              
-              <FormField
-                control={form.control}
-                name="certificate.name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>자격증명</FormLabel>
-                    <FormControl>
-                      <Input placeholder="음악 지도사 자격증" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+              {/* 자격증 섹션 */}
+              <ProfileCertificatesSection
+                certificates={certificates}
+                setCertificates={setCertificates}
               />
               
-              <FormField
-                control={form.control}
-                name="certificate.issuer"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>발급기관</FormLabel>
-                    <FormControl>
-                      <Input placeholder="한국음악협회" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="certificate.year"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>취득연도</FormLabel>
-                    <FormControl>
-                      <Input placeholder="2021" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className="flex justify-end space-x-2 pt-2">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              {/* 사업자 등록증 업로드 */}
+              <div>
+                <Label htmlFor="business-cert">사업자 등록증 (선택사항)</Label>
+                <Input 
+                  id="business-cert" 
+                  type="file" 
+                  accept=".pdf,.jpg,.jpeg,.png" 
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setBusinessFile(e.target.files[0]);
+                    }
+                  }}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  음악 관련 사업자인 경우 등록증을 업로드하시면 검증이 빠르게 진행됩니다.
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+        
+        <DialogFooter>
+          {!verified && (
+            <>
+              <Button variant="outline" onClick={() => onOpenChange(false)}>
                 취소
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "처리 중..." : "전문가 전환 신청"}
+              <Button onClick={handleVerification} disabled={verifying}>
+                {verifying ? "검증 중..." : "전문가 전환 신청"}
               </Button>
-            </div>
-          </form>
-        </Form>
+            </>
+          )}
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

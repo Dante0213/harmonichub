@@ -2,14 +2,15 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Music, Phone, MapPin, UserPlus, GraduationCap, Briefcase, Award, Minus } from "lucide-react";
+import { Music, Phone, MapPin, UserPlus, GraduationCap, Briefcase, Award, Minus, PenSquare } from "lucide-react";
 
 interface UserInfoCardProps {
   userData: any;
   onUpgradeClick: () => void;
+  onProfileEditClick: () => void;
 }
 
-export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
+export function UserInfoCard({ userData, onUpgradeClick, onProfileEditClick }: UserInfoCardProps) {
   const isProfessional = userData?.isProfessional || false;
 
   // 데이터 확인 함수 - 배열이 비어있거나 존재하지 않으면 true 반환
@@ -20,7 +21,11 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
       <CardHeader>
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
-            <AvatarImage src="/user-avatar.png" alt="사용자 프로필" />
+            {userData?.imageUrl ? (
+              <AvatarImage src={userData.imageUrl} alt="사용자 프로필" />
+            ) : (
+              <AvatarImage src="/user-avatar.png" alt="사용자 프로필" />
+            )}
             <AvatarFallback>{userData?.nickname?.charAt(0) || '사'}</AvatarFallback>
           </Avatar>
           <div>
@@ -36,8 +41,17 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {/* 전문가로 전환하기 버튼 (회원유형 위로 이동) */}
-          {!isProfessional && (
+          {/* 전문가로 전환하기 또는 프로필 수정 버튼 */}
+          {isProfessional ? (
+            <Button 
+              className="w-full" 
+              variant="outline"
+              onClick={onProfileEditClick}
+            >
+              <PenSquare className="h-4 w-4 mr-2" />
+              프로필 수정
+            </Button>
+          ) : (
             <Button 
               className="w-full" 
               variant="outline"
@@ -56,7 +70,7 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
             </p>
           </div>
           
-          {/* 악기 & 장르 정보 */}
+          {/* 악기 정보 */}
           <div>
             <p className="text-sm font-medium mb-2">악기</p>
             {isEmpty(userData?.instruments) ? (
@@ -75,6 +89,7 @@ export function UserInfoCard({ userData, onUpgradeClick }: UserInfoCardProps) {
             )}
           </div>
           
+          {/* 장르 정보 */}
           <div>
             <p className="text-sm font-medium mb-2">장르</p>
             {isEmpty(userData?.genres) ? (

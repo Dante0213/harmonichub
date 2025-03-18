@@ -1,6 +1,6 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
@@ -19,7 +19,7 @@ const Profile = () => {
     content: "",
     likes: 0,
     comments: 0,
-    isProfessional: true, // 속성 추가
+    isProfessional: true,
     instruments: ["기타", "피아노", "우쿨렐레"],
     genres: ["어쿠스틱", "재즈", "팝"],
     education: [
@@ -33,8 +33,43 @@ const Profile = () => {
     ]
   });
 
+  useEffect(() => {
+    // 로컬 스토리지에서 프로필 데이터 가져오기
+    const storedData = localStorage.getItem('userProfileData');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        setUserData(parsedData);
+      } catch (error) {
+        console.error('프로필 데이터 파싱 오류:', error);
+      }
+    }
+  }, []);
+
   const handleProfileUpdate = (updatedData: Reel) => {
     setUserData(updatedData);
+    localStorage.setItem('userProfileData', JSON.stringify(updatedData));
+    
+    // 마이페이지 데이터와 동기화
+    const myPageDataStr = sessionStorage.getItem('userData');
+    if (myPageDataStr) {
+      try {
+        const myPageData = JSON.parse(myPageDataStr);
+        const syncedData = {
+          ...myPageData,
+          bio: updatedData.bio,
+          instruments: updatedData.instruments,
+          genres: updatedData.genres,
+          education: updatedData.education,
+          experience: updatedData.experience,
+          certificates: updatedData.certificates,
+          imageUrl: updatedData.imageUrl
+        };
+        sessionStorage.setItem('userData', JSON.stringify(syncedData));
+      } catch (error) {
+        console.error('마이페이지 데이터 동기화 오류:', error);
+      }
+    }
   };
 
   return (
