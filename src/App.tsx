@@ -19,6 +19,12 @@ import MyPage from "./pages/MyPage";
 import Profile from "./pages/Profile";
 import { Chatbot } from "./components/chatbot/Chatbot";
 
+// 새로 추가된 페이지들
+import About from "./pages/About";
+import Notices from "./pages/Notices";
+import Guide from "./pages/Guide";
+import Contact from "./pages/Contact";
+
 // My 카테고리 페이지들
 import RecentVideos from "./pages/my/RecentVideos";
 import LikedVideos from "./pages/my/LikedVideos";
@@ -79,6 +85,12 @@ const App = () => {
               <Route path="/teachers" element={<Teachers />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/profile" element={<Profile />} />
+              
+              {/* 새로 추가한 페이지들 */}
+              <Route path="/about" element={<About />} />
+              <Route path="/notices" element={<Notices />} />
+              <Route path="/guide" element={<Guide />} />
+              <Route path="/contact" element={<Contact />} />
               
               {/* My 카테고리 페이지들 */}
               <Route path="/my/recent-videos" element={<RecentVideos />} />
