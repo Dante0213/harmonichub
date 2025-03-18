@@ -39,19 +39,23 @@ export const VodProgress = ({ courses }: VodProgressProps) => {
 
   return (
     <Card>
+      {/* 연습실 입장하기 버튼 - 제목 위에 배치 */}
+      <div className="p-6 pb-0">
+        <Link to="/lesson-room" className="w-full">
+          <Button className="w-full flex items-center gap-2 mb-6">
+            <Music className="h-4 w-4" />
+            <span>연습실 입장하기</span>
+          </Button>
+        </Link>
+      </div>
+      
       <CardHeader>
         <CardTitle>내 VOD 학습 진도</CardTitle>
         <CardDescription>현재 학습 중인 VOD 강의</CardDescription>
       </CardHeader>
       <CardContent>
-        {/* 상단 버튼 영역 - 2분할 */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <Link to="/lesson-room" className="w-full">
-            <Button className="w-full flex items-center gap-2">
-              <Music className="h-4 w-4" />
-              <span>연습실 입장하기</span>
-            </Button>
-          </Link>
+        {/* 스토어 버튼 */}
+        <div className="mb-6">
           <Link to="/store">
             <Button variant="outline" className="w-full flex items-center gap-2">
               <PlusCircle className="h-4 w-4" />
