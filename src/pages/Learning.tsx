@@ -35,9 +35,10 @@ const Learning = () => {
         </div>
         
         <Tabs defaultValue="received" className="w-full">
-          <TabsList className="mb-4 grid w-full grid-cols-2">
+          <TabsList className="mb-4 grid w-full grid-cols-3">
             <TabsTrigger value="received">받은 과제</TabsTrigger>
             <TabsTrigger value="history">지난 과제</TabsTrigger>
+            <TabsTrigger value="lesson-history">레슨 기록</TabsTrigger>
           </TabsList>
           
           <TabsContent value="received">
@@ -45,6 +46,10 @@ const Learning = () => {
           </TabsContent>
           
           <TabsContent value="history">
+            <HomeworkHistory showSubmitted={true} />
+          </TabsContent>
+          
+          <TabsContent value="lesson-history">
             <LessonHistory />
           </TabsContent>
         </Tabs>
