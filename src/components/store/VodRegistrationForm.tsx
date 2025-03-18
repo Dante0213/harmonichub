@@ -1,35 +1,22 @@
 
 import { useState } from "react";
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { baseProductFields } from "./types";
+import { 
+  TextField, 
+  SelectField, 
+  TextareaField, 
+  FileUploadField,
+  SubmitButton
+} from "./common/FormFields";
 
 const vodSchema = z.object({
-  name: z.string().min(2, "VOD 강의명은 최소 2자 이상이어야 합니다."),
-  price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "유효한 가격을 입력해주세요.",
-  }),
-  description: z.string().min(10, "강의 설명은 최소 10자 이상이어야 합니다."),
+  ...baseProductFields,
   instructor: z.string().min(2, "강사명은 최소 2자 이상이어야 합니다."),
   level: z.enum(["초급", "중급", "고급"]),
   duration: z.string().min(1, "강의 기간을 입력해주세요."),
@@ -60,7 +47,6 @@ export function VodRegistrationForm({ onSubmit, isSubmitting }: VodRegistrationF
   });
 
   const handleSubmit = (data: VodFormValues) => {
-    // 실제 구현에서는 여기에 thumbnail 업로드 로직이 추가될 수 있습니다
     if (thumbnail) {
       console.log("업로드할 썸네일:", thumbnail);
     }
@@ -73,128 +59,70 @@ export function VodRegistrationForm({ onSubmit, isSubmitting }: VodRegistrationF
     }
   };
 
+  const levelOptions = [
+    { value: "초급", label: "초급" },
+    { value: "중급", label: "중급" },
+    { value: "고급", label: "고급" },
+  ];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>VOD 강의명</FormLabel>
-              <FormControl>
-                <Input placeholder="강의명을 입력하세요" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <TextField 
+          form={form} 
+          name="name" 
+          label="VOD 강의명" 
+          placeholder="강의명을 입력하세요" 
         />
         
-        <FormField
-          control={form.control}
-          name="instructor"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>강사명</FormLabel>
-              <FormControl>
-                <Input placeholder="강사 이름을 입력하세요" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <TextField 
+          form={form} 
+          name="instructor" 
+          label="강사명" 
+          placeholder="강사 이름을 입력하세요" 
         />
         
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="level"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>난이도</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="난이도 선택" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="초급">초급</SelectItem>
-                    <SelectItem value="중급">중급</SelectItem>
-                    <SelectItem value="고급">고급</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+          <SelectField 
+            form={form} 
+            name="level" 
+            label="난이도" 
+            options={levelOptions} 
           />
           
-          <FormField
-            control={form.control}
-            name="duration"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>강의 기간</FormLabel>
-                <FormControl>
-                  <Input placeholder="예: 4주, 8주" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          <TextField 
+            form={form} 
+            name="duration" 
+            label="강의 기간" 
+            placeholder="예: 4주, 8주" 
           />
         </div>
         
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>가격 (원)</FormLabel>
-              <FormControl>
-                <Input placeholder="강의 가격을 입력하세요" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <TextField 
+          form={form} 
+          name="price" 
+          label="가격 (원)" 
+          placeholder="강의 가격을 입력하세요" 
         />
         
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>강의 설명</FormLabel>
-              <FormControl>
-                <Textarea 
-                  placeholder="강의에 대한 상세 설명을 입력하세요" 
-                  className="min-h-[120px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <TextareaField 
+          form={form} 
+          name="description" 
+          label="강의 설명" 
+          placeholder="강의에 대한 상세 설명을 입력하세요" 
+        />
+        
+        <FileUploadField 
+          id="thumbnail" 
+          label="강의 썸네일" 
+          value={thumbnail} 
+          onChange={handleFileChange} 
         />
         
         <div className="space-y-2">
-          <Label htmlFor="thumbnail">강의 썸네일</Label>
-          <div className="flex items-center gap-4">
-            <Input
-              id="thumbnail"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="flex-1"
-            />
-            {thumbnail && (
-              <div className="text-sm text-green-600">
-                파일 선택됨: {thumbnail.name}
-              </div>
-            )}
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <Label>강의 샘플 영상</Label>
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            강의 샘플 영상
+          </label>
           <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center">
             <Upload className="mx-auto h-8 w-8 text-gray-400" />
             <p className="mt-2 text-sm text-gray-500">
@@ -209,9 +137,7 @@ export function VodRegistrationForm({ onSubmit, isSubmitting }: VodRegistrationF
           </div>
         </div>
         
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "등록 중..." : "VOD 강의 등록하기"}
-        </Button>
+        <SubmitButton isSubmitting={isSubmitting} text="VOD 강의 등록하기" />
       </form>
     </Form>
   );

@@ -30,25 +30,25 @@ export function ProductRegistrationDialog({ isOpen, onClose }: ProductRegistrati
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [category, setCategory] = useState<string>("vod");
 
-  const handleVodSubmit = async (data: any) => {
+  const handleFormSubmit = async (data: any, productType: string) => {
     setIsSubmitting(true);
     try {
-      // 여기에 실제 VOD 등록 API 호출 로직이 들어갈 수 있습니다.
-      console.log("VOD 등록 데이터:", data);
+      // 여기에 실제 API 호출 로직이 들어갈 수 있습니다.
+      console.log(`${productType} 등록 데이터:`, data);
       
       // 성공 메시지를 표시합니다
       toast({
-        title: "VOD 강의 등록 성공",
-        description: "VOD 강의가 성공적으로 등록되었습니다.",
+        title: `${productType} 등록 성공`,
+        description: `${productType}가 성공적으로 등록되었습니다.`,
       });
       
       // 대화상자를 닫습니다
       onClose();
     } catch (error) {
-      console.error("VOD 등록 실패:", error);
+      console.error(`${productType} 등록 실패:`, error);
       toast({
-        title: "VOD 등록 실패",
-        description: "VOD 등록에 실패했습니다. 다시 시도해주세요.",
+        title: `${productType} 등록 실패`,
+        description: `${productType} 등록에 실패했습니다. 다시 시도해주세요.`,
         variant: "destructive",
       });
     } finally {
@@ -56,83 +56,10 @@ export function ProductRegistrationDialog({ isOpen, onClose }: ProductRegistrati
     }
   };
 
-  const handleInstrumentSubmit = async (data: any) => {
-    setIsSubmitting(true);
-    try {
-      // 여기에 실제 악기 등록 API 호출 로직이 들어갈 수 있습니다.
-      console.log("악기 등록 데이터:", data);
-      
-      // 성공 메시지를 표시합니다
-      toast({
-        title: "악기 등록 성공",
-        description: "악기가 성공적으로 등록되었습니다.",
-      });
-      
-      // 대화상자를 닫습니다
-      onClose();
-    } catch (error) {
-      console.error("악기 등록 실패:", error);
-      toast({
-        title: "악기 등록 실패",
-        description: "악기 등록에 실패했습니다. 다시 시도해주세요.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleBookSubmit = async (data: any) => {
-    setIsSubmitting(true);
-    try {
-      // 여기에 실제 교재 등록 API 호출 로직이 들어갈 수 있습니다.
-      console.log("교재 등록 데이터:", data);
-      
-      // 성공 메시지를 표시합니다
-      toast({
-        title: "교재 등록 성공",
-        description: "교재가 성공적으로 등록되었습니다.",
-      });
-      
-      // 대화상자를 닫습니다
-      onClose();
-    } catch (error) {
-      console.error("교재 등록 실패:", error);
-      toast({
-        title: "교재 등록 실패",
-        description: "교재 등록에 실패했습니다. 다시 시도해주세요.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleAccessorySubmit = async (data: any) => {
-    setIsSubmitting(true);
-    try {
-      // 여기에 실제 악세서리 등록 API 호출 로직이 들어갈 수 있습니다.
-      console.log("악세서리 등록 데이터:", data);
-      
-      // 성공 메시지를 표시합니다
-      toast({
-        title: "악세서리 등록 성공",
-        description: "악세서리가 성공적으로 등록되었습니다.",
-      });
-      
-      // 대화상자를 닫습니다
-      onClose();
-    } catch (error) {
-      console.error("악세서리 등록 실패:", error);
-      toast({
-        title: "악세서리 등록 실패",
-        description: "악세서리 등록에 실패했습니다. 다시 시도해주세요.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const handleVodSubmit = (data: any) => handleFormSubmit(data, "VOD 강의");
+  const handleInstrumentSubmit = (data: any) => handleFormSubmit(data, "악기");
+  const handleBookSubmit = (data: any) => handleFormSubmit(data, "교재");
+  const handleAccessorySubmit = (data: any) => handleFormSubmit(data, "악세서리");
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
