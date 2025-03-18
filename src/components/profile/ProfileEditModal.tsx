@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -43,6 +43,27 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
     defaultValues
   });
 
+  // useEffect로 userData가 변경되면 form 값도 업데이트
+  useEffect(() => {
+    if (isOpen) {
+      form.reset({
+        bio: userData.bio || "",
+        instruments: userData.instruments || [],
+        genres: userData.genres || [],
+        education: userData.education || [],
+        experience: userData.experience || [],
+        certificates: userData.certificates || []
+      });
+      
+      setInstruments(userData.instruments || []);
+      setGenres(userData.genres || []);
+      setEducation(userData.education || []);
+      setExperience(userData.experience || []);
+      setCertificates(userData.certificates || []);
+      setProfileImage(userData.imageUrl || "");
+    }
+  }, [isOpen, userData]);
+
   const [instruments, setInstruments] = useState<string[]>(defaultValues.instruments);
   const [newInstrument, setNewInstrument] = useState("");
   
@@ -73,6 +94,19 @@ export const ProfileEditModal = ({ isOpen, onClose, userData, onUpdate }: Profil
     };
     
     onUpdate(updatedData);
+    
+    // 세션 스토리지의 사용자 데이터에도 반영 (닉네임 동기화)
+    const userDataStr = sessionStorage.getItem('userData');
+    if (userDataStr) {
+      try {
+        const parsedUserData = JSON.parse(userDataStr);
+        parsedUserData.nickname = updatedData.user;
+        sessionStorage.setItem('userData', JSON.stringify(parsedUserData));
+      } catch (error) {
+        console.error('사용자 데이터 업데이트 오류:', error);
+      }
+    }
+    
     onClose();
   };
 

@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
 import PracticeRoom from "./pages/PracticeRoom";
@@ -64,6 +65,51 @@ const queryClient = new QueryClient({
 
 const App = () => {
   console.log('App 컴포넌트 렌더링 시작');
+  
+  // 앱 초기화 시 기본 프로필 데이터 설정
+  useEffect(() => {
+    // 프로필 데이터가 없는 경우 기본 데이터 생성
+    if (!localStorage.getItem('userProfileData')) {
+      const defaultProfileData = {
+        id: "current-user",
+        user: "사용자",
+        userHandle: "user",
+        avatar: "사",
+        bio: "",
+        time: "",
+        content: "",
+        likes: 0,
+        comments: 0,
+        isProfessional: false,
+        instruments: [],
+        genres: [],
+        education: [],
+        experience: [],
+        certificates: []
+      };
+      localStorage.setItem('userProfileData', JSON.stringify(defaultProfileData));
+    }
+    
+    // 세션 스토리지에 사용자 데이터가 있으면 닉네임 동기화
+    const userDataStr = sessionStorage.getItem('userData');
+    const profileDataStr = localStorage.getItem('userProfileData');
+    
+    if (userDataStr && profileDataStr) {
+      const userData = JSON.parse(userDataStr);
+      const profileData = JSON.parse(profileDataStr);
+      
+      // 사용자 데이터의 닉네임이 있으면 프로필 데이터 업데이트
+      if (userData.nickname && userData.nickname !== profileData.user) {
+        profileData.user = userData.nickname;
+        localStorage.setItem('userProfileData', JSON.stringify(profileData));
+      }
+      // 또는 프로필 데이터의 닉네임이 있으면 사용자 데이터 업데이트
+      else if (profileData.user && (!userData.nickname || userData.nickname !== profileData.user)) {
+        userData.nickname = profileData.user;
+        sessionStorage.setItem('userData', JSON.stringify(userData));
+      }
+    }
+  }, []);
   
   return (
     <QueryClientProvider client={queryClient}>
