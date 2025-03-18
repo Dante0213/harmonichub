@@ -79,6 +79,7 @@ const Profile = () => {
         const myPageData = JSON.parse(myPageDataStr);
         const syncedData = {
           ...myPageData,
+          isProfessional: updatedData.isProfessional, // 전문가 상태 동기화 추가
           bio: updatedData.bio,
           specialization: updatedData.specialization,
           instruments: updatedData.instruments,
