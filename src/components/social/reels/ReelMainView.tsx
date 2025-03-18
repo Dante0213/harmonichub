@@ -14,6 +14,7 @@ import {
   DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { ReelReportMenu } from "./ReelReportMenu";
 
 interface ReelMainViewProps {
   reel: Reel;
@@ -89,6 +90,11 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
       />
       
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50">
+        {/* 신고 메뉴 (우측 상단) */}
+        <div className="absolute top-4 right-4 z-10">
+          <ReelReportMenu reelId={reel.id} />
+        </div>
+        
         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
           <ReelInteractionButtons
             isLiked={isLiked}

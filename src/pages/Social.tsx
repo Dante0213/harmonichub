@@ -11,7 +11,7 @@ import { useState, createContext, useContext } from "react";
 import { UserProfileModal } from "@/components/social/UserProfileModal";
 import { Reel } from "@/components/social/reels/ReelsData";
 
-// Create context for following functionality
+// 팔로우 기능을 위한 컨텍스트 생성
 export const SocialContext = createContext<{
   followedUsers: Reel[];
   followUser: (user: Reel) => void;
