@@ -74,8 +74,8 @@ export const UserProfileModal = ({ user, isOpen, onClose }: UserProfileModalProp
         <TeacherScheduleModal
           isOpen={isScheduleOpen}
           onClose={() => setIsScheduleOpen(false)}
-          teacherName={user.username || "선생님"}
-          teacherId={user.id || 1}
+          teacherName={user.user || "선생님"} // user.username 대신 user.user 사용
+          teacherId={typeof user.id === 'string' ? parseInt(user.id, 10) : user.id} // ID를 number로 변환
         />
       )}
     </Dialog>
