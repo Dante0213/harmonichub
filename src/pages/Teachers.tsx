@@ -29,8 +29,8 @@ const Teachers = () => {
     <Layout>
       <div className="container px-4 mx-auto py-8">
         <div className="flex justify-between items-center mb-6">
+          <TeacherRegisterButton /> {/* 선생님 등록하기 버튼을 왼쪽으로 이동 */}
           <div></div>
-          <TeacherRegisterButton />
         </div>
         <TeacherFeatured onlyProfessional={true} />
         <TeacherGrid />

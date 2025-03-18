@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { TopTeachersList } from "./TopTeachersList";
-import { AdvertisementCarousel } from "./AdvertisementCarousel";
+import { CreatorsList } from "./CreatorsList";
 import { TeacherProfileModal, TeacherData } from "./TeacherProfileModal";
 
 interface TeacherFeaturedProps {
@@ -25,8 +25,8 @@ export function TeacherFeatured({ onlyProfessional = false }: TeacherFeaturedPro
         onSelectTeacher={openTeacherProfile} 
       />
       
-      {/* Advertisement Carousel */}
-      <AdvertisementCarousel />
+      {/* Creators Card - replacing the advertisement carousel */}
+      <CreatorsList onSelectCreator={openTeacherProfile} />
 
       {/* Teacher Profile Modal */}
       <TeacherProfileModal
