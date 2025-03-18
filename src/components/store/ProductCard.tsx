@@ -46,7 +46,9 @@ export const ProductCard = ({ name, price, description }: ProductCardProps) => {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle className="text-lg">{name}</CardTitle>
+            <CardTitle className="text-base">
+              {name}
+            </CardTitle>
             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => toast({ title: "장바구니에 추가되었습니다" })}>
               <ShoppingCart className="h-5 w-5" />
             </Button>
