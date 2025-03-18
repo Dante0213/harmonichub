@@ -9,23 +9,12 @@ import { TeacherScheduleModal } from "./TeacherScheduleModal";
 import { TeacherChatModal } from "./TeacherChatModal";
 import { TeacherVodModal } from "./TeacherVodModal";
 import { OnePointLessonModal } from "./OnePointLessonModal";
-
-export interface TeacherData {
-  id: number;
-  name: string;
-  image: string;
-  specialty: string;
-  education: string;
-  experience: string;
-  certificates: string;
-  introduction: string;
-  isProfessional: boolean;
-}
+import { Teacher } from "./TeacherData";
 
 interface TeacherProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedTeacher: TeacherData | null;
+  selectedTeacher: Teacher | null;
 }
 
 export function TeacherProfileModal({ 

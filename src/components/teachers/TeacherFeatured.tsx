@@ -2,17 +2,18 @@
 import { useState } from "react";
 import { TopTeachersList } from "./TopTeachersList";
 import { AdvertisementCarousel } from "./AdvertisementCarousel";
-import { TeacherProfileModal, TeacherData } from "./TeacherProfileModal";
+import { TeacherProfileModal } from "./TeacherProfileModal";
+import { Teacher } from "./TeacherData";
 
 interface TeacherFeaturedProps {
   onlyProfessional?: boolean;
 }
 
 export function TeacherFeatured({ onlyProfessional = false }: TeacherFeaturedProps) {
-  const [selectedTeacher, setSelectedTeacher] = useState<TeacherData | null>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openTeacherProfile = (teacher: TeacherData) => {
+  const openTeacherProfile = (teacher: Teacher) => {
     setSelectedTeacher(teacher);
     setIsModalOpen(true);
   };

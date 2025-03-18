@@ -4,18 +4,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { GraduationCap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { TeacherData } from "./TeacherProfileModal";
+import { Teacher } from "./TeacherData";
 
 interface TopTeachersListProps {
   onlyProfessional?: boolean;
-  onSelectTeacher: (teacher: TeacherData) => void;
+  onSelectTeacher: (teacher: Teacher) => void;
 }
 
 export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: TopTeachersListProps) {
-  const [teachers, setTeachers] = useState<TeacherData[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   
   // 전체 교사 데이터 (Mock data)
-  const topTeachers: TeacherData[] = [
+  const topTeachers: Teacher[] = [
     { 
       id: 1, 
       name: "김선생", 
@@ -25,6 +25,7 @@ export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: T
       experience: "10년 경력",
       certificates: "음악교육 자격증",
       introduction: "반갑습니다. 피아노를 가르치고 있습니다.",
+      category: "클래식",
       isProfessional: true,
     },
     { 
@@ -36,6 +37,7 @@ export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: T
       experience: "8년 경력",
       certificates: "기타 지도사 자격증",
       introduction: "기타를 쉽고 재미있게 가르칩니다.",
+      category: "실용음악",
       isProfessional: true,
     },
     { 
@@ -47,6 +49,7 @@ export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: T
       experience: "12년 경력",
       certificates: "바이올린 마스터 자격증",
       introduction: "바이올린의 아름다움을 전달합니다.",
+      category: "클래식",
       isProfessional: false,
     },
   ];
