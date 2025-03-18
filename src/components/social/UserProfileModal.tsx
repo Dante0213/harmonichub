@@ -5,6 +5,9 @@ import { ChatDialog } from "./chat/ChatDialog";
 import { ProfileModalInfo } from "./profile/ProfileModalInfo";
 import { ProfileTabsContent } from "./profile/ProfileTabsContent";
 import { Reel } from "./reels/ReelsData";
+import { TeacherScheduleModal } from "../teachers/TeacherScheduleModal";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "lucide-react";
 
 interface UserProfileModalProps {
   user: Reel;
@@ -14,9 +17,14 @@ interface UserProfileModalProps {
 
 export const UserProfileModal = ({ user, isOpen, onClose }: UserProfileModalProps) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   
   const handleChatOpen = () => {
     setIsChatOpen(true);
+  };
+
+  const handleScheduleOpen = () => {
+    setIsScheduleOpen(true);
   };
 
   return (
@@ -32,6 +40,20 @@ export const UserProfileModal = ({ user, isOpen, onClose }: UserProfileModalProp
               user={user} 
               onChatOpen={handleChatOpen} 
             />
+            
+            {/* 레슨 예약 버튼 추가 - 선생님인 경우에만 표시 */}
+            {user.instruments && user.instruments.length > 0 && (
+              <div className="mt-4">
+                <Button 
+                  className="w-full" 
+                  onClick={handleScheduleOpen}
+                  variant="secondary"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  레슨 예약하기
+                </Button>
+              </div>
+            )}
           </div>
           
           <div className="md:w-2/3">
@@ -45,6 +67,15 @@ export const UserProfileModal = ({ user, isOpen, onClose }: UserProfileModalProp
           isOpen={isChatOpen} 
           onClose={() => setIsChatOpen(false)} 
           user={user} 
+        />
+      )}
+
+      {isScheduleOpen && (
+        <TeacherScheduleModal
+          isOpen={isScheduleOpen}
+          onClose={() => setIsScheduleOpen(false)}
+          teacherName={user.username || "선생님"}
+          teacherId={user.id || 1}
         />
       )}
     </Dialog>
