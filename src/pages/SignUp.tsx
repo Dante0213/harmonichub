@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ export default function SignUp() {
     toast({
       title: `${provider}로 ${type === SignUpType.User ? '일반회원' : '전문가'} 가입`,
       description: `${provider}를 통한 회원가입을 진행합니다.`,
+      duration: 1000
     });
     // 실제 OAuth 회원가입 구현
     console.log(`${provider} 회원가입 시도`, type);

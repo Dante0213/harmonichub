@@ -29,10 +29,14 @@ export function VideoArea({ videoEnabled, micEnabled }: VideoAreaProps) {
           // 실제 WebRTC 구현에서는 여기서 RTCPeerConnection을 설정하고
           // 스트림을 연결해야 합니다
           
-          toast.success("카메라 및 마이크에 연결되었습니다.");
+          toast.success("카메라 및 마이크에 연결되었습니다.", {
+            duration: 1000
+          });
         } catch (err) {
           console.error("미디어 장치에 접근할 수 없습니다:", err);
-          toast.error("카메라나 마이크에 접근할 수 없습니다.");
+          toast.error("카메라나 마이크에 접근할 수 없습니다.", {
+            duration: 1000
+          });
         }
       };
       

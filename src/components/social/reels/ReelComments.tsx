@@ -57,7 +57,7 @@ export const ReelComments = ({ reel, isOpen, onOpenChange }: ReelCommentsProps) 
       
       toast({
         title: "댓글이 추가되었습니다",
-        duration: 2000
+        duration: 1000
       });
       
       setTimeout(scrollToBottom, 100);

@@ -59,7 +59,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
     navigator.clipboard.writeText(reelUrl);
     toast({
       title: "링크가 복사되었습니다",
-      duration: 2000
+      duration: 1000
     });
   };
 
@@ -73,7 +73,7 @@ export const ReelMainView = ({ reel, onUserClick }: ReelMainViewProps) => {
       toast({
         title: "영상이 업로드되었습니다",
         description: "잠시 후 릴스에 반영됩니다",
-        duration: 3000
+        duration: 1000
       });
       setIsUploadOpen(false);
     }

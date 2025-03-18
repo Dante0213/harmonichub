@@ -100,6 +100,7 @@ export function useChatbot() {
               toast({
                 title: "새 원포인트 레슨 요청",
                 description: `학생으로부터 원포인트 레슨 요청이 도착했습니다.`,
+                duration: 1000, // 1초 후 자동으로 사라짐
               });
             }
             
@@ -142,6 +143,7 @@ export function useChatbot() {
         toast({
           title: "새 원포인트 레슨 요청",
           description: `학생으로부터 원포인트 레슨 요청이 도착했습니다.`,
+          duration: 1000, // 1초 후 자동으로 사라짐
         });
       }
     };

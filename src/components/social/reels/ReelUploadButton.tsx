@@ -31,6 +31,7 @@ export const ReelUploadButton = () => {
       toast({
         title: "파일을 선택해주세요",
         variant: "destructive",
+        duration: 1000
       });
       return;
     }
@@ -48,6 +49,7 @@ export const ReelUploadButton = () => {
       toast({
         title: "릴스 업로드 완료",
         description: "릴스가 성공적으로 업로드되었습니다",
+        duration: 1000
       });
     }, 1500);
   };

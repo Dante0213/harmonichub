@@ -59,7 +59,7 @@ export const ReelReportMenu = ({ reelId }: ReelReportMenuProps) => {
     toast({
       title: "신고가 접수되었습니다",
       description: "신고 내용이 검토팀에 전달되었습니다",
-      duration: 3000
+      duration: 1000
     });
     
     // 상태 초기화
