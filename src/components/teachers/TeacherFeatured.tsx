@@ -8,11 +8,17 @@ import { Separator } from "@/components/ui/separator";
 import { Calendar, MessageCircle, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { TeacherScheduleModal } from "./TeacherScheduleModal";
+import { TeacherChatModal } from "./TeacherChatModal";
+import { TeacherVodModal } from "./TeacherVodModal";
 
 export function TeacherFeatured() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedTeacher, setSelectedTeacher] = useState<typeof topTeachers[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+  const [isVodModalOpen, setIsVodModalOpen] = useState(false);
   
   // Mock data for top teachers
   const topTeachers = [
@@ -58,6 +64,30 @@ export function TeacherFeatured() {
   const openTeacherProfile = (teacher: typeof topTeachers[0]) => {
     setSelectedTeacher(teacher);
     setIsModalOpen(true);
+  };
+
+  // 레슨 예약 모달 열기
+  const openScheduleModal = () => {
+    if (selectedTeacher) {
+      setIsModalOpen(false); // 기존 모달 닫기
+      setIsScheduleModalOpen(true); // 레슨 예약 모달 열기
+    }
+  };
+
+  // 채팅 모달 열기 
+  const openChatModal = () => {
+    if (selectedTeacher) {
+      setIsModalOpen(false); // 기존 모달 닫기
+      setIsChatModalOpen(true); // 채팅 모달 열기
+    }
+  };
+
+  // VOD 모달 열기
+  const openVodModal = () => {
+    if (selectedTeacher) {
+      setIsModalOpen(false); // 기존 모달 닫기
+      setIsVodModalOpen(true); // VOD 모달 열기
+    }
   };
 
   // Auto-slide for ads
@@ -143,15 +173,15 @@ export function TeacherFeatured() {
               </div>
               
               <div className="flex gap-2 my-4">
-                <Button size="sm">
+                <Button size="sm" onClick={openScheduleModal}>
                   <Calendar className="h-4 w-4 mr-2" />
                   레슨 예약
                 </Button>
-                <Button size="sm" variant="outline">
+                <Button size="sm" variant="outline" onClick={openChatModal}>
                   <MessageCircle className="h-4 w-4 mr-2" />
                   1:1 대화
                 </Button>
-                <Button size="sm" variant="secondary" onClick={() => console.log("Navigate to VOD")}>
+                <Button size="sm" variant="secondary" onClick={openVodModal}>
                   <Video className="h-4 w-4 mr-2" />
                   VOD 보러가기
                 </Button>
@@ -181,6 +211,37 @@ export function TeacherFeatured() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* 레슨 예약 모달 */}
+      {selectedTeacher && (
+        <TeacherScheduleModal
+          isOpen={isScheduleModalOpen}
+          onClose={() => setIsScheduleModalOpen(false)}
+          teacherName={selectedTeacher.name}
+          teacherId={selectedTeacher.id}
+        />
+      )}
+
+      {/* 1:1 대화 모달 */}
+      {selectedTeacher && (
+        <TeacherChatModal
+          isOpen={isChatModalOpen}
+          onClose={() => setIsChatModalOpen(false)}
+          teacherName={selectedTeacher.name}
+          teacherId={selectedTeacher.id}
+          teacherImage={selectedTeacher.image}
+        />
+      )}
+
+      {/* VOD 모달 */}
+      {selectedTeacher && (
+        <TeacherVodModal
+          isOpen={isVodModalOpen}
+          onClose={() => setIsVodModalOpen(false)}
+          teacherName={selectedTeacher.name}
+          teacherId={selectedTeacher.id}
+        />
+      )}
     </div>
   );
 }
