@@ -118,9 +118,7 @@ export function PracticeArea({
       <div className="w-full h-full flex flex-col items-center justify-center p-4 overflow-auto">
         {/* 악보 영역 */}
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-4 mb-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-medium">연습 모드</h2>
-          </div>
+          {/* 연습 모드 텍스트 제거 */}
           
           {/* 악보 표시 영역 */}
           <div 

@@ -147,7 +147,7 @@ const PracticeRoom = () => {
                 {/* 라이브러리 내용 */}
                 <div className="w-full">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-sm font-medium">악보 라이브러리</h3>
+                    <h3 className="text-sm font-medium"></h3>
                     <Button 
                       variant="outline" 
                       size="sm" 
@@ -155,7 +155,7 @@ const PracticeRoom = () => {
                       className="flex items-center gap-1"
                     >
                       <Upload className="h-4 w-4" />
-                      <span>PDF 업로드</span>
+                      <span>파일 업로드</span>
                     </Button>
                     <input
                       type="file"
