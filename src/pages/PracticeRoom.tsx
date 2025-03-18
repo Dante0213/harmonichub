@@ -6,93 +6,9 @@ import { Info, Library, Music2, Timer } from "lucide-react";
 import { PracticeArea } from "@/components/lesson-room/PracticeArea";
 import { ControlBar } from "@/components/lesson-room/ControlBar";
 import { toast } from "sonner";
-import { MidiConnectionPanel } from "@/components/lesson-room/MidiConnectionPanel";
 import { createMetronomeClick } from "@/components/lesson-room/metronomeUtils";
-import { SheetLibrary } from "@/components/lesson-room/SheetLibrary";
-import { MetronomePanel } from "@/components/lesson-room/MetronomePanel";
-import { Button } from "@/components/ui/button";
-
-// 패널 타입 정의
-type ActivePanelType = 'library' | 'midi' | 'metronome' | null;
-
-// 패널 버튼 컴포넌트
-interface PanelButtonProps {
-  panelName: ActivePanelType;
-  activePanel: ActivePanelType;
-  icon: React.ReactNode;
-  onClick: () => void;
-}
-
-const PanelButton = ({ panelName, activePanel, icon, onClick }: PanelButtonProps) => (
-  <Button
-    variant={activePanel === panelName ? "default" : "outline"}
-    size="icon"
-    onClick={onClick}
-    className="h-10 w-10 rounded-full"
-  >
-    {icon}
-  </Button>
-);
-
-// 패널 영역 컴포넌트
-interface ActivePanelProps {
-  activePanel: ActivePanelType;
-  selectedSheet: string | null;
-  onSheetSelect: (sheetTitle: string) => void;
-  onFileUpload: () => void;
-  fileInputRef: React.RefObject<HTMLInputElement>;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  metronomeActive: boolean;
-  metronomeTempo: number;
-  metronomeVolume: number;
-  onToggleMetronome: () => void;
-  onMetronomeTempoChange: (value: number) => void;
-  onMetronomeVolumeChange: (value: number) => void;
-}
-
-const ActivePanelComponent = ({
-  activePanel,
-  selectedSheet,
-  onSheetSelect,
-  onFileUpload,
-  fileInputRef,
-  onFileChange,
-  metronomeActive,
-  metronomeTempo,
-  metronomeVolume,
-  onToggleMetronome,
-  onMetronomeTempoChange,
-  onMetronomeVolumeChange
-}: ActivePanelProps) => {
-  if (!activePanel) return null;
-  
-  return (
-    <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-[90%] max-w-md bg-white border rounded-lg shadow-lg p-4">
-      {activePanel === "library" && (
-        <SheetLibrary 
-          selectedSheet={selectedSheet}
-          onSheetSelect={onSheetSelect}
-          onFileUpload={onFileUpload}
-          fileInputRef={fileInputRef}
-          onFileChange={onFileChange}
-        />
-      )}
-      {activePanel === "midi" && (
-        <MidiConnectionPanel />
-      )}
-      {activePanel === "metronome" && (
-        <MetronomePanel 
-          isActive={metronomeActive}
-          tempo={metronomeTempo}
-          volume={metronomeVolume}
-          onToggle={onToggleMetronome}
-          onTempoChange={onMetronomeTempoChange}
-          onVolumeChange={onMetronomeVolumeChange}
-        />
-      )}
-    </div>
-  );
-};
+import { PanelButton, ActivePanelType } from "@/components/lesson-room/PanelButton";
+import { ActivePanelComponent } from "@/components/lesson-room/ActivePanelComponent";
 
 // 메인 컴포넌트
 const PracticeRoom = () => {
