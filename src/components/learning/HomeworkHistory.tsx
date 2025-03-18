@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ClipboardCheck, FileText } from "lucide-react";
 import { HomeworkDetailModal } from "./HomeworkDetailModal";
 import { useToast } from "@/hooks/use-toast";
+import { FileTypeIcon } from "./FileTypeIcon";
 
 interface Homework {
   title: string;
@@ -114,7 +115,7 @@ export const HomeworkHistory = ({ homeworks, showSubmitted = true }: HomeworkHis
           <CardHeader>
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
+                <FileTypeIcon fileType={homework.fileType} />
                 <div>
                   <CardTitle className="text-lg">{homework.title}</CardTitle>
                   <CardDescription>
