@@ -27,9 +27,9 @@ const sidebarItems = [
     ]
   },
   {
-    title: "새로운 소식",
+    title: "하모닉 소식",
     items: [
-      { name: "하모닉TOP100", icon: List, link: "/news/top-100" },
+      { name: "TOP100", icon: List, link: "/news/top-100" },
       { name: "공연소식", icon: Theater, link: "/news/performances" },
       { name: "뉴스소식", icon: Newspaper, link: "/news/news" },
       { name: "사업소식", icon: Briefcase, link: "/news/business" },

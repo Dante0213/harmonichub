@@ -15,7 +15,7 @@ const Top100 = () => {
           <div className="container px-4 py-10 mx-auto">
             <div className="flex items-center mb-6 gap-2">
               <List className="w-6 h-6 text-primary" />
-              <h1 className="text-3xl font-bold">하모닉 TOP 100</h1>
+              <h1 className="text-3xl font-bold">TOP 100</h1>
             </div>
             
             <Tabs defaultValue="week" className="w-full mb-6">
