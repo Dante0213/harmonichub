@@ -95,24 +95,6 @@ export function TimeSlotSelection({
         )}
       </div>
 
-      {/* 원포인트 레슨 요청 버튼 */}
-      <div className="mt-6">
-        <Button 
-          variant="secondary" 
-          className="w-full" 
-          onClick={handleOnePointRequest}
-          disabled={onePointRequested}
-        >
-          <Zap className="w-4 h-4 mr-2" />
-          5~10분 단위 원포인트 레슨 원해요
-        </Button>
-        {onePointRequested && (
-          <p className="text-xs text-muted-foreground text-center mt-1">
-            1시간 후에 다시 요청할 수 있습니다
-          </p>
-        )}
-      </div>
-
       {/* 원포인트 레슨 모달 */}
       <Dialog open={isOnePointModalOpen} onOpenChange={setIsOnePointModalOpen}>
         <DialogContent className="sm:max-w-md">

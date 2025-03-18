@@ -48,7 +48,7 @@ export function TeacherScheduleModal({ isOpen, onClose, teacherName, teacherId }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[500px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[600px] max-w-[95vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>레슨 예약</DialogTitle>
           <DialogDescription>
@@ -57,11 +57,13 @@ export function TeacherScheduleModal({ isOpen, onClose, teacherName, teacherId }
         </DialogHeader>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <ScheduleCalendar 
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            schedule={schedule}
-          />
+          <div className="space-y-6">
+            <ScheduleCalendar 
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              schedule={schedule}
+            />
+          </div>
 
           <TimeSlotSelection 
             timeSlots={getTimeSlotsForDate(schedule, selectedDate)}
