@@ -21,7 +21,7 @@ export function TeacherFeatured({ onlyProfessional = false }: TeacherFeaturedPro
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
       {/* Top Teachers Card */}
       <TopTeachersList 
-        onlyProfessional={onlyProfessional} 
+        onlyProfessional={true} // Always show only professional teachers
         onSelectTeacher={openTeacherProfile} 
       />
       
