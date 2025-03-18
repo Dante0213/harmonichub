@@ -94,11 +94,8 @@ export function UserProfileDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/user-avatar.png" alt="사용자 프로필" />
-            <AvatarFallback>{userNickname.charAt(0)}</AvatarFallback>
-          </Avatar>
+        <Button variant="ghost" className="relative px-2 rounded-full">
+          <span className="font-medium">My</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>

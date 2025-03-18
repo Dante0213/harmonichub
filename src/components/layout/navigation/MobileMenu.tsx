@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Music, FileQuestion, Bell, Info, X, User, ShoppingBag, MessageCircle, BookOpen, LogOut } from "lucide-react";
@@ -64,8 +63,8 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen, handleNavClick }: Mobile
       {isLoggedIn && userData && (
         <div className="p-4 mb-2 border-b">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <span className="text-lg font-medium">{userData.nickname?.charAt(0) || 'U'}</span>
+            <div className="px-3 py-1 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-base font-medium">My</span>
             </div>
             <div>
               <p className="font-medium">{userData.nickname || '사용자'}</p>
