@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -220,7 +219,7 @@ export function Chatbot() {
                       <Switch 
                         checked={notificationSetting.toastEnabled}
                         onCheckedChange={(checked) => setNotificationSetting(prev => ({...prev, toastEnabled: checked}))}
-                        size="sm"
+                        className="scale-75"
                       />
                     </div>
                     <div className="flex items-center gap-1">
@@ -230,7 +229,7 @@ export function Chatbot() {
                       <Switch 
                         checked={notificationSetting.badgeEnabled}
                         onCheckedChange={(checked) => setNotificationSetting(prev => ({...prev, badgeEnabled: checked}))}
-                        size="sm"
+                        className="scale-75"
                       />
                     </div>
                   </div>
@@ -336,4 +335,3 @@ function formatMessageTime(timestamp: Date): string {
   
   return timestamp.toLocaleDateString();
 }
-
