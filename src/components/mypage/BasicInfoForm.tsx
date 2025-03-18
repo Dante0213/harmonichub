@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { basicInfoSchema } from "./schema";
+import { AddressSearch } from "@/components/common/AddressSearch";
 
 export type BasicInfoFormValues = z.infer<typeof basicInfoSchema>;
 
@@ -38,7 +39,7 @@ export function BasicInfoForm({ defaultValues, onSubmit, isSubmitting }: BasicIn
             <FormItem>
               <FormLabel>이름</FormLabel>
               <FormControl>
-                <Input placeholder="이름을 입력하세요" {...field} />
+                <Input placeholder="이름을 입력하세요" {...field} disabled className="bg-muted" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -77,7 +78,7 @@ export function BasicInfoForm({ defaultValues, onSubmit, isSubmitting }: BasicIn
             <FormItem>
               <FormLabel>주소</FormLabel>
               <FormControl>
-                <Input placeholder="주소를 입력하세요" {...field} />
+                <AddressSearch value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

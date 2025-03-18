@@ -6,6 +6,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessa
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { AddressSearch } from "@/components/common/AddressSearch";
 
 interface BasicInfoFormProps {
   form: UseFormReturn<ProfessionalFormValues>;
@@ -91,7 +92,7 @@ export default function BasicInfoForm({ form }: BasicInfoFormProps) {
             <FormItem>
               <FormLabel>주소</FormLabel>
               <FormControl>
-                <Input placeholder="서울시 강남구 역삼동" {...field} />
+                <AddressSearch value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormDescription>
                 레슨 장소 및 필요 서류 배송에 사용됩니다.
