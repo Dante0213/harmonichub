@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, FileText } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { isValidFileType, isValidFileSize } from "@/lib/file-utils";
@@ -14,6 +14,8 @@ export const HomeworkSubmission = () => {
   const [file, setFile] = useState<File | null>(null);
   const [teacherName, setTeacherName] = useState("");
   const [description, setDescription] = useState("");
+  const [currentTab, setCurrentTab] = useState("upload");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [savedFiles, setSavedFiles] = useState<{name: string, date: string, teacher: string}[]>([
     { name: "피아노_연습_녹음.mp3", date: "2023-07-10", teacher: "김지수" },
     { name: "기타_코드_연습.pdf", date: "2023-07-05", teacher: "박현우" },
@@ -23,6 +25,24 @@ export const HomeworkSubmission = () => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
+  };
+
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
   };
 
   const handleSubmit = () => {
@@ -57,8 +77,11 @@ export const HomeworkSubmission = () => {
     setDescription("");
     
     // 파일 input 초기화
-    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleTabChange = (value: string) => {
+    setCurrentTab(value);
   };
 
   return (
@@ -79,7 +102,7 @@ export const HomeworkSubmission = () => {
           />
         </div>
 
-        <Tabs defaultValue="upload" className="w-full">
+        <Tabs defaultValue="upload" className="w-full" onValueChange={handleTabChange}>
           <TabsList className="mb-4 grid grid-cols-2">
             <TabsTrigger value="upload">파일 업로드</TabsTrigger>
             <TabsTrigger value="storage">보낸 과제</TabsTrigger>
@@ -87,18 +110,21 @@ export const HomeworkSubmission = () => {
           
           <TabsContent value="upload">
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center">
+              <div 
+                className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer"
+                onDrop={handleFileDrop}
+                onDragOver={handleDragOver}
+                onClick={handleFileSelect}
+              >
                 <Upload className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
                 <p className="text-sm text-muted-foreground mb-2">파일을 드래그하거나 클릭하여 업로드</p>
                 <input
                   type="file"
                   className="hidden"
-                  id="file-upload"
+                  ref={fileInputRef}
                   onChange={handleFileChange}
                 />
-                <Label htmlFor="file-upload" className="cursor-pointer">
-                  <Button variant="outline" size="sm">파일 선택</Button>
-                </Label>
+                <Button variant="outline" size="sm" type="button">파일 선택</Button>
                 {file && (
                   <p className="mt-2 text-sm text-green-600">{file.name}</p>
                 )}
@@ -150,7 +176,7 @@ export const HomeworkSubmission = () => {
         </Tabs>
       </CardContent>
       <CardFooter>
-        <Tabs defaultValue="upload" className="w-full">
+        <Tabs value={currentTab} className="w-full">
           <TabsContent value="upload">
             <Button className="w-full" onClick={handleSubmit}>제출하기</Button>
           </TabsContent>
