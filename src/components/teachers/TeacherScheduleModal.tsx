@@ -4,6 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { Textarea } from "@/components/ui/textarea";
+import { AlignJustify } from "lucide-react";
 
 import { ScheduleCalendar } from "./ScheduleCalendar";
 import { TimeSlotSelection } from "./TimeSlotSelection";
@@ -14,6 +16,7 @@ export function TeacherScheduleModal({ isOpen, onClose, teacherName, teacherId }
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const { toast } = useToast();
 
   // 선생님 일정 데이터 불러오기
@@ -64,6 +67,19 @@ export function TeacherScheduleModal({ isOpen, onClose, teacherName, teacherId }
             timeSlots={getTimeSlotsForDate(schedule, selectedDate)}
             selectedTimeSlot={selectedTimeSlot}
             setSelectedTimeSlot={setSelectedTimeSlot}
+          />
+        </div>
+
+        {/* 추가 정보 입력란 */}
+        <div className="mt-6">
+          <div className="flex items-center text-sm font-medium mb-2">
+            <AlignJustify className="w-4 h-4 mr-2" /> 추가 정보 입력
+          </div>
+          <Textarea
+            placeholder="배우고 싶은 내용이나 목적, 목표 등을 자유롭게 써주세요."
+            value={additionalInfo}
+            onChange={(e) => setAdditionalInfo(e.target.value)}
+            className="min-h-[80px]"
           />
         </div>
 
