@@ -27,7 +27,7 @@ export const HomeworkSubmission = () => {
 
   const handleSubmit = () => {
     if (!teacherName) {
-      toast.error("선생님 이름을 입력해주세요.");
+      toast.error("받는 사람을 입력해주세요.");
       return;
     }
 
@@ -64,12 +64,12 @@ export const HomeworkSubmission = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>숙제 제출</CardTitle>
-        <CardDescription>숙제를 선생님에게 제출하세요</CardDescription>
+        <CardTitle>과제 제출</CardTitle>
+        <CardDescription>과제를 선생님에게 제출하세요</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <Label htmlFor="teacher-name">선생님 이름</Label>
+          <Label htmlFor="teacher-name">받는 사람</Label>
           <Input 
             id="teacher-name" 
             placeholder="과제를 제출할 선생님 이름" 
@@ -108,7 +108,7 @@ export const HomeworkSubmission = () => {
                 <Label htmlFor="assignment-desc">설명 (선택사항)</Label>
                 <Textarea 
                   id="assignment-desc" 
-                  placeholder="숙제에 대한 설명을 적어주세요" 
+                  placeholder="과제에 대한 설명을 적어주세요" 
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
