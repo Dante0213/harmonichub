@@ -67,16 +67,7 @@ export function ControlBar({
       </div>
       
       <div className="flex items-center space-x-2">
-        {/* 연습/레슨 모드 전환 버튼 - 항상 같은 위치에 표시 */}
-        <Button 
-          variant={practiceMode ? "secondary" : "outline"}
-          size="sm"
-          onClick={onTogglePracticeMode}
-          className="flex items-center gap-1"
-        >
-          <Music className="h-4 w-4" />
-          <span>{practiceMode ? "레슨 모드" : "연습 모드"}</span>
-        </Button>
+        {/* 연습/레슨 모드 전환 버튼 제거 */}
         
         {/* 레슨 모드에서만 표시할 버튼들 */}
         {!practiceMode && (

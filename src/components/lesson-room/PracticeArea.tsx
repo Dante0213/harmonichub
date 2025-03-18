@@ -29,16 +29,7 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-medium">연습 모드</h2>
             
-            {/* 연습모드 전환 버튼 (같은 위치에 고정) */}
-            <Button 
-              variant="secondary"
-              size="sm"
-              onClick={onTogglePracticeMode}
-              className="flex items-center gap-1"
-            >
-              <Music className="h-4 w-4" />
-              <span>레슨 모드</span>
-            </Button>
+            {/* 연습모드 전환 버튼 제거됨 */}
           </div>
           
           {/* 악보 표시 영역 */}
