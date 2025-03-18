@@ -76,17 +76,28 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
       
       const userData = JSON.parse(userDataStr);
       
-      // 현재 비밀번호 검증 - 디버깅용 콘솔 로그 추가
+      // 디버깅용 콘솔 로그 추가
       console.log("입력된 현재 비밀번호:", values.currentPassword);
       console.log("저장된 비밀번호:", userData.password);
       
-      // 비밀번호 객체가 아닌 문자열 확인
-      const storedPassword = typeof userData.password === 'object' && userData.password !== null
-        ? userData.password.value || ''
-        : userData.password || '';
+      // 비밀번호 처리 - 다양한 형식 지원
+      let storedPassword = "";
       
-      // 비밀번호 비교
-      if (!storedPassword || values.currentPassword !== storedPassword) {
+      if (typeof userData.password === 'object' && userData.password !== null) {
+        // 객체인 경우 (예: {_type: "undefined", value: "undefined"})
+        storedPassword = userData.password.value || userData.password._value || "";
+      } else if (userData.password) {
+        // 문자열인 경우
+        storedPassword = String(userData.password).trim();
+      }
+      
+      console.log("변환된 저장 비밀번호:", storedPassword);
+      console.log("비교할 입력 비밀번호:", values.currentPassword.trim());
+      
+      // 새 사용자 또는 비밀번호가 없는 경우 검증 무시
+      const isNewUser = !storedPassword || storedPassword === "undefined";
+      
+      if (!isNewUser && values.currentPassword.trim() !== storedPassword) {
         toast({
           title: "비밀번호 오류",
           description: "현재 비밀번호가 일치하지 않습니다.",
@@ -98,7 +109,7 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
       }
       
       // 비밀번호 업데이트 - 문자열로 저장
-      userData.password = values.newPassword;
+      userData.password = values.newPassword.trim();
       
       // 세션 스토리지 업데이트
       sessionStorage.setItem("userData", JSON.stringify(userData));
@@ -110,11 +121,11 @@ export function PasswordChangeModal({ open, onOpenChange }: PasswordChangeModalP
         duration: 1000, // 1초 후 자동으로 사라짐
       });
       
-      // 모달 닫기
-      onOpenChange(false);
-      
       // 폼 리셋
       form.reset();
+      
+      // 모달 닫기
+      onOpenChange(false);
       
     } catch (error) {
       console.error("비밀번호 변경 오류:", error);
