@@ -1,6 +1,6 @@
 
 import { PianoKeyboard } from "./PianoKeyboard";
-import { Music } from "lucide-react";
+import { Music, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
@@ -31,13 +31,13 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
             
             {/* 연습모드 전환 버튼 (같은 위치에 고정) */}
             <Button 
-              variant={practiceMode ? "secondary" : "outline"}
+              variant="secondary"
               size="sm"
               onClick={onTogglePracticeMode}
               className="flex items-center gap-1"
             >
               <Music className="h-4 w-4" />
-              <span>{practiceMode ? "레슨 모드" : "연습 모드"}</span>
+              <span>레슨 모드</span>
             </Button>
           </div>
           
@@ -83,7 +83,8 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
                 onClick={togglePlay}
                 className="flex items-center gap-1"
               >
-                {isPlaying ? "일시정지" : "재생"}
+                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                <span>{isPlaying ? "일시정지" : "재생"}</span>
               </Button>
             </div>
           </div>

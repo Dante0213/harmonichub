@@ -43,22 +43,27 @@ export function ControlBar({
   return (
     <div className="h-16 bg-background border-t flex items-center justify-between px-4">
       <div className="flex items-center space-x-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={onToggleMic}
-          className={!micEnabled ? "bg-red-100 text-red-500 border-red-200" : ""}
-        >
-          {micEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={onToggleVideo}
-          className={!videoEnabled ? "bg-red-100 text-red-500 border-red-200" : ""}
-        >
-          {videoEnabled ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
-        </Button>
+        {/* 오디오/비디오 컨트롤은 레슨 모드에서만 표시 */}
+        {!practiceMode && (
+          <>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onToggleMic}
+              className={!micEnabled ? "bg-red-100 text-red-500 border-red-200" : ""}
+            >
+              {micEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onToggleVideo}
+              className={!videoEnabled ? "bg-red-100 text-red-500 border-red-200" : ""}
+            >
+              {videoEnabled ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
+            </Button>
+          </>
+        )}
       </div>
       
       <div className="flex items-center space-x-2">
@@ -108,11 +113,11 @@ export function ControlBar({
         )}
         
         {/* 레슨 모드에서만 채팅 아이콘 표시 */}
-        {!practiceMode ? (
+        {!practiceMode && (
           <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
             <MessageSquare className="h-5 w-5" />
           </Button>
-        ) : null}
+        )}
       </div>
       
       <div>
