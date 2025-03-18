@@ -2,6 +2,14 @@
 import { create } from "zustand";
 import { toast } from "sonner";
 
+export type ChatMessage = {
+  id: string;
+  text: string;
+  sender: string;
+  timestamp: Date;
+  type?: 'lesson' | 'normal' | 'onepoint';
+};
+
 export type Message = {
   id: string;
   text: string;
@@ -20,9 +28,6 @@ export type DirectMessage = {
   avatar?: string;
   isOnePointRequest?: boolean;
   read?: boolean;
-  text?: string;
-  sender?: string;
-  senderAvatar?: string;
 };
 
 export type NotificationSetting = {
@@ -41,7 +46,7 @@ interface ChatbotState {
   
   // Data States
   messages: Message[];
-  currentChat: Message[];
+  currentChat: ChatMessage[];
   directMessages: DirectMessage[];
   activeUserId: number | null;
   notificationSetting: NotificationSetting;
@@ -171,7 +176,7 @@ export const useChatbot = create<ChatbotState>((set, get) => {
       if (state.activeUserId !== null) {
         // DM 응답 (실제로는 API 호출)
         setTimeout(() => {
-          const teacherResponse: Message = {
+          const teacherResponse: ChatMessage = {
             id: `teacher-${Date.now()}`,
             text: `[자동 응답] "${text}"에 대한 답변은 곧 선생님이 확인 후 답변드릴 예정입니다.`,
             sender: "teacher",
@@ -326,10 +331,7 @@ export const useChatbot = create<ChatbotState>((set, get) => {
       
       // 해당 선생님과 대화 중이지 않거나 채팅이 닫혀있는 경우 토스트 알림
       if (activeUserId !== teacherId || !isOpen) {
-        toast({
-          description: "학생으로부터 원포인트 레슨 요청이 도착했습니다.",
-          duration: 1000, // 1초 후 자동으로 사라짐
-        });
+        toast("학생으로부터 원포인트 레슨 요청이 도착했습니다.");
       }
     }
   };
