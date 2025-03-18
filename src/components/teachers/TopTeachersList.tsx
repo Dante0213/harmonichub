@@ -50,7 +50,7 @@ export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: T
       certificates: "바이올린 마스터 자격증",
       introduction: "바이올린의 아름다움을 전달합니다.",
       category: "클래식",
-      isProfessional: false,
+      isProfessional: true,
     },
   ];
   
@@ -59,15 +59,17 @@ export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: T
     // 로컬 스토리지에서 등록된 선생님 가져오기
     const storedTeachers = JSON.parse(localStorage.getItem('teachers') || '[]');
     
-    // 전문가만 필터링해서 표시
+    // 모든 선생님들을 전문가로 설정
     let filteredTeachers = [...topTeachers];
     
-    if (onlyProfessional) {
-      filteredTeachers = filteredTeachers.filter(teacher => teacher.isProfessional);
-    }
+    // 저장된 선생님들도 모두 전문가로 설정
+    const professionalStoredTeachers = storedTeachers.map((teacher: any) => ({
+      ...teacher,
+      isProfessional: true
+    }));
     
     // 등록된 선생님들 추가
-    const allTeachers = [...filteredTeachers, ...storedTeachers].slice(0, 3);
+    const allTeachers = [...filteredTeachers, ...professionalStoredTeachers].slice(0, 3);
     setTeachers(allTeachers);
   }, [onlyProfessional]);
 

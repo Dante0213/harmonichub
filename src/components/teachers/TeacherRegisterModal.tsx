@@ -41,6 +41,7 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
       introduction,
       image,
       musicTypes,
+      isProfessional: true, // 모든 선생님을 전문가로 설정
       schedule: {
         date: selectedDate,
         availableTimes
