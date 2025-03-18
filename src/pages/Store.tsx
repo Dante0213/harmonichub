@@ -30,14 +30,18 @@ const Store = () => {
         <Tabs defaultValue={activeTab} className="w-full" onValueChange={handleTabChange}>
           <TabsList className="mb-6">
             <TabsTrigger value="all">전체 상품</TabsTrigger>
+            <TabsTrigger value="vod">VOD 강의</TabsTrigger>
             <TabsTrigger value="instruments">악기</TabsTrigger>
             <TabsTrigger value="books">교재</TabsTrigger>
-            <TabsTrigger value="vod">VOD 강의</TabsTrigger>
             <TabsTrigger value="accessories">악세서리</TabsTrigger>
           </TabsList>
           
           <TabsContent value="all">
             <AllProductsTab />
+          </TabsContent>
+          
+          <TabsContent value="vod">
+            <VodTab />
           </TabsContent>
           
           <TabsContent value="instruments">
@@ -46,10 +50,6 @@ const Store = () => {
           
           <TabsContent value="books">
             <BooksTab />
-          </TabsContent>
-          
-          <TabsContent value="vod">
-            <VodTab />
           </TabsContent>
           
           <TabsContent value="accessories">
