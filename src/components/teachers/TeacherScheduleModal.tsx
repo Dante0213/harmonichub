@@ -66,7 +66,19 @@ export function TeacherScheduleModal({ isOpen, onClose, teacherName, teacherId }
 
   // 원포인트 레슨 요청 제출
   const handleSubmitOnePointRequest = () => {
-    // 원포인트 레슨 요청 제출 및 쿨다운 시작
+    if (!onePointNote.trim()) {
+      toast({
+        title: "내용을 입력해주세요",
+        description: "원포인트 레슨에 대한 내용을 입력해야 요청이 가능합니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // 선생님의 메시지함으로 원포인트 레슨 요청 전송
+    // 실제 구현에서는 API를 통해 데이터베이스에 저장
+    sendOnePointRequestToTeacher(teacherId, teacherName, onePointNote);
+    
     toast({
       title: "원포인트 레슨 요청 완료",
       description: "선생님께 원포인트 레슨 요청이 전송되었습니다.",
@@ -74,11 +86,66 @@ export function TeacherScheduleModal({ isOpen, onClose, teacherName, teacherId }
     
     setOnePointRequested(true);
     setIsOnePointModalOpen(false);
+    setOnePointNote("");
     
     // 1시간 후 다시 요청 가능하도록 설정
     setTimeout(() => {
       setOnePointRequested(false);
     }, 60 * 60 * 1000); // 1시간(밀리초)
+  };
+
+  // 선생님에게 원포인트 레슨 요청 메시지 전송
+  const sendOnePointRequestToTeacher = (teacherId: number, teacherName: string, content: string) => {
+    // 실제 구현에서는 이 부분이 API 호출이 됨
+    // 여기서는 로컬 스토리지를 통해 시뮬레이션
+    
+    try {
+      // 기존 메시지 가져오기 (실제로는 DB에서 가져와야 함)
+      const storedMessages = localStorage.getItem('teacherMessages');
+      let teacherMessages = storedMessages ? JSON.parse(storedMessages) : {};
+      
+      // 해당 선생님에 대한 메시지 배열이 없으면 생성
+      if (!teacherMessages[teacherId]) {
+        teacherMessages[teacherId] = [];
+      }
+      
+      // 새 메시지 추가
+      const newMessage = {
+        id: Date.now(),
+        sender: '학생', // 실제로는 로그인한 유저 정보 사용
+        senderAvatar: 'ST', // 실제로는 유저 아바타 사용
+        text: `원포인트 레슨 요청: ${content}`,
+        timestamp: new Date(),
+        read: false,
+        isOnePointRequest: true
+      };
+      
+      teacherMessages[teacherId].push(newMessage);
+      
+      // 저장 (실제로는 DB에 저장)
+      localStorage.setItem('teacherMessages', JSON.stringify(teacherMessages));
+      
+      // 로컬 스토리지에 원포인트 레슨 요청 이벤트 트리거
+      const onePointEvent = {
+        type: 'onePointRequest',
+        teacherId,
+        teacherName,
+        message: newMessage
+      };
+      localStorage.setItem('onePointRequestEvent', JSON.stringify(onePointEvent));
+      
+      // 이벤트 발생 알림을 위한 커스텀 이벤트 발생
+      const event = new CustomEvent('onePointRequest', { detail: onePointEvent });
+      window.dispatchEvent(event);
+      
+    } catch (error) {
+      console.error('원포인트 레슨 요청 전송 중 오류 발생:', error);
+      toast({
+        title: "요청 실패",
+        description: "원포인트 레슨 요청을 전송하는 중 오류가 발생했습니다.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

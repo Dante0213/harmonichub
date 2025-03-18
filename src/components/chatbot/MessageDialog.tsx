@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, Zap } from "lucide-react";
 import { DirectMessage } from "@/hooks/use-chatbot";
 
 interface ChatMessage {
@@ -82,7 +82,14 @@ export function MessageDialog({ isOpen, onClose, message }: MessageDialogProps) 
               <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
                 {message.senderAvatar}
               </div>
-              <DialogTitle>{message.sender}님과의 대화</DialogTitle>
+              <div className="flex flex-col">
+                <DialogTitle>{message.sender}</DialogTitle>
+                {message.isOnePointRequest && (
+                  <span className="text-xs flex items-center text-blue-500 font-medium">
+                    <Zap className="h-3 w-3 mr-1" /> 원포인트 레슨 요청
+                  </span>
+                )}
+              </div>
             </div>
             {/* Removed the X button here since DialogContent already has a close button */}
           </div>
@@ -104,7 +111,9 @@ export function MessageDialog({ isOpen, onClose, message }: MessageDialogProps) 
                   className={`max-w-[80%] rounded-lg px-3 py-2 ${
                     msg.sender === 'user'
                       ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
+                      : message.isOnePointRequest 
+                        ? 'bg-blue-100 dark:bg-blue-900/30' 
+                        : 'bg-muted'
                   }`}
                 >
                   <p className="text-sm">{msg.content}</p>

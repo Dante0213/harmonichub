@@ -16,6 +16,7 @@ type DirectMessage = {
   text: string;
   timestamp: Date;
   read: boolean;
+  isOnePointRequest?: boolean;
 };
 
 type NotificationSetting = {
@@ -66,6 +67,95 @@ export function useChatbot() {
     badgeEnabled: true
   });
   const { toast } = useToast();
+
+  // 원포인트 레슨 요청 이벤트 리스너 등록
+  useEffect(() => {
+    // 로컬 스토리지 이벤트 확인
+    const checkOnePointRequests = () => {
+      const onePointEvent = localStorage.getItem('onePointRequestEvent');
+      if (onePointEvent) {
+        try {
+          const event = JSON.parse(onePointEvent);
+          
+          // 이미 처리된 이벤트인지 확인
+          const processedEvents = localStorage.getItem('processedOnePointEvents') || '[]';
+          const processedEventIds = JSON.parse(processedEvents);
+          
+          if (!processedEventIds.includes(event.message.id)) {
+            // 새 메시지 추가
+            const newMessage: DirectMessage = {
+              id: event.message.id,
+              sender: '학생으로부터',
+              senderAvatar: event.message.senderAvatar,
+              text: event.message.text,
+              timestamp: new Date(event.message.timestamp),
+              read: false,
+              isOnePointRequest: true
+            };
+            
+            setDirectMessages(prev => [newMessage, ...prev]);
+            
+            // 알림 표시
+            if (notificationSetting.toastEnabled) {
+              toast({
+                title: "새 원포인트 레슨 요청",
+                description: `학생으로부터 원포인트 레슨 요청이 도착했습니다.`,
+              });
+            }
+            
+            // 처리된 이벤트로 표시
+            processedEventIds.push(event.message.id);
+            localStorage.setItem('processedOnePointEvents', JSON.stringify(processedEventIds));
+          }
+          
+          // 이벤트 처리 후 삭제
+          localStorage.removeItem('onePointRequestEvent');
+        } catch (error) {
+          console.error('원포인트 이벤트 처리 중 오류 발생:', error);
+        }
+      }
+    };
+
+    // 페이지 로드시 확인
+    checkOnePointRequests();
+
+    // 커스텀 이벤트 리스너 등록
+    const handleOnePointRequest = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const data = customEvent.detail;
+      
+      // 새 메시지 추가
+      const newMessage: DirectMessage = {
+        id: data.message.id,
+        sender: '학생으로부터',
+        senderAvatar: data.message.senderAvatar,
+        text: data.message.text,
+        timestamp: new Date(data.message.timestamp),
+        read: false,
+        isOnePointRequest: true
+      };
+      
+      setDirectMessages(prev => [newMessage, ...prev]);
+      
+      // 알림 표시
+      if (notificationSetting.toastEnabled) {
+        toast({
+          title: "새 원포인트 레슨 요청",
+          description: `학생으로부터 원포인트 레슨 요청이 도착했습니다.`,
+        });
+      }
+    };
+
+    window.addEventListener('onePointRequest', handleOnePointRequest);
+    
+    // 정기적으로 로컬 스토리지 확인 (다른 탭에서 발생한 이벤트 처리를 위함)
+    const intervalId = setInterval(checkOnePointRequests, 5000);
+
+    return () => {
+      window.removeEventListener('onePointRequest', handleOnePointRequest);
+      clearInterval(intervalId);
+    };
+  }, [toast, notificationSetting.toastEnabled]);
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
