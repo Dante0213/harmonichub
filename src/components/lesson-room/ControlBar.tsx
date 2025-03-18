@@ -75,11 +75,13 @@ export function ControlBar({
             <Button variant="outline" size="icon" onClick={onShareScreen}>
               <ScreenShare className="h-5 w-5" />
             </Button>
-            <Button variant="outline" size="icon" onClick={onFileUpload}>
-              <FileUp className="h-5 w-5" />
-            </Button>
           </>
         )}
+        
+        {/* 파일 업로드 버튼 - 연습 모드에서도 보이게 함 */}
+        <Button variant="outline" size="icon" onClick={onFileUpload}>
+          <FileUp className="h-5 w-5" />
+        </Button>
         
         {/* 메트로놈 - 두 모드 모두 표시 */}
         <MetronomePopover
@@ -113,7 +115,7 @@ export function ControlBar({
       
       <div>
         <Button variant="destructive" onClick={onEndLesson}>
-          레슨 종료
+          {practiceMode ? "연습 종료" : "레슨 종료"}
         </Button>
       </div>
     </div>

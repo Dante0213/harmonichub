@@ -1,15 +1,86 @@
 
 import { PianoKeyboard } from "./PianoKeyboard";
-import { Music, Play, Pause } from "lucide-react";
+import { Music, Play, Pause, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onTogglePracticeMode: () => void, practiceMode: boolean }) {
+interface PracticeAreaProps {
+  onTogglePracticeMode: () => void;
+  practiceMode: boolean;
+  selectedSheet?: string | null;
+  sheetFile?: File | null;
+}
+
+export function PracticeArea({ 
+  onTogglePracticeMode, 
+  practiceMode, 
+  selectedSheet, 
+  sheetFile 
+}: PracticeAreaProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180); // 3분 (예시)
   const [volume, setVolume] = useState([50]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const pdfContainerRef = useRef<HTMLDivElement>(null);
+  
+  // PDF 객체 URL
+  const [pdfObjectUrl, setPdfObjectUrl] = useState<string | null>(null);
+
+  // 선택된 악보나 파일이 변경되면 PDF 객체 URL 업데이트
+  useEffect(() => {
+    if (sheetFile) {
+      const objectUrl = URL.createObjectURL(sheetFile);
+      setPdfObjectUrl(objectUrl);
+      
+      // 컴포넌트 언마운트시 객체 URL 해제
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    } else {
+      setPdfObjectUrl(null);
+    }
+  }, [sheetFile]);
+
+  // 오디오 객체를 통한 재생 처리
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+      
+      // 선택된 악보에 따라 오디오 파일 설정 (예시)
+      if (selectedSheet) {
+        // 실제로는 서버에서 해당 악보에 맞는 오디오 파일 URL을 가져와야 함
+        audioRef.current.src = `/audio/${selectedSheet}.mp3`;
+      } else {
+        audioRef.current.src = '/audio/default-piano.mp3';
+      }
+      
+      // 오디오 이벤트 리스너
+      audioRef.current.addEventListener('timeupdate', updateProgress);
+      audioRef.current.addEventListener('loadedmetadata', () => {
+        setDuration(audioRef.current?.duration || 0);
+      });
+      audioRef.current.addEventListener('ended', () => {
+        setIsPlaying(false);
+        setCurrentTime(0);
+      });
+    }
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeEventListener('timeupdate', updateProgress);
+        audioRef.current = null;
+      }
+    };
+  }, [selectedSheet]);
+
+  const updateProgress = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -18,7 +89,28 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
   };
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleProgressChange = (value: number[]) => {
+    if (audioRef.current && value.length > 0) {
+      audioRef.current.currentTime = value[0];
+      setCurrentTime(value[0]);
+    }
+  };
+
+  const handleVolumeChange = (value: number[]) => {
+    setVolume(value);
+    if (audioRef.current && value.length > 0) {
+      audioRef.current.volume = value[0] / 100;
+    }
   };
 
   return (
@@ -28,13 +120,32 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
         <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-4 mb-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-medium">연습 모드</h2>
-            
-            {/* 연습모드 전환 버튼 제거됨 */}
           </div>
           
           {/* 악보 표시 영역 */}
-          <div className="w-full aspect-[4/3] bg-gray-100 rounded-md flex items-center justify-center mb-4">
-            <p className="text-gray-500">여기에 악보가 표시됩니다</p>
+          <div 
+            className="w-full aspect-[4/3] bg-gray-100 rounded-md flex items-center justify-center mb-4 overflow-hidden"
+            ref={pdfContainerRef}
+          >
+            {pdfObjectUrl ? (
+              <object 
+                data={pdfObjectUrl} 
+                type="application/pdf" 
+                width="100%" 
+                height="100%"
+                className="w-full h-full"
+              >
+                <p>PDF를 표시할 수 없습니다. <a href={pdfObjectUrl} target="_blank" rel="noopener noreferrer">다운로드</a></p>
+              </object>
+            ) : selectedSheet ? (
+              <div className="flex flex-col items-center justify-center">
+                <FileText className="h-12 w-12 text-gray-400 mb-2" />
+                <p className="text-gray-600 font-medium">{selectedSheet}</p>
+                <p className="text-gray-500 text-sm">선택된 악보가 표시됩니다</p>
+              </div>
+            ) : (
+              <p className="text-gray-500">왼쪽 라이브러리에서 악보를 선택하세요</p>
+            )}
           </div>
           
           {/* 음원 플레이어 UI */}
@@ -42,7 +153,7 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Music className="h-5 w-5 text-gray-600" />
-                <span className="font-medium">쇼팽 녹턴 Op.9 No.2</span>
+                <span className="font-medium">{selectedSheet || "선택된 악보가 없습니다"}</span>
               </div>
               <div className="text-sm text-gray-500">
                 {formatTime(currentTime)} / {formatTime(duration)}
@@ -54,7 +165,7 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
               value={[currentTime]} 
               max={duration} 
               step={1}
-              onValueChange={(value) => setCurrentTime(value[0])}
+              onValueChange={(value) => handleProgressChange(value)}
               className="mb-4"
             />
             
@@ -65,7 +176,7 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
                   value={volume} 
                   max={100} 
                   step={1}
-                  onValueChange={setVolume}
+                  onValueChange={handleVolumeChange}
                 />
               </div>
               <Button 

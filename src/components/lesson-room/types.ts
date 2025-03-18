@@ -30,3 +30,10 @@ export interface ControlBarProps {
   practiceMode: boolean;
   onTogglePracticeMode: () => void;
 }
+
+export interface PracticeAreaProps {
+  onTogglePracticeMode: () => void;
+  practiceMode: boolean;
+  selectedSheet?: string | null;
+  sheetFile?: File | null;
+}
