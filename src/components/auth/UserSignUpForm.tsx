@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
@@ -29,6 +29,7 @@ export default function UserSignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -48,11 +49,25 @@ export default function UserSignUpForm() {
       console.log("Form values:", values);
       // TODO: 실제 인증 로직 구현
       
+      // 세션 스토리지에 로그인 상태 저장 (임시 구현)
+      sessionStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('userData', JSON.stringify({
+        name: values.name,
+        nickname: values.nickname,
+        email: values.email,
+        isProfessional: false
+      }));
+      
       // 성공 메시지
       toast({
         title: "회원가입 성공!",
-        description: "회원가입이 완료되었습니다. 로그인해주세요.",
+        description: "회원가입이 완료되었습니다. 메인 페이지로 이동합니다.",
       });
+      
+      // 홈페이지로 리다이렉트
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
     } catch (error) {
       console.error("회원가입 오류:", error);
       toast({

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BasicInfoForm from "./BasicInfoForm";
 import ProfessionalInfoForm from "./ProfessionalInfoForm";
 
@@ -40,6 +40,7 @@ export default function ProfessionalSignUpForm() {
   const [fileList, setFileList] = useState<File[]>([]);
   const [fileError, setFileError] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const form = useForm<ProfessionalFormValues>({
     resolver: zodResolver(professionalFormSchema),
@@ -64,6 +65,16 @@ export default function ProfessionalSignUpForm() {
       console.log("Uploaded files:", fileList);
       // TODO: 실제 인증 로직 구현
       
+      // 세션 스토리지에 로그인 상태 저장 (임시 구현)
+      sessionStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('userData', JSON.stringify({
+        name: values.name,
+        nickname: values.nickname,
+        email: values.email,
+        isProfessional: true,
+        specialization: values.specialization
+      }));
+      
       // 파일 분석 시뮬레이션
       if (fileList.length > 0) {
         // 파일 분석 로직은 여기에 구현
@@ -75,6 +86,11 @@ export default function ProfessionalSignUpForm() {
         title: "전문가 회원가입 신청 완료",
         description: "가입 신청이 접수되었습니다. 자격 검증 후 승인 이메일을 보내드립니다.",
       });
+      
+      // 홈페이지로 리다이렉트
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
     } catch (error) {
       console.error("회원가입 오류:", error);
       toast({

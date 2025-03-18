@@ -1,7 +1,9 @@
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Music, FileQuestion, Bell, Info, X, User, ShoppingBag, MessageCircle, BookOpen } from "lucide-react";
+import { Music, FileQuestion, Bell, Info, X, User, ShoppingBag, MessageCircle, BookOpen, LogOut } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -10,10 +12,69 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isMenuOpen, setIsMenuOpen, handleNavClick }: MobileMenuProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // 컴포넌트 마운트 시 로그인 상태 확인
+  useEffect(() => {
+    const loginStatus = sessionStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loginStatus);
+    
+    if (loginStatus) {
+      try {
+        const storedUserData = sessionStorage.getItem('userData');
+        if (storedUserData) {
+          setUserData(JSON.parse(storedUserData));
+        }
+      } catch (error) {
+        console.error('사용자 데이터 파싱 오류:', error);
+      }
+    }
+  }, [isMenuOpen]); // 메뉴가 열릴 때마다 상태 확인
+  
+  const handleLogout = () => {
+    // 세션 스토리지에서 로그인 상태 제거
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userData');
+    
+    // 상태 업데이트
+    setIsLoggedIn(false);
+    setUserData(null);
+    
+    // 메뉴 닫기
+    setIsMenuOpen(false);
+    
+    // 로그아웃 알림
+    toast({
+      title: "로그아웃 완료",
+      description: "성공적으로 로그아웃되었습니다.",
+    });
+    
+    // 홈페이지로 리다이렉트
+    navigate('/');
+  };
+
   if (!isMenuOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col px-4 py-6 space-y-4 bg-background md:hidden top-16">
+      {/* 로그인 상태인 경우 사용자 정보 표시 */}
+      {isLoggedIn && userData && (
+        <div className="p-4 mb-2 border-b">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-lg font-medium">{userData.nickname?.charAt(0) || 'U'}</span>
+            </div>
+            <div>
+              <p className="font-medium">{userData.nickname || '사용자'}</p>
+              <p className="text-xs text-muted-foreground">{userData.email || 'user@example.com'}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Main Navigation for Mobile */}
       <button 
         onClick={() => {
@@ -83,14 +144,25 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen, handleNavClick }: Mobile
       </Link>
       
       <div className="pt-4 mt-4 border-t">
-        <div className="grid gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>로그인</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>회원가입</Link>
-          </Button>
-        </div>
+        {isLoggedIn ? (
+          <div className="grid gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/mypage" onClick={() => setIsMenuOpen(false)}>마이페이지</Link>
+            </Button>
+            <Button variant="destructive" size="sm" onClick={handleLogout}>
+              <LogOut className="w-4 h-4 mr-2" /> 로그아웃
+            </Button>
+          </div>
+        ) : (
+          <div className="grid gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/sign-in" onClick={() => setIsMenuOpen(false)}>로그인</Link>
+            </Button>
+            <Button size="sm" asChild>
+              <Link to="/sign-up" onClick={() => setIsMenuOpen(false)}>회원가입</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
