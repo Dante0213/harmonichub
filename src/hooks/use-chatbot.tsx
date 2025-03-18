@@ -66,8 +66,6 @@ export function useChatbot() {
     badgeEnabled: true
   });
   const { toast } = useToast();
-  // 데모 메시지가 이미 추가되었는지 추적하는 상태 추가
-  const messageAddedRef = useRef(false);
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
@@ -102,42 +100,6 @@ export function useChatbot() {
       prev.map(dm => dm.id === id ? { ...dm, read: true } : dm)
     );
   };
-
-  // 새 메시지가 올 때 데모를 위한 타이머
-  useEffect(() => {
-    // 이미 메시지가 추가되었으면 타이머를 설정하지 않음
-    if (messageAddedRef.current) return;
-    
-    const timer = setTimeout(() => {
-      // 메시지가 아직 추가되지 않았을 때만 추가
-      if (!messageAddedRef.current) {
-        const newMessage: DirectMessage = {
-          id: Date.now(),
-          sender: '정우성 선생님',
-          senderAvatar: 'JW',
-          text: '안녕하세요, 다음 드럼 레슨 일정 확인해 주세요!',
-          timestamp: new Date(),
-          read: false
-        };
-        
-        setDirectMessages(prev => [newMessage, ...prev]);
-        
-        // 토스트 알림 활성화된 경우
-        if (notificationSetting.toastEnabled && !isOpen) {
-          toast({
-            title: "새 메시지",
-            description: `${newMessage.sender}님으로부터 메시지가 도착했습니다.`,
-            variant: "default",
-          });
-        }
-        
-        // 메시지가 추가되었음을 표시
-        messageAddedRef.current = true;
-      }
-    }, 30000); // 30초 후 새 메시지 도착 (데모 용도)
-    
-    return () => clearTimeout(timer);
-  }, [directMessages, notificationSetting.toastEnabled, isOpen, toast]);
 
   // 안읽은 메시지 개수
   const unreadCount = directMessages.filter(dm => !dm.read).length;
