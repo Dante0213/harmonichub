@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SendHorizontal, X } from "lucide-react";
+import { SendHorizontal } from "lucide-react";
 import { DirectMessage } from "@/hooks/use-chatbot";
 
 interface ChatMessage {
@@ -84,9 +84,7 @@ export function MessageDialog({ isOpen, onClose, message }: MessageDialogProps) 
               </div>
               <DialogTitle>{message.sender}님과의 대화</DialogTitle>
             </div>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="h-4 w-4" />
-            </Button>
+            {/* Removed the X button here since DialogContent already has a close button */}
           </div>
         </DialogHeader>
         

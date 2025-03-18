@@ -94,6 +94,7 @@ export const ChatDialog = ({ isOpen, onClose, user }: ChatDialogProps) => {
               <DialogTitle className="text-lg">{user.user}</DialogTitle>
               <p className="text-xs text-muted-foreground">@{user.userHandle}</p>
             </div>
+            {/* Removed the X button here since DialogContent already has a close button */}
           </div>
         </DialogHeader>
 

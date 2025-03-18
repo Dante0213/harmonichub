@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { Send, X } from "lucide-react";
+import { Send } from "lucide-react";
 
 interface Message {
   id: string;
@@ -117,9 +117,7 @@ export function TeacherChatModal({ isOpen, onClose, teacherName, teacherId, teac
               </Avatar>
               <SheetTitle>{teacherName} 선생님과 1:1 대화</SheetTitle>
             </div>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="h-4 w-4" />
-            </Button>
+            {/* Removed the X button here since SheetContent already has a close button */}
           </div>
         </SheetHeader>
         
