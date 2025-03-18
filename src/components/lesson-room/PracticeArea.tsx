@@ -1,19 +1,14 @@
 
-import { useState } from "react";
 import { PianoKeyboard } from "./PianoKeyboard";
-import { Play, Pause, Music } from "lucide-react";
+import { Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
 
 export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onTogglePracticeMode: () => void, practiceMode: boolean }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState([50]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180); // 3분 (예시)
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
+  const [volume, setVolume] = useState([50]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -36,6 +31,7 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
               onClick={onTogglePracticeMode}
               className="flex items-center gap-1"
             >
+              <Music className="h-4 w-4" />
               <span>{practiceMode ? "레슨 모드" : "연습 모드"}</span>
             </Button>
           </div>
@@ -67,25 +63,6 @@ export function PracticeArea({ onTogglePracticeMode, practiceMode }: { onToggleP
             />
             
             <div className="flex items-center justify-between">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={togglePlay}
-                className="flex items-center gap-1 px-4"
-              >
-                {isPlaying ? (
-                  <>
-                    <Pause className="h-4 w-4" />
-                    <span>일시정지</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="h-4 w-4" />
-                    <span>재생</span>
-                  </>
-                )}
-              </Button>
-              
               <div className="flex items-center gap-2 w-1/3">
                 <span className="text-sm">음량:</span>
                 <Slider 

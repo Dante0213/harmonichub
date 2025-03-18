@@ -1,8 +1,9 @@
 
 import { Button } from "@/components/ui/button";
-import { Mic, MicOff, Video, VideoOff, ScreenShare, FileUp, MessageSquare, Music } from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, ScreenShare, FileUp, MessageSquare, Music, Play, Pause } from "lucide-react";
 import { MetronomePopover } from "./MetronomePopover";
 import { ControlBarProps } from "./types";
+import { useState } from "react";
 
 interface ControlBarExtendedProps extends ControlBarProps {
   metronomeTempo: number;
@@ -33,6 +34,12 @@ export function ControlBar({
   practiceMode,
   onTogglePracticeMode
 }: ControlBarExtendedProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <div className="h-16 bg-background border-t flex items-center justify-between px-4">
       <div className="flex items-center space-x-2">
@@ -55,7 +62,7 @@ export function ControlBar({
       </div>
       
       <div className="flex items-center space-x-2">
-        {/* 연습모드 전환 버튼 */}
+        {/* 연습/레슨 모드 전환 버튼 - 항상 같은 위치에 표시 */}
         <Button 
           variant={practiceMode ? "secondary" : "outline"}
           size="sm"
@@ -66,14 +73,19 @@ export function ControlBar({
           <span>{practiceMode ? "레슨 모드" : "연습 모드"}</span>
         </Button>
         
-        <Button variant="outline" size="icon" onClick={onShareScreen}>
-          <ScreenShare className="h-5 w-5" />
-        </Button>
-        <Button variant="outline" size="icon" onClick={onFileUpload}>
-          <FileUp className="h-5 w-5" />
-        </Button>
+        {/* 레슨 모드에서만 표시할 버튼들 */}
+        {!practiceMode && (
+          <>
+            <Button variant="outline" size="icon" onClick={onShareScreen}>
+              <ScreenShare className="h-5 w-5" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={onFileUpload}>
+              <FileUp className="h-5 w-5" />
+            </Button>
+          </>
+        )}
         
-        {/* 메트로놈 팝오버 */}
+        {/* 메트로놈 - 두 모드 모두 표시 */}
         <MetronomePopover
           metronomeActive={metronomeActive}
           metronomeTempo={metronomeTempo}
@@ -83,7 +95,19 @@ export function ControlBar({
           onToggleMetronome={onToggleMetronome}
         />
         
-        {/* 연습 모드일 때는 채팅 아이콘 숨김 */}
+        {/* 연습 모드일 때만 표시할 플레이어 컨트롤 */}
+        {practiceMode && (
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={togglePlay}
+            className={isPlaying ? "bg-primary/20" : ""}
+          >
+            {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+          </Button>
+        )}
+        
+        {/* 레슨 모드에서만 채팅 아이콘 표시 */}
         {!practiceMode && (
           <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
             <MessageSquare className="h-5 w-5" />
