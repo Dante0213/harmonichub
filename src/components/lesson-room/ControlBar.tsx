@@ -63,7 +63,7 @@ export function ControlBar({
           className="flex items-center gap-1"
         >
           <Music className="h-4 w-4" />
-          <span>{practiceMode ? "연습 모드" : "레슨 모드"}</span>
+          <span>{practiceMode ? "레슨 모드" : "연습 모드"}</span>
         </Button>
         
         <Button variant="outline" size="icon" onClick={onShareScreen}>
@@ -83,9 +83,12 @@ export function ControlBar({
           onToggleMetronome={onToggleMetronome}
         />
         
-        <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
-          <MessageSquare className="h-5 w-5" />
-        </Button>
+        {/* 연습 모드일 때는 채팅 아이콘 숨김 */}
+        {!practiceMode && (
+          <Button variant="outline" size="icon" onClick={() => setActiveTab("chat")}>
+            <MessageSquare className="h-5 w-5" />
+          </Button>
+        )}
       </div>
       
       <div>
