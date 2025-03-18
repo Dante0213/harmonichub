@@ -35,7 +35,7 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           npm install terser --no-save
-          echo "의존성 설치 완료"
+          echo "Dependencies installed successfully"
         
       - name: Debug environment
         run: |
@@ -44,14 +44,14 @@ jobs:
           echo "Directory contents:"
           ls -la
           
-      # 빌드 과정에서 메모리 문제를 해결하기 위해 NODE_OPTIONS 환경 변수 설정
+      # Set NODE_OPTIONS environment variable to solve memory issues during build
       - name: Build with increased memory
         run: |
           export NODE_OPTIONS="--max-old-space-size=8192"
           export GENERATE_SOURCEMAP=false
           export CI=false
           echo "NODE_OPTIONS: $NODE_OPTIONS"
-          npm run build || (echo "빌드 실패 - 오류 로그 확인" && exit 1)
+          npm run build || (echo "Build failed - check error logs" && exit 1)
       
       - name: Debug build output
         run: |
@@ -64,15 +64,15 @@ jobs:
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
       
-      # 수정: 우리 자체 404.html 파일 사용
+      # Using our own 404.html file
       - name: Ensure 404.html exists
         run: |
           if [ -f "public/404.html" ]; then
             cp public/404.html dist/404.html
-            echo "public/404.html을 dist/404.html로 복사했습니다"
+            echo "Copied public/404.html to dist/404.html"
           else
             cp dist/index.html dist/404.html
-            echo "index.html을 404.html로 복사했습니다"
+            echo "Copied index.html to 404.html"
           fi
       
       - name: Upload artifact
