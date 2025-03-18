@@ -29,7 +29,20 @@ export function UserProfileDropdown() {
       
       if (loginStatus) {
         try {
-          const storedUserData = sessionStorage.getItem('userData');
+          // 현재 로그인된 사용자 이메일 가져오기
+          const currentUserEmailJson = sessionStorage.getItem('currentUserEmail');
+          if (!currentUserEmailJson) {
+            console.error('현재 로그인된 사용자 정보를 찾을 수 없습니다.');
+            return;
+          }
+          
+          const currentUserEmail = JSON.parse(currentUserEmailJson);
+          
+          // 사용자별 고유 키 생성
+          const userDataKey = `userData_${currentUserEmail}`;
+          
+          // 해당 사용자의 데이터 가져오기
+          const storedUserData = sessionStorage.getItem(userDataKey);
           if (storedUserData) {
             setUserData(JSON.parse(storedUserData));
           }
@@ -55,9 +68,9 @@ export function UserProfileDropdown() {
   }, []);
   
   const handleLogout = () => {
-    // 세션 스토리지에서 로그인 상태 제거
+    // 로그인 상태 제거
     sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('userData');
+    sessionStorage.removeItem('currentUserEmail');
     
     // 상태 업데이트
     setIsLoggedIn(false);

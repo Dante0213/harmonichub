@@ -11,32 +11,38 @@ const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userData, setUserData] = useState<Reel>({
     id: "current-user",
-    user: "김음악",
-    userHandle: "music_kim",
-    avatar: "김",
-    bio: "음악을 사랑하는 기타리스트입니다. 취미로 작곡도 하고 있어요.",
+    user: "새로운 사용자",
+    userHandle: "new_user",
+    avatar: "새",
+    bio: "음악을 사랑하는 사용자입니다.",
     time: "",
     content: "",
     likes: 0,
     comments: 0,
-    isProfessional: true,
-    specialization: "guitar", // 이미 존재하는 값 유지
-    instruments: ["기타", "피아노", "우쿨렐레"],
-    genres: ["어쿠스틱", "재즈", "팝"],
-    education: [
-      {id: "ed1", institution: "서울음악대학", degree: "음악학과", year: "2018-2022"}
-    ],
-    experience: [
-      {id: "ex1", company: "음악 스튜디오", position: "기타리스트", period: "2022-현재"}
-    ],
-    certificates: [
-      {id: "cert1", name: "음악 지도사 자격증", issuer: "한국음악협회", year: "2021"}
-    ]
+    isProfessional: false,
+    specialization: "",
+    instruments: [],
+    genres: [],
+    education: [],
+    experience: [],
+    certificates: []
   });
 
   useEffect(() => {
+    // 현재 로그인된 사용자 이메일 가져오기
+    const currentUserEmailJson = sessionStorage.getItem('currentUserEmail');
+    if (!currentUserEmailJson) {
+      console.error('현재 로그인된 사용자 정보를 찾을 수 없습니다.');
+      return;
+    }
+    
+    const currentUserEmail = JSON.parse(currentUserEmailJson);
+    
+    // 사용자별 고유 키 생성
+    const profileKey = `userProfileData_${currentUserEmail}`;
+    
     // 로컬 스토리지에서 프로필 데이터 가져오기
-    const storedData = localStorage.getItem('userProfileData');
+    const storedData = localStorage.getItem(profileKey);
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
@@ -49,10 +55,25 @@ const Profile = () => {
 
   const handleProfileUpdate = (updatedData: Reel) => {
     setUserData(updatedData);
-    localStorage.setItem('userProfileData', JSON.stringify(updatedData));
+    
+    // 현재 로그인된 사용자 이메일 가져오기
+    const currentUserEmailJson = sessionStorage.getItem('currentUserEmail');
+    if (!currentUserEmailJson) {
+      console.error('현재 로그인된 사용자 정보를 찾을 수 없습니다.');
+      return;
+    }
+    
+    const currentUserEmail = JSON.parse(currentUserEmailJson);
+    
+    // 사용자별 고유 키 생성
+    const profileKey = `userProfileData_${currentUserEmail}`;
+    const userDataKey = `userData_${currentUserEmail}`;
+    
+    // 프로필 데이터 저장
+    localStorage.setItem(profileKey, JSON.stringify(updatedData));
     
     // 마이페이지 데이터와 동기화
-    const myPageDataStr = sessionStorage.getItem('userData');
+    const myPageDataStr = sessionStorage.getItem(userDataKey);
     if (myPageDataStr) {
       try {
         const myPageData = JSON.parse(myPageDataStr);
@@ -67,7 +88,7 @@ const Profile = () => {
           certificates: updatedData.certificates,
           imageUrl: updatedData.imageUrl
         };
-        sessionStorage.setItem('userData', JSON.stringify(syncedData));
+        sessionStorage.setItem(userDataKey, JSON.stringify(syncedData));
       } catch (error) {
         console.error('마이페이지 데이터 동기화 오류:', error);
       }

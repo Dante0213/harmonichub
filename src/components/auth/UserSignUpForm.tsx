@@ -86,9 +86,15 @@ export default function UserSignUpForm() {
       console.log("Form values:", values);
       // TODO: 실제 인증 로직 구현
       
-      // 세션 스토리지에 로그인 상태 저장 (임시 구현)
-      sessionStorage.setItem('isLoggedIn', 'true');
-      sessionStorage.setItem('userData', JSON.stringify({
+      // 현재 로그인한 사용자 이메일 저장
+      sessionStorage.setItem('currentUserEmail', JSON.stringify(values.email));
+      
+      // 사용자별 고유 키 생성
+      const userDataKey = `userData_${values.email}`;
+      
+      // 사용자 데이터 생성
+      const userData = {
+        id: `user-${Date.now()}`,
         name: values.name,
         nickname: values.nickname,
         email: values.email,
@@ -97,12 +103,19 @@ export default function UserSignUpForm() {
         password: values.password,
         isProfessional: false,
         marketingAgreed: values.marketingAgreed,
+        userHandle: `user_${Math.floor(Math.random() * 10000)}`,
         joinDate: new Date().toLocaleDateString('ko-KR', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
         })
-      }));
+      };
+      
+      // 사용자별 데이터 저장
+      sessionStorage.setItem(userDataKey, JSON.stringify(userData));
+      
+      // 로그인 상태 저장
+      sessionStorage.setItem('isLoggedIn', 'true');
       
       // 성공 메시지
       toast({

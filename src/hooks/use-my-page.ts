@@ -27,7 +27,11 @@ export function useMyPage() {
       };
       
       setUserData(updatedData);
-      sessionStorage.setItem('userData', JSON.stringify(updatedData));
+      
+      // 현재 로그인한 사용자의 이메일 키를 사용하여 세션 스토리지에 저장
+      const userEmail = userData.email;
+      const userDataKey = `userData_${userEmail}`;
+      sessionStorage.setItem(userDataKey, JSON.stringify(updatedData));
       
       // SNS 프로필과 동기화
       updateSNSProfile(updatedData);
@@ -43,7 +47,11 @@ export function useMyPage() {
       };
       
       setUserData(updatedData);
-      sessionStorage.setItem('userData', JSON.stringify(updatedData));
+      
+      // 현재 로그인한 사용자의 이메일 키를 사용하여 세션 스토리지에 저장
+      const userEmail = userData.email;
+      const userDataKey = `userData_${userEmail}`;
+      sessionStorage.setItem(userDataKey, JSON.stringify(updatedData));
       
       // SNS 프로필과 동기화
       updateSNSProfile(updatedData);
@@ -52,6 +60,10 @@ export function useMyPage() {
   
   // SNS 프로필 정보 동기화 함수
   const updateSNSProfile = (updatedData: any) => {
+    // 사용자별 고유 키 생성
+    const userEmail = updatedData.email;
+    const profileKey = `userProfileData_${userEmail}`;
+    
     // SNS 프로필 데이터 형식에 맞게 변환
     const snsProfileData = {
       id: updatedData.id,
@@ -73,16 +85,29 @@ export function useMyPage() {
       comments: 0
     };
     
-    // SNS 프로필 데이터 저장
-    localStorage.setItem('userProfileData', JSON.stringify(snsProfileData));
+    // SNS 프로필 데이터 저장 (사용자별 고유 키 사용)
+    localStorage.setItem(profileKey, JSON.stringify(snsProfileData));
   };
   
   useEffect(() => {
+    // 현재 로그인된 사용자 정보 가져오기
+    const currentUserEmailJson = sessionStorage.getItem('currentUserEmail');
+    const currentUserEmail = currentUserEmailJson ? JSON.parse(currentUserEmailJson) : null;
+    
+    if (!currentUserEmail) {
+      console.error('현재 로그인된 사용자 정보를 찾을 수 없습니다.');
+      return;
+    }
+    
+    // 사용자별 고유 키 생성
+    const userDataKey = `userData_${currentUserEmail}`;
+    const profileKey = `userProfileData_${currentUserEmail}`;
+    
     // 세션 스토리지에서 사용자 데이터 가져오기
-    const userDataStr = sessionStorage.getItem('userData');
+    const userDataStr = sessionStorage.getItem(userDataKey);
     
     // SNS 프로필 데이터 가져오기
-    const profileDataStr = localStorage.getItem('userProfileData');
+    const profileDataStr = localStorage.getItem(profileKey);
     let profileData = null;
     
     if (profileDataStr) {
@@ -112,7 +137,7 @@ export function useMyPage() {
           };
           
           setUserData(syncedData);
-          sessionStorage.setItem('userData', JSON.stringify(syncedData));
+          sessionStorage.setItem(userDataKey, JSON.stringify(syncedData));
         } else {
           setUserData(parsedUserData);
         }
@@ -123,15 +148,19 @@ export function useMyPage() {
       // 세션 스토리지에 데이터가 없는 경우 샘플 데이터 사용
       const sampleUserData = {
         id: "current-user",
-        nickname: "김음악",
-        userHandle: "music_kim",
-        email: "music_kim@example.com",
-        phone: "010-1234-5678",
-        address: "서울시 강남구",
-        joinDate: "2023년 3월 15일",
+        nickname: "새로운 사용자",
+        userHandle: `user_${Math.floor(Math.random() * 10000)}`,
+        email: currentUserEmail,
+        phone: "",
+        address: "",
+        joinDate: new Date().toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
         isProfessional: false,
         specialization: "",
-        bio: "음악을 사랑하는 기타리스트입니다. 취미로 작곡도 하고 있어요.",
+        bio: "음악을 사랑하는 사용자입니다.",
         instruments: [], 
         genres: [], 
         education: [], 
@@ -140,7 +169,7 @@ export function useMyPage() {
       };
       
       setUserData(sampleUserData);
-      sessionStorage.setItem('userData', JSON.stringify(sampleUserData));
+      sessionStorage.setItem(userDataKey, JSON.stringify(sampleUserData));
       
       // SNS 프로필 초기화
       if (!profileData) {

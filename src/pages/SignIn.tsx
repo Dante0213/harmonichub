@@ -40,14 +40,36 @@ export default function SignIn() {
       console.log("Form values:", values);
       // TODO: 실제 로그인 로직 구현
       
-      // 세션 스토리지에 로그인 상태 저장 (임시 구현)
+      // 세션 스토리지에 현재 로그인한 사용자 이메일 저장
+      sessionStorage.setItem('currentUserEmail', JSON.stringify(values.email));
+      
+      // 사용자별 고유 키 생성
+      const userDataKey = `userData_${values.email}`;
+      
+      // 해당 사용자의 데이터가 이미 있는지 확인
+      const existingUserData = sessionStorage.getItem(userDataKey);
+      
+      if (!existingUserData) {
+        // 새로운 사용자의 경우 기본 데이터 생성
+        const newUserData = {
+          id: `user-${Date.now()}`,
+          nickname: "사용자",
+          email: values.email,
+          userHandle: `user_${Math.floor(Math.random() * 10000)}`,
+          isProfessional: false,
+          joinDate: new Date().toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
+        };
+        
+        // 사용자별 데이터 저장
+        sessionStorage.setItem(userDataKey, JSON.stringify(newUserData));
+      }
+      
+      // 로그인 상태 저장
       sessionStorage.setItem('isLoggedIn', 'true');
-      sessionStorage.setItem('userData', JSON.stringify({
-        name: "사용자",
-        nickname: "음악인",
-        email: values.email,
-        isProfessional: Math.random() > 0.5 // 테스트를 위해 랜덤으로 설정
-      }));
       
       toast({
         title: "로그인 성공!",
