@@ -7,7 +7,7 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000 // 1초 후 자동 사라짐으로 변경
+const TOAST_REMOVE_DELAY = 1000 // 1초 후 자동 사라짐으로 설정
 
 type ToasterToast = ToastProps & {
   id: string

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -51,6 +52,7 @@ export default function SignIn() {
       toast({
         title: "로그인 성공!",
         description: "환영합니다. 메인 페이지로 이동합니다.",
+        duration: 1000, // 1초 후 자동으로 사라짐
       });
       
       // 홈페이지로 리다이렉트
@@ -63,6 +65,7 @@ export default function SignIn() {
         title: "로그인 실패",
         description: "이메일 또는 비밀번호가 올바르지 않습니다.",
         variant: "destructive",
+        duration: 1000, // 1초 후 자동으로 사라짐
       });
     } finally {
       setIsLoading(false);
@@ -73,6 +76,7 @@ export default function SignIn() {
     toast({
       title: `${provider} 로그인`,
       description: `${provider}로 로그인을 시도합니다.`,
+      duration: 1000, // 1초 후 자동으로 사라짐
     });
     // 실제 OAuth 로그인 구현
     console.log(`${provider} 로그인 시도`);

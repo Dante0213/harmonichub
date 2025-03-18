@@ -49,6 +49,7 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen, handleNavClick }: Mobile
     toast({
       title: "로그아웃 완료",
       description: "성공적으로 로그아웃되었습니다.",
+      duration: 1000, // 1초 후 자동으로 사라짐
     });
     
     // 홈페이지로 리다이렉트
