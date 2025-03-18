@@ -16,6 +16,8 @@ const formSchema = z.object({
   name: z.string().min(2, { message: "이름은 2자 이상이어야 합니다." }),
   nickname: z.string().min(2, { message: "닉네임은 2자 이상이어야 합니다." }),
   email: z.string().email({ message: "유효한 이메일 주소를 입력해주세요." }),
+  phone: z.string().min(10, { message: "연락처는 10자 이상이어야 합니다." }),
+  address: z.string().min(5, { message: "주소는 5자 이상이어야 합니다." }),
   password: z.string().min(8, { message: "비밀번호는 8자 이상이어야 합니다." }),
   confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
@@ -37,6 +39,8 @@ export default function UserSignUpForm() {
       name: "",
       nickname: "",
       email: "",
+      phone: "",
+      address: "",
       password: "",
       confirmPassword: ""
     }
@@ -55,13 +59,22 @@ export default function UserSignUpForm() {
         name: values.name,
         nickname: values.nickname,
         email: values.email,
-        isProfessional: false
+        phone: values.phone,
+        address: values.address,
+        password: values.password,
+        isProfessional: false,
+        joinDate: new Date().toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
       }));
       
       // 성공 메시지
       toast({
         title: "회원가입 성공!",
         description: "회원가입이 완료되었습니다. 메인 페이지로 이동합니다.",
+        duration: 1000,
       });
       
       // 홈페이지로 리다이렉트
@@ -74,6 +87,7 @@ export default function UserSignUpForm() {
         title: "회원가입 실패",
         description: "회원가입 중 오류가 발생했습니다. 다시 시도해주세요.",
         variant: "destructive",
+        duration: 1000,
       });
     } finally {
       setIsLoading(false);
@@ -134,6 +148,40 @@ export default function UserSignUpForm() {
                   <FormControl>
                     <Input type="email" placeholder="example@mail.com" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>연락처</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="010-1234-5678" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    레슨 예약 및 중요 안내에 사용됩니다.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>주소</FormLabel>
+                  <FormControl>
+                    <Input placeholder="서울시 강남구 역삼동" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    배송 및 오프라인 레슨 장소 안내에 사용됩니다.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

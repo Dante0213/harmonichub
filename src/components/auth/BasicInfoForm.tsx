@@ -69,6 +69,40 @@ export default function BasicInfoForm({ form }: BasicInfoFormProps) {
         
         <FormField
           control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>연락처</FormLabel>
+              <FormControl>
+                <Input type="tel" placeholder="010-1234-5678" {...field} />
+              </FormControl>
+              <FormDescription>
+                레슨 예약 및 중요 안내에 사용됩니다.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>주소</FormLabel>
+              <FormControl>
+                <Input placeholder="서울시 강남구 역삼동" {...field} />
+              </FormControl>
+              <FormDescription>
+                레슨 장소 및 필요 서류 배송에 사용됩니다.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>

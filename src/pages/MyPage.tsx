@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Music, UserPlus } from "lucide-react";
+import { Mail, MapPin, Music, Phone, User, UserPlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ProfessionalUpgradeModal } from "@/components/mypage/ProfessionalUpgradeModal";
 import { PasswordChangeModal } from "@/components/mypage/PasswordChangeModal";
+import { BasicInfoChangeModal } from "@/components/mypage/BasicInfoChangeModal";
 
 export default function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isBasicInfoModalOpen, setIsBasicInfoModalOpen] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function MyPage() {
         console.error('사용자 데이터 파싱 오류:', error);
       }
     }
-  }, []);
+  }, [isBasicInfoModalOpen]); // 기본 정보 변경 후 다시 로드하기 위해 의존성 추가
   
   const isProfessional = userData?.isProfessional || false;
   
@@ -61,6 +63,21 @@ export default function MyPage() {
                       {isProfessional ? "전문가 회원" : "일반 회원"}
                     </p>
                   </div>
+                  
+                  {userData?.phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">{userData.phone}</p>
+                    </div>
+                  )}
+                  
+                  {userData?.address && (
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">{userData.address}</p>
+                    </div>
+                  )}
+                  
                   <div>
                     <p className="text-sm font-medium">가입일</p>
                     <p className="text-sm text-muted-foreground">
@@ -146,8 +163,41 @@ export default function MyPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid gap-2">
+                      <p className="text-sm font-medium">기본 정보</p>
+                      <div className="flex flex-col space-y-1">
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground">이름: {userData?.name || '미설정'}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground">닉네임: {userData?.nickname || '미설정'}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground">연락처: {userData?.phone || '미설정'}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground">주소: {userData?.address || '미설정'}</p>
+                        </div>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setIsBasicInfoModalOpen(true)}
+                        className="mt-2"
+                      >
+                        기본 정보 변경
+                      </Button>
+                    </div>
+                    
+                    <div className="grid gap-2">
                       <p className="text-sm font-medium">이메일</p>
-                      <p className="text-sm text-muted-foreground">{userData?.email || 'user@example.com'}</p>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground">{userData?.email || 'user@example.com'}</p>
+                      </div>
                     </div>
                     <div className="grid gap-2">
                       <p className="text-sm font-medium">비밀번호</p>
@@ -173,6 +223,7 @@ export default function MyPage() {
       
       <ProfessionalUpgradeModal open={isModalOpen} onOpenChange={setIsModalOpen} />
       <PasswordChangeModal open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen} />
+      <BasicInfoChangeModal open={isBasicInfoModalOpen} onOpenChange={setIsBasicInfoModalOpen} />
     </Layout>
   );
 }
