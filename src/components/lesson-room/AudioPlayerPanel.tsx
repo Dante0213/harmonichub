@@ -1,8 +1,7 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Play, Pause, Stop, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Square, Volume2, VolumeX } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
 
 interface AudioPlayerPanelProps {
@@ -144,7 +143,7 @@ export function AudioPlayerPanel({ audioSrc = "/audio/default-piano.mp3" }: Audi
           {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
         </Button>
         <Button variant="outline" size="icon" onClick={stopAudio}>
-          <Stop className="h-5 w-5" />
+          <Square className="h-5 w-5" />
         </Button>
       </div>
     </div>
