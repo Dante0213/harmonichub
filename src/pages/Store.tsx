@@ -25,8 +25,6 @@ const Store = () => {
   return (
     <Layout>
       <div className="container px-4 py-10 mx-auto">
-        <h1 className="mb-6 text-3xl font-bold">스토어</h1>
-        
         <Tabs defaultValue={activeTab} className="w-full" onValueChange={handleTabChange}>
           <TabsList className="mb-6">
             <TabsTrigger value="all">전체 상품</TabsTrigger>

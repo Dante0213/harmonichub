@@ -16,8 +16,6 @@ const Learning = () => {
   return (
     <Layout>
       <div className="container px-4 py-10 mx-auto">
-        <h1 className="mb-6 text-3xl font-bold">개인 학습실</h1>
-        
         <Alert className="mb-8">
           <Info className="h-4 w-4" />
           <AlertTitle>안내</AlertTitle>
