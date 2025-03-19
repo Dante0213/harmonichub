@@ -5,7 +5,8 @@ import {
   DialogContent, 
   DialogHeader, 
   DialogTitle,
-  DialogFooter
+  DialogFooter,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -107,6 +108,9 @@ export function OnePointLessonModal({
         <DialogContent className="sm:max-w-[480px] max-h-[80vh]">
           <DialogHeader>
             <DialogTitle>5~10분 단위 원포인트 레슨 요청</DialogTitle>
+            <DialogDescription>
+              원하는 날짜와 시간을 선택하여 원포인트 레슨을 요청해보세요.
+            </DialogDescription>
           </DialogHeader>
           
           <ScrollArea className="max-h-[60vh] pr-4">
