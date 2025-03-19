@@ -3,23 +3,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useMyPage } from "@/hooks/use-my-page";
 import { useToast } from "@/hooks/use-toast";
 import { ProfileTagsSection } from "@/components/profile/ProfileTagsSection";
-import { ProfileEducationSection } from "@/components/profile/ProfileEducationSection";
-import { ProfileExperienceSection } from "@/components/profile/ProfileExperienceSection";
-import { ProfileCertificatesSection } from "@/components/profile/ProfileCertificatesSection";
+import { UpgradeEducationSection } from "./upgrade-sections/UpgradeEducationSection";
+import { UpgradeExperienceSection } from "./upgrade-sections/UpgradeExperienceSection";
+import { UpgradeCertificatesSection } from "./upgrade-sections/UpgradeCertificatesSection";
+import { UpgradeSpecializationSection } from "./upgrade-sections/UpgradeSpecializationSection";
+import { UpgradeSuccessView } from "./upgrade-sections/UpgradeSuccessView";
 import { v4 as uuidv4 } from "uuid";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
-import { Label as FormLabel } from "@/components/ui/label";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
@@ -143,34 +136,14 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
         
         <div className="space-y-6 py-4">
           {verified ? (
-            <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">검증이 완료되었습니다</h3>
-              <p className="text-gray-500">전문가 회원으로 전환이 성공적으로 완료되었습니다.</p>
-            </div>
+            <UpgradeSuccessView />
           ) : (
             <>
               {/* 전공 선택 섹션 */}
-              <div className="space-y-2">
-                <Label>전공</Label>
-                <Select onValueChange={setSpecialization} value={specialization}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="전공 선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="piano">피아노</SelectItem>
-                    <SelectItem value="guitar">기타</SelectItem>
-                    <SelectItem value="violin">바이올린</SelectItem>
-                    <SelectItem value="vocal">보컬</SelectItem>
-                    <SelectItem value="composition">작곡</SelectItem>
-                    <SelectItem value="other">기타</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <UpgradeSpecializationSection 
+                specialization={specialization}
+                setSpecialization={setSpecialization}
+              />
               
               {/* 악기 선택 섹션 */}
               <ProfileTagsSection
@@ -193,19 +166,19 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
               />
               
               {/* 학력 섹션 */}
-              <ProfileEducationSection
+              <UpgradeEducationSection
                 education={education}
                 setEducation={setEducation}
               />
               
               {/* 경력 섹션 */}
-              <ProfileExperienceSection
+              <UpgradeExperienceSection
                 experience={experience}
                 setExperience={setExperience}
               />
               
               {/* 자격증 섹션 */}
-              <ProfileCertificatesSection
+              <UpgradeCertificatesSection
                 certificates={certificates}
                 setCertificates={setCertificates}
               />

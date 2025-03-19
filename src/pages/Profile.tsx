@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { useState, useEffect, createContext, useContext } from "react";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
@@ -172,7 +171,11 @@ const Profile = () => {
                 onEditClick={() => setIsEditModalOpen(true)} 
               />
               
-              <ProfileInfo userData={userData} />
+              <UserProfileSection 
+                userData={userData}
+                isCurrentUser={true}
+                onEditClick={() => setIsEditModalOpen(true)}
+              />
             </div>
             
             {/* 탭 콘텐츠 섹션 */}
