@@ -69,10 +69,10 @@ export const UserProfileSection = ({
         <h1 className="text-2xl font-bold">{userData.user}</h1>
         <p className="text-muted-foreground">@{userData.userHandle}</p>
         
-        {/* 프로필 수정 버튼 - 전공 섹션 위로 이동 */}
+        {/* 프로필 수정 버튼 - 닉네임 바로 아래로 이동 */}
         {isCurrentUser && (
           <Button
-            className="w-full mt-4"
+            className="w-full mt-2"
             variant="outline"
             onClick={onEditClick}
           >
