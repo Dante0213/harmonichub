@@ -1,5 +1,5 @@
 
-import { FormLabel } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { 
   Select, 
@@ -40,7 +40,7 @@ export function TeacherPricingForm({
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <FormLabel htmlFor="lessonCount">레슨 횟수</FormLabel>
+            <Label htmlFor="lessonCount">레슨 횟수</Label>
             <Select 
               value={lessonCount.toString()} 
               onValueChange={(value) => setLessonCount(parseInt(value))}
@@ -58,7 +58,7 @@ export function TeacherPricingForm({
           </div>
           
           <div>
-            <FormLabel htmlFor="lessonPrice">레슨 총 가격 (원)</FormLabel>
+            <Label htmlFor="lessonPrice">레슨 총 가격 (원)</Label>
             <Input
               id="lessonPrice"
               type="number"
@@ -79,7 +79,7 @@ export function TeacherPricingForm({
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <FormLabel htmlFor="onePointDuration">레슨 시간 (분)</FormLabel>
+            <Label htmlFor="onePointDuration">레슨 시간 (분)</Label>
             <Select 
               value={onePointDuration.toString()} 
               onValueChange={(value) => setOnePointDuration(parseInt(value))}
@@ -97,7 +97,7 @@ export function TeacherPricingForm({
           </div>
           
           <div>
-            <FormLabel htmlFor="onePointPrice">레슨 가격 (원)</FormLabel>
+            <Label htmlFor="onePointPrice">레슨 가격 (원)</Label>
             <Input
               id="onePointPrice"
               type="number"

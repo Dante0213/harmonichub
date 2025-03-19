@@ -1,5 +1,5 @@
 
-import { FormLabel } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 interface TeacherCurriculumFormProps {
@@ -21,7 +21,7 @@ export function TeacherCurriculumForm({
         </p>
         
         <div className="space-y-2">
-          <FormLabel htmlFor="curriculum">커리큘럼 내용</FormLabel>
+          <Label htmlFor="curriculum">커리큘럼 내용</Label>
           <Textarea
             id="curriculum"
             placeholder="예: 1-2주차: 기본 코드 익히기, 3-4주차: 스트러밍 연습..."
