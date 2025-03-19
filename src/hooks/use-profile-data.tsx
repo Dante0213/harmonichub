@@ -8,12 +8,14 @@ import {
   saveProfileData, 
   syncProfileWithMyPage 
 } from "@/utils/profile-utils";
+import { useNavigate } from "react-router-dom";
 
 export const useProfileData = () => {
   const [userData, setUserData] = useState<Reel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   // 데이터 불러오기
   const fetchUserData = useCallback(() => {
@@ -24,6 +26,12 @@ export const useProfileData = () => {
       const email = getCurrentUserEmail();
       if (!email) {
         setError('현재 로그인된 사용자 정보를 찾을 수 없습니다.');
+        toast({
+          title: "로그인 필요",
+          description: "프로필을 보려면 로그인이 필요합니다.",
+          variant: "destructive"
+        });
+        navigate('/sign-in');
         setIsLoading(false);
         return;
       }
@@ -66,7 +74,7 @@ export const useProfileData = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [toast]);
+  }, [toast, navigate]);
   
   // 초기 데이터 로드
   useEffect(() => {
@@ -79,6 +87,12 @@ export const useProfileData = () => {
       const email = getCurrentUserEmail();
       if (!email) {
         setError('현재 로그인된 사용자 정보를 찾을 수 없습니다.');
+        toast({
+          title: "로그인 필요",
+          description: "프로필을 업데이트하려면 로그인이 필요합니다.",
+          variant: "destructive"
+        });
+        navigate('/sign-in');
         return;
       }
       
@@ -101,7 +115,7 @@ export const useProfileData = () => {
         variant: "destructive"
       });
     }
-  }, [toast]);
+  }, [toast, navigate]);
   
   // 프로필 새로고침 함수
   const refreshProfile = useCallback(() => {

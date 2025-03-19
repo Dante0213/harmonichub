@@ -10,9 +10,22 @@ import { useProfileData } from "@/hooks/use-profile-data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getCurrentUserEmail } from "@/utils/profile-utils";
 
 const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const navigate = useNavigate();
+  
+  // 로그인 체크
+  useEffect(() => {
+    const email = getCurrentUserEmail();
+    if (!email) {
+      // 비로그인 상태일 경우 로그인 페이지로 리다이렉트
+      navigate('/sign-in');
+    }
+  }, [navigate]);
+  
   const { 
     userData, 
     isLoading, 
