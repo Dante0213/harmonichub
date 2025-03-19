@@ -5,6 +5,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { UpgradeSuccessView } from "./upgrade-sections/UpgradeSuccessView";
 import { UpgradeFormContent } from "./upgrade-sections/UpgradeFormContent";
 import { useProfessionalUpgrade } from "@/hooks/use-professional-upgrade";
+import { ModalFooterActions } from "./upgrade-sections/ModalFooterActions";
+import { ModalHeader } from "./upgrade-sections/ModalHeader";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
@@ -45,12 +47,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[800px] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-center text-xl">전문가 회원 전환</DialogTitle>
-          <DialogDescription className="text-center">
-            전문가 회원으로 전환하려면 아래 정보를 입력해주세요.
-          </DialogDescription>
-        </DialogHeader>
+        <ModalHeader />
         
         <FormProvider {...methods}>
           <div className="space-y-6 py-4">
@@ -82,14 +79,11 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
           
           <DialogFooter>
             {!verified && (
-              <>
-                <Button variant="outline" onClick={() => resetAndCloseModal(closeModal)}>
-                  취소
-                </Button>
-                <Button onClick={() => handleVerification(closeModal)} disabled={verifying}>
-                  {verifying ? "검증 중..." : "전문가 전환 신청"}
-                </Button>
-              </>
+              <ModalFooterActions 
+                verifying={verifying}
+                handleVerification={() => handleVerification(closeModal)}
+                onCancel={() => resetAndCloseModal(closeModal)}
+              />
             )}
           </DialogFooter>
         </FormProvider>

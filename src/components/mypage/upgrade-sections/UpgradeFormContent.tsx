@@ -5,6 +5,7 @@ import { UpgradeExperienceSection } from "./UpgradeExperienceSection";
 import { UpgradeCertificatesSection } from "./UpgradeCertificatesSection";
 import { UpgradeSpecializationSection } from "./UpgradeSpecializationSection";
 import { BusinessUploadSection } from "./BusinessUploadSection";
+import { SectionContainer } from "./SectionContainer";
 
 interface UpgradeFormContentProps {
   specialization: string;
@@ -49,48 +50,62 @@ export function UpgradeFormContent({
 }: UpgradeFormContentProps) {
   return (
     <div className="space-y-6">
-      <UpgradeSpecializationSection 
-        specialization={specialization}
-        setSpecialization={setSpecialization}
-      />
+      <SectionContainer>
+        <UpgradeSpecializationSection 
+          specialization={specialization}
+          setSpecialization={setSpecialization}
+        />
+      </SectionContainer>
       
-      <ProfileTagsSection
-        title="악기"
-        tags={instruments}
-        setTags={setInstruments}
-        newTag={newInstrument}
-        setNewTag={setNewInstrument}
-        placeholder="악기 추가"
-      />
+      <SectionContainer>
+        <ProfileTagsSection
+          title="악기"
+          tags={instruments}
+          setTags={setInstruments}
+          newTag={newInstrument}
+          setNewTag={setNewInstrument}
+          placeholder="악기 추가"
+        />
+      </SectionContainer>
       
-      <ProfileTagsSection
-        title="장르"
-        tags={genres}
-        setTags={setGenres}
-        newTag={newGenre}
-        setNewTag={setNewGenre}
-        placeholder="장르 추가"
-      />
+      <SectionContainer>
+        <ProfileTagsSection
+          title="장르"
+          tags={genres}
+          setTags={setGenres}
+          newTag={newGenre}
+          setNewTag={setNewGenre}
+          placeholder="장르 추가"
+        />
+      </SectionContainer>
       
-      <UpgradeEducationSection
-        education={education}
-        setEducation={setEducation}
-      />
+      <SectionContainer>
+        <UpgradeEducationSection
+          education={education}
+          setEducation={setEducation}
+        />
+      </SectionContainer>
       
-      <UpgradeExperienceSection
-        experience={experience}
-        setExperience={setExperience}
-      />
+      <SectionContainer>
+        <UpgradeExperienceSection
+          experience={experience}
+          setExperience={setExperience}
+        />
+      </SectionContainer>
       
-      <UpgradeCertificatesSection
-        certificates={certificates}
-        setCertificates={setCertificates}
-      />
+      <SectionContainer>
+        <UpgradeCertificatesSection
+          certificates={certificates}
+          setCertificates={setCertificates}
+        />
+      </SectionContainer>
       
-      <BusinessUploadSection 
-        businessFile={businessFile}
-        setBusinessFile={setBusinessFile}
-      />
+      <SectionContainer>
+        <BusinessUploadSection 
+          businessFile={businessFile}
+          setBusinessFile={setBusinessFile}
+        />
+      </SectionContainer>
     </div>
   );
 }
