@@ -79,16 +79,14 @@ export const UserProfileSection = ({
             <p className="font-bold">98</p>
             <p className="text-sm text-muted-foreground">팔로잉</p>
           </Button>
-          {isProfessional && (
-            <Button 
-              variant="ghost" 
-              className="text-center flex-1 flex flex-col items-center hover:bg-slate-50"
-              onClick={handleFavoritesClick}
-            >
-              <p className="font-bold">42</p>
-              <p className="text-sm text-muted-foreground">찜한 선생님</p>
-            </Button>
-          )}
+          <Button 
+            variant="ghost" 
+            className="text-center flex-1 flex flex-col items-center hover:bg-slate-50"
+            onClick={handleFavoritesClick}
+          >
+            <p className="font-bold">42</p>
+            <p className="text-sm text-muted-foreground">찜한 선생님</p>
+          </Button>
         </div>
       </div>
       
