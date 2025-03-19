@@ -7,8 +7,7 @@ import { FollowersView } from "@/components/social/profile/FollowersView";
 import { FollowingView } from "@/components/social/profile/FollowingView";
 import { FavoriteTeachersView } from "@/components/social/profile/FavoriteTeachersView";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BookOpen, Briefcase, GraduationCap, Award, Calendar, Minus, PenSquare } from "lucide-react";
+import { PenSquare } from "lucide-react";
 import { ProfileSections } from "./profile-sections/ProfileSections";
 
 interface UserProfileSectionProps {

@@ -5,7 +5,6 @@ import { InstrumentsGenresSection } from "./InstrumentsGenresSection";
 import { EducationSection } from "./EducationSection";
 import { ExperienceSection } from "./ExperienceSection";
 import { CertificatesSection } from "./CertificatesSection";
-import { UpcomingScheduleSection } from "./UpcomingScheduleSection";
 
 interface ProfileSectionsProps {
   userData: Reel;
@@ -31,9 +30,6 @@ export const ProfileSections = ({ userData }: ProfileSectionsProps) => {
       
       {/* 자격증 섹션 */}
       <CertificatesSection certificates={userData.certificates} />
-      
-      {/* 다가오는 일정 */}
-      <UpcomingScheduleSection />
     </>
   );
 };

@@ -1,6 +1,6 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { GraduationCap, Briefcase, Award, Calendar, BookOpen } from "lucide-react";
+import { GraduationCap, Briefcase, Award, BookOpen } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 
 interface ProfileInfoProps {
@@ -113,30 +113,6 @@ export const ProfileInfo = ({ userData }: ProfileInfoProps) => {
               </div>
             </div>
           )}
-        </CardContent>
-      </Card>
-      
-      <Card className="mt-6">
-        <CardHeader>
-          <h3 className="font-semibold">다가오는 일정</h3>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="font-medium">기타 레슨</p>
-                <p className="text-xs text-muted-foreground">5월 15일 (화) 18:00</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="font-medium">연주회 연습</p>
-                <p className="text-xs text-muted-foreground">5월 18일 (금) 19:30</p>
-              </div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </>
