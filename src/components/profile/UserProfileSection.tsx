@@ -7,6 +7,8 @@ import { FollowersView } from "@/components/social/profile/FollowersView";
 import { FollowingView } from "@/components/social/profile/FollowingView";
 import { FavoriteTeachersView } from "@/components/social/profile/FavoriteTeachersView";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, Briefcase, GraduationCap, Award } from "lucide-react";
 
 interface UserProfileSectionProps {
   userData: Reel;
@@ -89,6 +91,112 @@ export const UserProfileSection = ({
           </Button>
         </div>
       </div>
+      
+      {/* 전공 섹션 */}
+      {userData.specialization && (
+        <Card className="mt-4">
+          <CardContent className="pt-4">
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-muted-foreground" />
+              <span className="font-medium">{userData.specialization}</span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      
+      {/* 악기 & 장르 섹션 */}
+      {(userData.instruments?.length > 0 || userData.genres?.length > 0) && (
+        <Card className="mt-4">
+          <CardContent className="pt-4 space-y-4">
+            {userData.instruments?.length > 0 && (
+              <div>
+                <h4 className="text-sm font-medium mb-2">악기</h4>
+                <div className="flex flex-wrap gap-2">
+                  {userData.instruments.map((instrument, index) => (
+                    <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                      {instrument}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {userData.genres?.length > 0 && (
+              <div>
+                <h4 className="text-sm font-medium mb-2">장르</h4>
+                <div className="flex flex-wrap gap-2">
+                  {userData.genres.map((genre, index) => (
+                    <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                      {genre}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+      
+      {/* 정보 카드: 학력, 경력, 자격증 */}
+      {(userData.education?.length > 0 || userData.experience?.length > 0 || userData.certificates?.length > 0) && (
+        <Card className="mt-4">
+          <CardContent className="pt-4 space-y-4">
+            {/* 학력 */}
+            {userData.education?.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <GraduationCap className="h-5 w-5 text-muted-foreground" />
+                  <h4 className="font-medium">학력</h4>
+                </div>
+                <div className="space-y-2 pl-7">
+                  {userData.education.map((edu) => (
+                    <div key={edu.id}>
+                      <p className="font-medium">{edu.institution}</p>
+                      <p className="text-sm text-muted-foreground">{edu.degree} • {edu.year}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* 경력 */}
+            {userData.experience?.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Briefcase className="h-5 w-5 text-muted-foreground" />
+                  <h4 className="font-medium">경력</h4>
+                </div>
+                <div className="space-y-2 pl-7">
+                  {userData.experience.map((exp) => (
+                    <div key={exp.id}>
+                      <p className="font-medium">{exp.company}</p>
+                      <p className="text-sm text-muted-foreground">{exp.position} • {exp.period}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* 자격증 */}
+            {userData.certificates?.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Award className="h-5 w-5 text-muted-foreground" />
+                  <h4 className="font-medium">자격증</h4>
+                </div>
+                <div className="space-y-2 pl-7">
+                  {userData.certificates.map((cert) => (
+                    <div key={cert.id}>
+                      <p className="font-medium">{cert.name}</p>
+                      <p className="text-sm text-muted-foreground">{cert.issuer} • {cert.year}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
       
       {/* Sheet for followers */}
       <Sheet open={activeSheet === 'followers'} onOpenChange={(open) => !open && setActiveSheet(null)}>
