@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { useState, useEffect, createContext, useContext } from "react";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
@@ -5,6 +6,7 @@ import { Reel } from "@/components/social/reels/ReelsData";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileInfo } from "@/components/profile/ProfileInfo";
 import { ProfileContentTabs } from "@/components/profile/ProfileContentTabs";
+import { UserProfileSection } from "@/components/profile/UserProfileSection";
 
 // Social 컨텍스트를 위한 기본값 생성
 export const ProfileSocialContext = createContext<{
