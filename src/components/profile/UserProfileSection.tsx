@@ -7,8 +7,8 @@ import { FollowersView } from "@/components/social/profile/FollowersView";
 import { FollowingView } from "@/components/social/profile/FollowingView";
 import { FavoriteTeachersView } from "@/components/social/profile/FavoriteTeachersView";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Briefcase, GraduationCap, Award } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { BookOpen, Briefcase, GraduationCap, Award, Calendar, Minus } from "lucide-react";
 
 interface UserProfileSectionProps {
   userData: Reel;
@@ -50,6 +50,10 @@ export const UserProfileSection = ({
       setActiveSheet('favorites');
     }
   };
+  
+  // 데이터 확인 함수 - 배열이 비어있거나 존재하지 않으면 true 반환
+  const isEmpty = (data: any[] | undefined | null) => !data || data.length === 0;
+  const isEmptyString = (data: string | undefined | null) => !data || data.trim() === '';
   
   return (
     <>
@@ -93,110 +97,167 @@ export const UserProfileSection = ({
       </div>
       
       {/* 전공 섹션 */}
-      {userData.specialization && (
-        <Card className="mt-4">
-          <CardContent className="pt-4">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-5 w-5 text-muted-foreground" />
+      <Card className="mt-6">
+        <CardHeader>
+          <h3 className="font-semibold">전공</h3>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-muted-foreground" />
+            {isEmptyString(userData.specialization) ? (
+              <span className="text-muted-foreground">등록된 전공 정보가 없습니다</span>
+            ) : (
               <span className="font-medium">{userData.specialization}</span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            )}
+          </div>
+        </CardContent>
+      </Card>
       
       {/* 악기 & 장르 섹션 */}
-      {(userData.instruments?.length > 0 || userData.genres?.length > 0) && (
-        <Card className="mt-4">
-          <CardContent className="pt-4 space-y-4">
-            {userData.instruments?.length > 0 && (
-              <div>
-                <h4 className="text-sm font-medium mb-2">악기</h4>
-                <div className="flex flex-wrap gap-2">
-                  {userData.instruments.map((instrument, index) => (
-                    <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
-                      {instrument}
-                    </div>
-                  ))}
-                </div>
+      <Card className="mt-4">
+        <CardHeader>
+          <h3 className="font-semibold">악기 & 장르</h3>
+        </CardHeader>
+        <CardContent className="pt-0 space-y-4">
+          <div>
+            <h4 className="text-sm font-medium mb-2">악기</h4>
+            {isEmpty(userData.instruments) ? (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 악기 정보가 없습니다</span>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {userData.instruments?.map((instrument, index) => (
+                  <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                    {instrument}
+                  </div>
+                ))}
               </div>
             )}
-            
-            {userData.genres?.length > 0 && (
-              <div>
-                <h4 className="text-sm font-medium mb-2">장르</h4>
-                <div className="flex flex-wrap gap-2">
-                  {userData.genres.map((genre, index) => (
-                    <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
-                      {genre}
-                    </div>
-                  ))}
-                </div>
+          </div>
+          
+          <div>
+            <h4 className="text-sm font-medium mb-2">장르</h4>
+            {isEmpty(userData.genres) ? (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 장르 정보가 없습니다</span>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {userData.genres?.map((genre, index) => (
+                  <div key={index} className="bg-secondary px-3 py-1 rounded-full text-sm">
+                    {genre}
+                  </div>
+                ))}
               </div>
             )}
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        </CardContent>
+      </Card>
       
       {/* 정보 카드: 학력, 경력, 자격증 */}
-      {(userData.education?.length > 0 || userData.experience?.length > 0 || userData.certificates?.length > 0) && (
-        <Card className="mt-4">
-          <CardContent className="pt-4 space-y-4">
-            {/* 학력 */}
-            {userData.education?.length > 0 && (
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <GraduationCap className="h-5 w-5 text-muted-foreground" />
-                  <h4 className="font-medium">학력</h4>
-                </div>
-                <div className="space-y-2 pl-7">
-                  {userData.education.map((edu) => (
-                    <div key={edu.id}>
-                      <p className="font-medium">{edu.institution}</p>
-                      <p className="text-sm text-muted-foreground">{edu.degree} • {edu.year}</p>
-                    </div>
-                  ))}
-                </div>
+      <Card className="mt-4">
+        <CardHeader>
+          <h3 className="font-semibold">정보</h3>
+        </CardHeader>
+        <CardContent className="pt-0 space-y-6">
+          {/* 학력 */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <GraduationCap className="h-5 w-5 text-muted-foreground" />
+              <h4 className="font-medium">학력</h4>
+            </div>
+            {isEmpty(userData.education) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-7">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 학력 정보가 없습니다</span>
+              </div>
+            ) : (
+              <div className="space-y-3 pl-7">
+                {userData.education?.map((edu) => (
+                  <div key={edu.id}>
+                    <p className="font-medium">{edu.institution}</p>
+                    <p className="text-sm text-muted-foreground">{edu.degree} • {edu.year}</p>
+                  </div>
+                ))}
               </div>
             )}
-            
-            {/* 경력 */}
-            {userData.experience?.length > 0 && (
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Briefcase className="h-5 w-5 text-muted-foreground" />
-                  <h4 className="font-medium">경력</h4>
-                </div>
-                <div className="space-y-2 pl-7">
-                  {userData.experience.map((exp) => (
-                    <div key={exp.id}>
-                      <p className="font-medium">{exp.company}</p>
-                      <p className="text-sm text-muted-foreground">{exp.position} • {exp.period}</p>
-                    </div>
-                  ))}
-                </div>
+          </div>
+          
+          {/* 경력 */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Briefcase className="h-5 w-5 text-muted-foreground" />
+              <h4 className="font-medium">경력</h4>
+            </div>
+            {isEmpty(userData.experience) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-7">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 경력 정보가 없습니다</span>
+              </div>
+            ) : (
+              <div className="space-y-3 pl-7">
+                {userData.experience?.map((exp) => (
+                  <div key={exp.id}>
+                    <p className="font-medium">{exp.company}</p>
+                    <p className="text-sm text-muted-foreground">{exp.position} • {exp.period}</p>
+                  </div>
+                ))}
               </div>
             )}
-            
-            {/* 자격증 */}
-            {userData.certificates?.length > 0 && (
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Award className="h-5 w-5 text-muted-foreground" />
-                  <h4 className="font-medium">자격증</h4>
-                </div>
-                <div className="space-y-2 pl-7">
-                  {userData.certificates.map((cert) => (
-                    <div key={cert.id}>
-                      <p className="font-medium">{cert.name}</p>
-                      <p className="text-sm text-muted-foreground">{cert.issuer} • {cert.year}</p>
-                    </div>
-                  ))}
-                </div>
+          </div>
+          
+          {/* 자격증 */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Award className="h-5 w-5 text-muted-foreground" />
+              <h4 className="font-medium">자격증</h4>
+            </div>
+            {isEmpty(userData.certificates) ? (
+              <div className="flex items-center text-sm text-muted-foreground pl-7">
+                <Minus className="h-4 w-4 mr-1" />
+                <span>등록된 자격증 정보가 없습니다</span>
+              </div>
+            ) : (
+              <div className="space-y-3 pl-7">
+                {userData.certificates?.map((cert) => (
+                  <div key={cert.id}>
+                    <p className="font-medium">{cert.name}</p>
+                    <p className="text-sm text-muted-foreground">{cert.issuer} • {cert.year}</p>
+                  </div>
+                ))}
               </div>
             )}
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* 다가오는 일정 */}
+      <Card className="mt-4">
+        <CardHeader>
+          <h3 className="font-semibold">다가오는 일정</h3>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="font-medium">기타 레슨</p>
+                <p className="text-xs text-muted-foreground">5월 15일 (화) 18:00</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="font-medium">연주회 연습</p>
+                <p className="text-xs text-muted-foreground">5월 18일 (금) 19:30</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       
       {/* Sheet for followers */}
       <Sheet open={activeSheet === 'followers'} onOpenChange={(open) => !open && setActiveSheet(null)}>
