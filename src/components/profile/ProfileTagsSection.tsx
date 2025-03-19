@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import { FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { KeyboardEvent } from "react";
@@ -48,38 +47,72 @@ export function ProfileTagsSection({
         </label>
       </div>
       
-      <div className="flex flex-wrap gap-1.5">
-        {tags.map((tag, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-1 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md text-sm"
-          >
-            <span>{tag}</span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-4 w-4 p-0 hover:bg-secondary/80"
-              onClick={() => handleRemoveTag(tag)}
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          </div>
-        ))}
-      </div>
+      <TagList 
+        tags={tags} 
+        onRemoveTag={handleRemoveTag} 
+      />
       
-      <div className="flex gap-2">
-        <Input
-          value={newTag}
-          onChange={(e) => setNewTag(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className="flex-1"
-        />
-        <Button type="button" onClick={handleAddTag}>
-          추가
-        </Button>
-      </div>
+      <TagInput 
+        newTag={newTag}
+        setNewTag={setNewTag}
+        placeholder={placeholder}
+        onKeyDown={handleKeyDown}
+        onAddTag={handleAddTag}
+      />
+    </div>
+  );
+}
+
+interface TagListProps {
+  tags: string[];
+  onRemoveTag: (tag: string) => void;
+}
+
+function TagList({ tags, onRemoveTag }: TagListProps) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {tags.map((tag, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-1 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md text-sm"
+        >
+          <span>{tag}</span>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-4 w-4 p-0 hover:bg-secondary/80"
+            onClick={() => onRemoveTag(tag)}
+          >
+            <X className="h-3 w-3" />
+          </Button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+interface TagInputProps {
+  newTag: string;
+  setNewTag: (tag: string) => void;
+  placeholder: string;
+  onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onAddTag: () => void;
+}
+
+function TagInput({ newTag, setNewTag, placeholder, onKeyDown, onAddTag }: TagInputProps) {
+  return (
+    <div className="flex gap-2">
+      <Input
+        value={newTag}
+        onChange={(e) => setNewTag(e.target.value)}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        className="flex-1"
+      />
+      <Button type="button" onClick={onAddTag}>
+        추가
+      </Button>
     </div>
   );
 }
