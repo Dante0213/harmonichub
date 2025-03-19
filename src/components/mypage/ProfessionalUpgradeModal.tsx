@@ -19,7 +19,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { FormLabel } from "@/components/ui/form";
+import { Label as FormLabel } from "@/components/ui/label";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
@@ -156,7 +156,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
             <>
               {/* 전공 선택 섹션 */}
               <div className="space-y-2">
-                <FormLabel>전공</FormLabel>
+                <Label>전공</Label>
                 <Select onValueChange={setSpecialization} value={specialization}>
                   <SelectTrigger>
                     <SelectValue placeholder="전공 선택" />
