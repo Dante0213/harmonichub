@@ -2,8 +2,15 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { GraduationCap, Minus } from "lucide-react";
 
+interface Education {
+  id: string;
+  institution: string;
+  degree: string;
+  year: string;
+}
+
 interface EducationSectionProps {
-  education: string[] | undefined;
+  education: Education[] | undefined;
 }
 
 export const EducationSection = ({ education }: EducationSectionProps) => {
@@ -23,10 +30,15 @@ export const EducationSection = ({ education }: EducationSectionProps) => {
           </div>
         ) : (
           <ul className="space-y-2">
-            {education?.map((edu, index) => (
-              <li key={index} className="flex items-center gap-2">
+            {education?.map((edu) => (
+              <li key={edu.id} className="flex items-center gap-2">
                 <GraduationCap className="h-5 w-5 text-muted-foreground" />
-                <span>{edu}</span>
+                <div>
+                  <span className="font-medium">{edu.institution}</span>
+                  <span className="text-sm text-muted-foreground ml-2">
+                    {edu.degree && `${edu.degree} • `}{edu.year}
+                  </span>
+                </div>
               </li>
             ))}
           </ul>

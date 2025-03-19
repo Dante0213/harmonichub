@@ -2,8 +2,15 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Award, Minus } from "lucide-react";
 
+interface Certificate {
+  id: string;
+  name: string;
+  issuer: string;
+  year: string;
+}
+
 interface CertificatesSectionProps {
-  certificates: string[] | undefined;
+  certificates: Certificate[] | undefined;
 }
 
 export const CertificatesSection = ({ certificates }: CertificatesSectionProps) => {
@@ -23,10 +30,15 @@ export const CertificatesSection = ({ certificates }: CertificatesSectionProps) 
           </div>
         ) : (
           <ul className="space-y-2">
-            {certificates?.map((cert, index) => (
-              <li key={index} className="flex items-center gap-2">
+            {certificates?.map((cert) => (
+              <li key={cert.id} className="flex items-center gap-2">
                 <Award className="h-5 w-5 text-muted-foreground" />
-                <span>{cert}</span>
+                <div>
+                  <span className="font-medium">{cert.name}</span>
+                  <span className="text-sm text-muted-foreground ml-2">
+                    {cert.issuer && `${cert.issuer} • `}{cert.year}
+                  </span>
+                </div>
               </li>
             ))}
           </ul>

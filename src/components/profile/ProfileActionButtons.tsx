@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { UserPlus, UserCheck, MessageSquare, PenSquare, Heart } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { useSocial } from "@/pages/Social";
-import { useProfileSocial } from "@/pages/Profile";
+import { useProfileSocial } from "@/context/ProfileSocialContext";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "react-router-dom";
 

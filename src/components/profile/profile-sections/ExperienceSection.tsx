@@ -2,8 +2,15 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Briefcase, Minus } from "lucide-react";
 
+interface Experience {
+  id: string;
+  company: string;
+  position: string;
+  period: string;
+}
+
 interface ExperienceSectionProps {
-  experience: string[] | undefined;
+  experience: Experience[] | undefined;
 }
 
 export const ExperienceSection = ({ experience }: ExperienceSectionProps) => {
@@ -23,10 +30,15 @@ export const ExperienceSection = ({ experience }: ExperienceSectionProps) => {
           </div>
         ) : (
           <ul className="space-y-2">
-            {experience?.map((exp, index) => (
-              <li key={index} className="flex items-center gap-2">
+            {experience?.map((exp) => (
+              <li key={exp.id} className="flex items-center gap-2">
                 <Briefcase className="h-5 w-5 text-muted-foreground" />
-                <span>{exp}</span>
+                <div>
+                  <span className="font-medium">{exp.company}</span>
+                  <span className="text-sm text-muted-foreground ml-2">
+                    {exp.position && `${exp.position} • `}{exp.period}
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
