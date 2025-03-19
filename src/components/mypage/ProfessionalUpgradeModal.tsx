@@ -1,3 +1,4 @@
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ import { UpgradeCertificatesSection } from "./upgrade-sections/UpgradeCertificat
 import { UpgradeSpecializationSection } from "./upgrade-sections/UpgradeSpecializationSection";
 import { UpgradeSuccessView } from "./upgrade-sections/UpgradeSuccessView";
 import { v4 as uuidv4 } from "uuid";
+import { Form, FormProvider, useForm } from "react-hook-form";
 
 interface ProfessionalUpgradeModalProps {
   open: boolean;
@@ -21,6 +23,7 @@ interface ProfessionalUpgradeModalProps {
 export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpgradeModalProps) {
   const { toast } = useToast();
   const { updateProfessionalStatus } = useMyPage();
+  const form = useForm(); // Form 컨텍스트 추가
 
   // 전공 상태 관리
   const [specialization, setSpecialization] = useState<string>("");
@@ -134,88 +137,90 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-6 py-4">
-          {verified ? (
-            <UpgradeSuccessView />
-          ) : (
-            <>
-              {/* 전공 선택 섹션 */}
-              <UpgradeSpecializationSection 
-                specialization={specialization}
-                setSpecialization={setSpecialization}
-              />
-              
-              {/* 악기 선택 섹션 */}
-              <ProfileTagsSection
-                title="악기"
-                tags={instruments}
-                setTags={setInstruments}
-                newTag={newInstrument}
-                setNewTag={setNewInstrument}
-                placeholder="악기 추가"
-              />
-              
-              {/* 장르 선택 섹션 */}
-              <ProfileTagsSection
-                title="장르"
-                tags={genres}
-                setTags={setGenres}
-                newTag={newGenre}
-                setNewTag={setNewGenre}
-                placeholder="장르 추가"
-              />
-              
-              {/* 학력 섹션 */}
-              <UpgradeEducationSection
-                education={education}
-                setEducation={setEducation}
-              />
-              
-              {/* 경력 섹션 */}
-              <UpgradeExperienceSection
-                experience={experience}
-                setExperience={setExperience}
-              />
-              
-              {/* 자격증 섹션 */}
-              <UpgradeCertificatesSection
-                certificates={certificates}
-                setCertificates={setCertificates}
-              />
-              
-              {/* 사업자 등록증 업로드 */}
-              <div>
-                <Label htmlFor="business-cert">사업자 등록증 (선택사항)</Label>
-                <Input 
-                  id="business-cert" 
-                  type="file" 
-                  accept=".pdf,.jpg,.jpeg,.png" 
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setBusinessFile(e.target.files[0]);
-                    }
-                  }}
+        <FormProvider {...form}>
+          <div className="space-y-6 py-4">
+            {verified ? (
+              <UpgradeSuccessView />
+            ) : (
+              <>
+                {/* 전공 선택 섹션 */}
+                <UpgradeSpecializationSection 
+                  specialization={specialization}
+                  setSpecialization={setSpecialization}
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  음악 관련 사업자인 경우 등록증을 업로드하시면 검증이 빠르게 진행됩니다.
-                </p>
-              </div>
-            </>
-          )}
-        </div>
-        
-        <DialogFooter>
-          {!verified && (
-            <>
-              <Button variant="outline" onClick={() => onOpenChange(false)}>
-                취소
-              </Button>
-              <Button onClick={handleVerification} disabled={verifying}>
-                {verifying ? "검증 중..." : "전문가 전환 신청"}
-              </Button>
-            </>
-          )}
-        </DialogFooter>
+                
+                {/* 악기 선택 섹션 */}
+                <ProfileTagsSection
+                  title="악기"
+                  tags={instruments}
+                  setTags={setInstruments}
+                  newTag={newInstrument}
+                  setNewTag={setNewInstrument}
+                  placeholder="악기 추가"
+                />
+                
+                {/* 장르 선택 섹션 */}
+                <ProfileTagsSection
+                  title="장르"
+                  tags={genres}
+                  setTags={setGenres}
+                  newTag={newGenre}
+                  setNewTag={setNewGenre}
+                  placeholder="장르 추가"
+                />
+                
+                {/* 학력 섹션 */}
+                <UpgradeEducationSection
+                  education={education}
+                  setEducation={setEducation}
+                />
+                
+                {/* 경력 섹션 */}
+                <UpgradeExperienceSection
+                  experience={experience}
+                  setExperience={setExperience}
+                />
+                
+                {/* 자격증 섹션 */}
+                <UpgradeCertificatesSection
+                  certificates={certificates}
+                  setCertificates={setCertificates}
+                />
+                
+                {/* 사업자 등록증 업로드 */}
+                <div>
+                  <Label htmlFor="business-cert">사업자 등록증 (선택사항)</Label>
+                  <Input 
+                    id="business-cert" 
+                    type="file" 
+                    accept=".pdf,.jpg,.jpeg,.png" 
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setBusinessFile(e.target.files[0]);
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    음악 관련 사업자인 경우 등록증을 업로드하시면 검증이 빠르게 진행됩니다.
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+          
+          <DialogFooter>
+            {!verified && (
+              <>
+                <Button variant="outline" onClick={() => onOpenChange(false)}>
+                  취소
+                </Button>
+                <Button onClick={handleVerification} disabled={verifying}>
+                  {verifying ? "검증 중..." : "전문가 전환 신청"}
+                </Button>
+              </>
+            )}
+          </DialogFooter>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );
