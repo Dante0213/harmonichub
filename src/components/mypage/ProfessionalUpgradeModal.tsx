@@ -1,8 +1,6 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useMyPage } from "@/hooks/use-my-page";
 import { useToast } from "@/hooks/use-toast";
@@ -24,7 +22,7 @@ interface ProfessionalUpgradeModalProps {
 export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpgradeModalProps) {
   const { toast } = useToast();
   const { updateProfessionalStatus } = useMyPage();
-  const form = useForm();
+  const methods = useForm();
 
   // State management
   const [specialization, setSpecialization] = useState<string>("");
@@ -142,7 +140,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
           </DialogDescription>
         </DialogHeader>
         
-        <FormProvider {...form}>
+        <FormProvider {...methods}>
           <div className="space-y-6 py-4">
             {verified ? (
               <UpgradeSuccessView />
