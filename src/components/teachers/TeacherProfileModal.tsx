@@ -124,6 +124,14 @@ export function TeacherProfileModal({
                   <h4 className="font-medium mb-1">소개글</h4>
                   <p>{selectedTeacher.introduction}</p>
                 </div>
+                
+                {/* 커리큘럼 섹션 추가 */}
+                {selectedTeacher.curriculum && (
+                  <div>
+                    <h4 className="font-medium mb-1">커리큘럼</h4>
+                    <p>{selectedTeacher.curriculum}</p>
+                  </div>
+                )}
               </div>
             </>
           )}
@@ -137,6 +145,8 @@ export function TeacherProfileModal({
           onClose={() => setIsScheduleModalOpen(false)}
           teacherName={selectedTeacher.name}
           teacherId={selectedTeacher.id}
+          lessonPrice={selectedTeacher.pricing?.lessonPrice || 0}
+          lessonCount={selectedTeacher.pricing?.lessonCount || 1}
         />
       )}
 
@@ -147,6 +157,8 @@ export function TeacherProfileModal({
           onClose={() => setIsOnePointModalOpen(false)}
           teacherId={selectedTeacher.id}
           teacherName={selectedTeacher.name}
+          onePointPrice={selectedTeacher.pricing?.onePointPrice || 0}
+          onePointDuration={selectedTeacher.pricing?.onePointDuration || 10}
         />
       )}
 

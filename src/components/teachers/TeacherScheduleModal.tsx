@@ -18,6 +18,8 @@ import { AdditionalInfoForm } from "./AdditionalInfoForm";
 import { TimeSlotSelection } from "./TimeSlotSelection";
 import { OnePointLessonModal } from "./OnePointLessonModal";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import { PaymentMethodModal } from "../store/modals/PaymentMethodModal";
 
 const formSchema = z.object({
   instrument: z.string({
@@ -34,10 +36,13 @@ export function TeacherScheduleModal({
   onClose,
   teacherName,
   teacherId,
+  lessonPrice = 100000,
+  lessonCount = 4,
 }: TeacherScheduleModalProps) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [onePointModalOpen, setOnePointModalOpen] = useState(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const schedule = generateMockSchedule();
   const { toast } = useToast();
 
@@ -59,13 +64,20 @@ export function TeacherScheduleModal({
       return;
     }
 
-    // Here you would typically make an API call to book the lesson
+    // 결제 모달 열기
+    setPaymentModalOpen(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    // 예약 정보 저장
     console.log("예약 정보:", {
       teacherId,
       teacherName,
       date: format(selectedDate, "yyyy-MM-dd"),
       time: selectedTime,
-      ...values,
+      ...form.getValues(),
+      lessonPrice,
+      lessonCount,
     });
 
     toast({
@@ -102,6 +114,22 @@ export function TeacherScheduleModal({
               />
 
               <AdditionalInfoForm form={form} />
+              
+              <Separator className="my-2" />
+              
+              {/* 가격 정보 표시 */}
+              <div className="rounded-lg border p-4 bg-muted/30">
+                <h3 className="font-medium mb-2">결제 정보</h3>
+                <div className="flex justify-between items-center">
+                  <span>레슨 횟수</span>
+                  <span className="font-medium">{lessonCount}회</span>
+                </div>
+                <div className="flex justify-between items-center mt-1">
+                  <span>총 결제 금액</span>
+                  <span className="font-semibold text-lg">₩{lessonPrice.toLocaleString()}</span>
+                </div>
+                <p className="text-red-500 text-sm mt-2">* 레슨이 취소될 시 환불됩니다.</p>
+              </div>
 
               <DialogFooter className="flex gap-2 pt-4">
                 <Button type="button" variant="outline" onClick={onClose}>
@@ -113,12 +141,21 @@ export function TeacherScheduleModal({
           </FormProvider>
         </DialogContent>
       </Dialog>
-
+      
+      {/* 원포인트 레슨 모달 */}
       <OnePointLessonModal
         isOpen={onePointModalOpen}
         onClose={() => setOnePointModalOpen(false)}
         teacherId={teacherId}
         teacherName={teacherName}
+      />
+      
+      {/* 결제 모달 */}
+      <PaymentMethodModal
+        isOpen={paymentModalOpen}
+        onOpenChange={setPaymentModalOpen}
+        onSuccess={handlePaymentSuccess}
+        productName={`${teacherName} 선생님 ${lessonCount}회 레슨`}
       />
     </>
   );
