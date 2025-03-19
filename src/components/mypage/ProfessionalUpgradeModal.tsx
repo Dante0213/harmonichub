@@ -1,4 +1,3 @@
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -56,6 +55,7 @@ export function ProfessionalUpgradeModal({ open, onOpenChange }: ProfessionalUpg
   
   // 검증 처리 함수
   const handleVerification = () => {
+    console.log("전문가 전환 처리 시작");
     if (specialization === "") {
       toast({
         title: "전공 정보 필요",

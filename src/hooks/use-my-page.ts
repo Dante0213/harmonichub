@@ -176,7 +176,7 @@ export function useMyPage() {
         updateSNSProfile(sampleUserData);
       }
     }
-  }, [isBasicInfoModalOpen, isProfileEditModalOpen]); // 프로필 수정 모달이 닫힐 때도 다시 로드
+  }, [isBasicInfoModalOpen, isProfileEditModalOpen, isModalOpen]); // 모달 상태가 변경될 때마다 다시 로드하도록 의존성 배열에 isModalOpen 추가
   
   return {
     isModalOpen,
