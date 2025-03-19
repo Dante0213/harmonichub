@@ -7,9 +7,7 @@ import { FollowersView } from "@/components/social/profile/FollowersView";
 import { FollowingView } from "@/components/social/profile/FollowingView";
 import { FavoriteTeachersView } from "@/components/social/profile/FavoriteTeachersView";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BookOpen, Briefcase, GraduationCap, Award, Calendar, Minus, PenSquare } from "lucide-react";
-import { ProfileSections } from "./profile-sections/ProfileSections";
+import { PenSquare } from "lucide-react";
 
 interface UserProfileSectionProps {
   userData: Reel;
@@ -28,8 +26,6 @@ export const UserProfileSection = ({
   onEditClick,
   isCurrentUser = false
 }: UserProfileSectionProps) => {
-  const isProfessional = userData.isProfessional || false;
-  
   const [activeSheet, setActiveSheet] = useState<'followers' | 'following' | 'favorites' | null>(null);
   
   const handleFollowersClick = () => {
@@ -109,8 +105,7 @@ export const UserProfileSection = ({
         </div>
       </div>
       
-      {/* 프로필 정보 섹션 - 분리된 컴포넌트 사용 */}
-      <ProfileSections userData={userData} />
+      {/* 프로필 정보 섹션 제거 - ProfileSections 컴포넌트 호출 제거 */}
       
       {/* Sheet for followers */}
       <Sheet open={activeSheet === 'followers'} onOpenChange={(open) => !open && setActiveSheet(null)}>
