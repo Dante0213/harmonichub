@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { UserPlus, UserCheck, MessageSquare, PenSquare, Heart } from "lucide-react";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { useSocial } from "@/pages/Social";
+import { useProfileSocial } from "@/pages/Profile";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "react-router-dom";
 
 interface ProfileActionButtonsProps {
   userData: Reel;
@@ -18,7 +20,12 @@ export const ProfileActionButtons = ({
   onEditClick,
   onChatOpen
 }: ProfileActionButtonsProps) => {
-  const { isFollowing, followUser, unfollowUser, isFavoriteTeacher, addFavoriteTeacher, removeFavoriteTeacher } = useSocial();
+  const location = useLocation();
+  // 현재 경로에 따라 적절한 컨텍스트 사용
+  const isProfilePage = location.pathname === "/profile";
+  const socialContext = isProfilePage ? useProfileSocial() : useSocial();
+  
+  const { isFollowing, followUser, unfollowUser, isFavoriteTeacher, addFavoriteTeacher, removeFavoriteTeacher } = socialContext;
   const following = isFollowing(userData.id);
   const isFavorite = isFavoriteTeacher(userData.id);
   const { toast } = useToast();

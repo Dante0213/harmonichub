@@ -1,11 +1,34 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileInfo } from "@/components/profile/ProfileInfo";
 import { ProfileContentTabs } from "@/components/profile/ProfileContentTabs";
+
+// Social 컨텍스트를 위한 기본값 생성
+export const ProfileSocialContext = createContext<{
+  followedUsers: Reel[];
+  followUser: (user: Reel) => void;
+  unfollowUser: (userId: string | number) => void;
+  isFollowing: (userId: string | number) => boolean;
+  favoriteTeachers: Reel[];
+  addFavoriteTeacher: (user: Reel) => void;
+  removeFavoriteTeacher: (userId: string | number) => void;
+  isFavoriteTeacher: (userId: string | number) => boolean;
+}>({
+  followedUsers: [],
+  followUser: () => {},
+  unfollowUser: () => {},
+  isFollowing: () => false,
+  favoriteTeachers: [],
+  addFavoriteTeacher: () => {},
+  removeFavoriteTeacher: () => {},
+  isFavoriteTeacher: () => false
+});
+
+export const useProfileSocial = () => useContext(ProfileSocialContext);
 
 const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -27,6 +50,10 @@ const Profile = () => {
     experience: [],
     certificates: []
   });
+
+  // 팔로우 및 찜 관련 상태
+  const [followedUsers, setFollowedUsers] = useState<Reel[]>([]);
+  const [favoriteTeachers, setFavoriteTeachers] = useState<Reel[]>([]);
 
   useEffect(() => {
     // 현재 로그인된 사용자 이메일 가져오기
@@ -95,35 +122,75 @@ const Profile = () => {
     }
   };
 
+  // Social 컨텍스트 함수들
+  const followUser = (user: Reel) => {
+    if (!followedUsers.some(u => u.id === user.id)) {
+      setFollowedUsers([...followedUsers, user]);
+    }
+  };
+
+  const unfollowUser = (userId: string | number) => {
+    setFollowedUsers(followedUsers.filter(u => u.id !== userId));
+  };
+
+  const isFollowing = (userId: string | number) => {
+    return followedUsers.some(u => u.id === userId);
+  };
+  
+  const addFavoriteTeacher = (user: Reel) => {
+    if (!favoriteTeachers.some(u => u.id === user.id)) {
+      setFavoriteTeachers([...favoriteTeachers, user]);
+    }
+  };
+
+  const removeFavoriteTeacher = (userId: string | number) => {
+    setFavoriteTeachers(favoriteTeachers.filter(u => u.id !== userId));
+  };
+
+  const isFavoriteTeacher = (userId: string | number) => {
+    return favoriteTeachers.some(u => u.id === userId);
+  };
+
   return (
-    <Layout>
-      <div className="container mx-auto py-10 px-4">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* 프로필 정보 섹션 */}
-          <div className="md:w-1/3">
-            <ProfileHeader 
-              userData={userData} 
-              onEditClick={() => setIsEditModalOpen(true)} 
-            />
+    <ProfileSocialContext.Provider value={{ 
+      followedUsers, 
+      followUser, 
+      unfollowUser, 
+      isFollowing,
+      favoriteTeachers,
+      addFavoriteTeacher,
+      removeFavoriteTeacher,
+      isFavoriteTeacher
+    }}>
+      <Layout>
+        <div className="container mx-auto py-10 px-4">
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* 프로필 정보 섹션 */}
+            <div className="md:w-1/3">
+              <ProfileHeader 
+                userData={userData} 
+                onEditClick={() => setIsEditModalOpen(true)} 
+              />
+              
+              <ProfileInfo userData={userData} />
+            </div>
             
-            <ProfileInfo userData={userData} />
-          </div>
-          
-          {/* 탭 콘텐츠 섹션 */}
-          <div className="md:w-2/3">
-            <ProfileContentTabs />
+            {/* 탭 콘텐츠 섹션 */}
+            <div className="md:w-2/3">
+              <ProfileContentTabs />
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* 프로필 수정 모달 */}
-      <ProfileEditModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        userData={userData}
-        onUpdate={handleProfileUpdate}
-      />
-    </Layout>
+        
+        {/* 프로필 수정 모달 */}
+        <ProfileEditModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          userData={userData}
+          onUpdate={handleProfileUpdate}
+        />
+      </Layout>
+    </ProfileSocialContext.Provider>
   );
 };
 
