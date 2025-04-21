@@ -24,7 +24,11 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
     <>
       <Card>
         <CardHeader className="relative pb-0">
-          <UserProfileSection userData={userData} />
+          <UserProfileSection 
+            userData={userData} 
+            onEditClick={onEditClick}
+            isCurrentUser={isCurrentUser}
+          />
         </CardHeader>
         
         <CardContent className="pt-6">

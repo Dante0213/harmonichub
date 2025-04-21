@@ -1,14 +1,13 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Reel } from "@/components/social/reels/ReelsData";
 import { Button } from "@/components/ui/button";
+import { Reel } from "@/components/social/reels/ReelsData";
 import { useState } from "react";
 import { FollowersView } from "@/components/social/profile/FollowersView";
 import { FollowingView } from "@/components/social/profile/FollowingView";
 import { FavoriteTeachersView } from "@/components/social/profile/FavoriteTeachersView";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BookOpen, Briefcase, GraduationCap, Award, Calendar, Minus, PenSquare } from "lucide-react";
+import { PenSquare } from "lucide-react";
 import { ProfileSections } from "./profile-sections/ProfileSections";
 
 interface UserProfileSectionProps {
@@ -28,8 +27,6 @@ export const UserProfileSection = ({
   onEditClick,
   isCurrentUser = false
 }: UserProfileSectionProps) => {
-  const isProfessional = userData.isProfessional || false;
-  
   const [activeSheet, setActiveSheet] = useState<'followers' | 'following' | 'favorites' | null>(null);
   
   const handleFollowersClick = () => {
@@ -69,7 +66,6 @@ export const UserProfileSection = ({
         <h1 className="text-2xl font-bold">{userData.user}</h1>
         <p className="text-muted-foreground">@{userData.userHandle}</p>
         
-        {/* 프로필 수정 버튼 - 전공 섹션 위로 이동 */}
         {isCurrentUser && (
           <Button
             className="w-full mt-4"
@@ -109,10 +105,9 @@ export const UserProfileSection = ({
         </div>
       </div>
       
-      {/* 프로필 정보 섹션 - 분리된 컴포넌트 사용 */}
       <ProfileSections userData={userData} />
       
-      {/* Sheet for followers */}
+      {/* Sheet Components */}
       <Sheet open={activeSheet === 'followers'} onOpenChange={(open) => !open && setActiveSheet(null)}>
         <SheetContent>
           <SheetHeader>
@@ -124,7 +119,6 @@ export const UserProfileSection = ({
         </SheetContent>
       </Sheet>
       
-      {/* Sheet for following */}
       <Sheet open={activeSheet === 'following'} onOpenChange={(open) => !open && setActiveSheet(null)}>
         <SheetContent>
           <SheetHeader>
@@ -136,7 +130,6 @@ export const UserProfileSection = ({
         </SheetContent>
       </Sheet>
       
-      {/* Sheet for favorites */}
       <Sheet open={activeSheet === 'favorites'} onOpenChange={(open) => !open && setActiveSheet(null)}>
         <SheetContent>
           <SheetHeader>
