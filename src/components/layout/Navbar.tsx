@@ -38,7 +38,6 @@ export function Navbar() {
         {shouldShowMainNav && <MainNavigation handleNavClick={handleNavClick} />}
       </div>
 
-      {/* Mobile Navigation */}
       <MobileMenu 
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}

@@ -14,7 +14,6 @@ export function Layout({ children }: LayoutProps) {
     <TooltipProvider>
       <div className="min-h-screen bg-gradient-to-br from-pastel-purple via-background to-pastel-blue">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-center mb-8">Harmonic Hub</h1>
           <Navbar />
           <div className="content-area mx-0 my-0">
             {children || <Outlet />}
