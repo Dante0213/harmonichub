@@ -1,10 +1,10 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeProvider";
+import { Layout } from "./components/layout/Layout";
 import Index from "./pages/Index";
 import LessonRoom from "./pages/LessonRoom";
 import PracticeRoom from "./pages/PracticeRoom";
@@ -74,39 +74,41 @@ const App = () => {
           <HashRouter>
             <RouteDebugger />
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/lesson-room" element={<LessonRoom />} />
-              <Route path="/practice-room" element={<PracticeRoom />} />
-              <Route path="/store" element={<Store />} />
-              <Route path="/social" element={<Social />} />
-              <Route path="/learning" element={<Learning />} />
-              <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/sign-in" element={<SignIn />} />
-              <Route path="/teachers" element={<Teachers />} />
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="/profile" element={<Profile />} />
-              
-              {/* 새로 추가한 페이지들 */}
-              <Route path="/about" element={<About />} />
-              <Route path="/notices" element={<Notices />} />
-              <Route path="/guide" element={<Guide />} />
-              <Route path="/contact" element={<Contact />} />
-              
-              {/* My 카테고리 페이지들 */}
-              <Route path="/my/recent-videos" element={<RecentVideos />} />
-              <Route path="/my/liked-videos" element={<LikedVideos />} />
-              <Route path="/my/saved-videos" element={<SavedVideos />} />
-              <Route path="/my/watch-later" element={<WatchLater />} />
-              
-              {/* 새로운 소식 페이지들 */}
-              <Route path="/news/top-100" element={<Top100 />} />
-              <Route path="/news/performances" element={<Performances />} />
-              <Route path="/news/news" element={<News />} />
-              <Route path="/news/business" element={<Business />} />
-              <Route path="/news/more-videos" element={<MoreVideos />} />
-              
-              {/* 404 페이지 - 모든 경로를 캐치 */}
-              <Route path="*" element={<NotFound />} />
+              <Route element={<Layout />}>
+                <Route path="/" element={<Index />} />
+                <Route path="/lesson-room" element={<LessonRoom />} />
+                <Route path="/practice-room" element={<PracticeRoom />} />
+                <Route path="/store" element={<Store />} />
+                <Route path="/social" element={<Social />} />
+                <Route path="/learning" element={<Learning />} />
+                <Route path="/sign-up" element={<SignUp />} />
+                <Route path="/sign-in" element={<SignIn />} />
+                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/profile" element={<Profile />} />
+                
+                {/* 새로 추가한 페이지들 */}
+                <Route path="/about" element={<About />} />
+                <Route path="/notices" element={<Notices />} />
+                <Route path="/guide" element={<Guide />} />
+                <Route path="/contact" element={<Contact />} />
+                
+                {/* My 카테고리 페이지들 */}
+                <Route path="/my/recent-videos" element={<RecentVideos />} />
+                <Route path="/my/liked-videos" element={<LikedVideos />} />
+                <Route path="/my/saved-videos" element={<SavedVideos />} />
+                <Route path="/my/watch-later" element={<WatchLater />} />
+                
+                {/* 새로운 소식 페이지들 */}
+                <Route path="/news/top-100" element={<Top100 />} />
+                <Route path="/news/performances" element={<Performances />} />
+                <Route path="/news/news" element={<News />} />
+                <Route path="/news/business" element={<Business />} />
+                <Route path="/news/more-videos" element={<MoreVideos />} />
+                
+                {/* 404 페이지 - 모든 경로를 캐치 */}
+                <Route path="*" element={<NotFound />} />
+              </Route>
             </Routes>
             <Chatbot />
           </HashRouter>
