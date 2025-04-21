@@ -7,22 +7,9 @@ import { UserInfoCard } from "@/components/mypage/UserInfoCard";
 import { MyPageTabs } from "@/components/mypage/MyPageTabs";
 import { useMyPage } from "@/hooks/use-my-page";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
-import { useState, useEffect } from "react"; 
-import { useNavigate } from "react-router-dom"; 
-import { getCurrentUserEmail } from "@/utils/profile-utils"; 
+import { useState } from "react";
 
 export default function MyPage() {
-  const navigate = useNavigate(); 
-
-  // 로그인 체크
-  useEffect(() => {
-    const email = getCurrentUserEmail();
-    if (!email) {
-      // 비로그인 상태일 경우 로그인 페이지로 리다이렉트
-      navigate('/sign-in');
-    }
-  }, [navigate]);
-
   const {
     isModalOpen,
     setIsModalOpen,
@@ -76,7 +63,6 @@ export default function MyPage() {
         </div>
       </div>
       
-      {/* 모달 컴포넌트들 */}
       <ProfessionalUpgradeModal open={isModalOpen} onOpenChange={setIsModalOpen} />
       <PasswordChangeModal open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen} />
       <BasicInfoChangeModal open={isBasicInfoModalOpen} onOpenChange={setIsBasicInfoModalOpen} />
@@ -94,7 +80,7 @@ export default function MyPage() {
             bio: userData.bio || "",
             imageUrl: userData.imageUrl || "",
             isProfessional: userData.isProfessional,
-            specialization: userData.specialization || "", 
+            specialization: userData.specialization || "", // 타입이 맞도록 수정
             instruments: userData.instruments || [],
             genres: userData.genres || [],
             education: userData.education || [],

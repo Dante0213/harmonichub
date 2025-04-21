@@ -7,7 +7,8 @@ import { FollowersView } from "@/components/social/profile/FollowersView";
 import { FollowingView } from "@/components/social/profile/FollowingView";
 import { FavoriteTeachersView } from "@/components/social/profile/FavoriteTeachersView";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { PenSquare } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { BookOpen, Briefcase, GraduationCap, Award, Calendar, Minus, PenSquare } from "lucide-react";
 import { ProfileSections } from "./profile-sections/ProfileSections";
 
 interface UserProfileSectionProps {
@@ -68,10 +69,10 @@ export const UserProfileSection = ({
         <h1 className="text-2xl font-bold">{userData.user}</h1>
         <p className="text-muted-foreground">@{userData.userHandle}</p>
         
-        {/* 프로필 수정 버튼 - 닉네임 바로 아래로 이동 */}
+        {/* 프로필 수정 버튼 - 전공 섹션 위로 이동 */}
         {isCurrentUser && (
           <Button
-            className="w-full mt-2"
+            className="w-full mt-4"
             variant="outline"
             onClick={onEditClick}
           >

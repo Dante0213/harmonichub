@@ -1,118 +1,68 @@
 
-import { Button } from "@/components/ui/button";
+import { FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { KeyboardEvent } from "react";
 
 interface ProfileTagsSectionProps {
   title: string;
   tags: string[];
-  setTags: (tags: string[]) => void;
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
   newTag: string;
-  setNewTag: (tag: string) => void;
+  setNewTag: React.Dispatch<React.SetStateAction<string>>;
   placeholder: string;
 }
 
-export function ProfileTagsSection({
+export const ProfileTagsSection = ({
   title,
   tags,
   setTags,
   newTag,
   setNewTag,
   placeholder
-}: ProfileTagsSectionProps) {
-  const handleAddTag = () => {
-    if (newTag.trim() !== "" && !tags.includes(newTag.trim())) {
+}: ProfileTagsSectionProps) => {
+  const addTag = () => {
+    if (newTag.trim() !== "") {
       setTags([...tags, newTag.trim()]);
       setNewTag("");
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAddTag();
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+  const removeTag = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
   };
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          {title}
-        </label>
-      </div>
-      
-      <TagList 
-        tags={tags} 
-        onRemoveTag={handleRemoveTag} 
-      />
-      
-      <TagInput 
-        newTag={newTag}
-        setNewTag={setNewTag}
-        placeholder={placeholder}
-        onKeyDown={handleKeyDown}
-        onAddTag={handleAddTag}
-      />
-    </div>
-  );
-}
-
-interface TagListProps {
-  tags: string[];
-  onRemoveTag: (tag: string) => void;
-}
-
-function TagList({ tags, onRemoveTag }: TagListProps) {
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {tags.map((tag, index) => (
-        <div
-          key={index}
-          className="flex items-center gap-1 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md text-sm"
-        >
-          <span>{tag}</span>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="h-4 w-4 p-0 hover:bg-secondary/80"
-            onClick={() => onRemoveTag(tag)}
+    <div className="space-y-4">
+      <FormLabel>{title}</FormLabel>
+      <div className="flex flex-wrap gap-2 mb-2">
+        {tags.map((tag, index) => (
+          <div 
+            key={index} 
+            className="bg-secondary px-3 py-1 rounded-full text-sm flex items-center gap-1"
           >
-            <X className="h-3 w-3" />
-          </Button>
-        </div>
-      ))}
+            {tag}
+            <button 
+              type="button" 
+              onClick={() => removeTag(index)}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <Input
+          placeholder={placeholder}
+          value={newTag}
+          onChange={e => setNewTag(e.target.value)}
+          className="flex-1"
+        />
+        <Button type="button" onClick={addTag} size="sm">
+          추가
+        </Button>
+      </div>
     </div>
   );
-}
-
-interface TagInputProps {
-  newTag: string;
-  setNewTag: (tag: string) => void;
-  placeholder: string;
-  onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
-  onAddTag: () => void;
-}
-
-function TagInput({ newTag, setNewTag, placeholder, onKeyDown, onAddTag }: TagInputProps) {
-  return (
-    <div className="flex gap-2">
-      <Input
-        value={newTag}
-        onChange={(e) => setNewTag(e.target.value)}
-        onKeyDown={onKeyDown}
-        placeholder={placeholder}
-        className="flex-1"
-      />
-      <Button type="button" onClick={onAddTag}>
-        추가
-      </Button>
-    </div>
-  );
-}
+};

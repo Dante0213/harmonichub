@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { GraduationCap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Teacher, teachersList } from "./TeacherData";
+import { Teacher } from "./TeacherData";
 
 interface TopTeachersListProps {
   onlyProfessional?: boolean;
@@ -14,13 +14,53 @@ interface TopTeachersListProps {
 export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: TopTeachersListProps) {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   
-  // 전체 교사 데이터를 TeacherData.ts에서 불러오기
+  // 전체 교사 데이터 (Mock data)
+  const topTeachers: Teacher[] = [
+    { 
+      id: 1, 
+      name: "김선생", 
+      image: "/placeholder.svg",
+      specialty: "피아노",
+      education: "서울대학교 음악대학",
+      experience: "10년 경력",
+      certificates: "음악교육 자격증",
+      introduction: "반갑습니다. 피아노를 가르치고 있습니다.",
+      category: "클래식",
+      isProfessional: true,
+    },
+    { 
+      id: 2, 
+      name: "이선생", 
+      image: "/placeholder.svg",
+      specialty: "기타",
+      education: "한양대학교 음악대학",
+      experience: "8년 경력",
+      certificates: "기타 지도사 자격증",
+      introduction: "기타를 쉽고 재미있게 가르칩니다.",
+      category: "실용음악",
+      isProfessional: true,
+    },
+    { 
+      id: 3, 
+      name: "박선생", 
+      image: "/placeholder.svg",
+      specialty: "바이올린",
+      education: "연세대학교 음악대학",
+      experience: "12년 경력",
+      certificates: "바이올린 마스터 자격증",
+      introduction: "바이올린의 아름다움을 전달합니다.",
+      category: "클래식",
+      isProfessional: true,
+    },
+  ];
+  
+  // 등록된 교사 가져오기
   useEffect(() => {
-    // 최대 3명의 선생님을 선택합니다
-    const topThreeTeachers = teachersList.slice(0, 3);
-    
     // 로컬 스토리지에서 등록된 선생님 가져오기
     const storedTeachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+    
+    // 모든 선생님들을 전문가로 설정
+    let filteredTeachers = [...topTeachers];
     
     // 저장된 선생님들도 모두 전문가로 설정
     const professionalStoredTeachers = storedTeachers.map((teacher: any) => ({
@@ -28,8 +68,8 @@ export function TopTeachersList({ onlyProfessional = false, onSelectTeacher }: T
       isProfessional: true
     }));
     
-    // 등록된 선생님들 추가하고 최대 3명까지만
-    const allTeachers = [...topThreeTeachers, ...professionalStoredTeachers].slice(0, 3);
+    // 등록된 선생님들 추가
+    const allTeachers = [...filteredTeachers, ...professionalStoredTeachers].slice(0, 3);
     setTeachers(allTeachers);
   }, [onlyProfessional]);
 

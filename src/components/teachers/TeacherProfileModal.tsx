@@ -124,13 +124,6 @@ export function TeacherProfileModal({
                   <h4 className="font-medium mb-1">소개글</h4>
                   <p>{selectedTeacher.introduction}</p>
                 </div>
-                
-                {selectedTeacher.curriculum && (
-                  <div>
-                    <h4 className="font-medium mb-1">커리큘럼</h4>
-                    <p className="whitespace-pre-line">{selectedTeacher.curriculum}</p>
-                  </div>
-                )}
               </div>
             </>
           )}
@@ -144,8 +137,6 @@ export function TeacherProfileModal({
           onClose={() => setIsScheduleModalOpen(false)}
           teacherName={selectedTeacher.name}
           teacherId={selectedTeacher.id}
-          lessonPrice={selectedTeacher.pricing?.lessonPrice}
-          lessonCount={selectedTeacher.pricing?.lessonCount}
         />
       )}
 
@@ -156,8 +147,6 @@ export function TeacherProfileModal({
           onClose={() => setIsOnePointModalOpen(false)}
           teacherId={selectedTeacher.id}
           teacherName={selectedTeacher.name}
-          onePointPrice={selectedTeacher.pricing?.onePointPrice}
-          onePointDuration={selectedTeacher.pricing?.onePointDuration}
         />
       )}
 

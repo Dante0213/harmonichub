@@ -59,7 +59,6 @@ export function TimeSlotSelection({
                     slot.isBooked ? "bg-gray-100 text-gray-400" : ""
                   }`}
                   onClick={() => handleTimeSelection(slot.time, slot.isBooked)}
-                  type="button"
                 >
                   {slot.time}
                   {slot.isBooked && " (예약됨)"}

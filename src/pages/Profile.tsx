@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ProfileEditModal } from "@/components/profile/ProfileEditModal";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileContentTabs } from "@/components/profile/ProfileContentTabs";
+import { UserProfileSection } from "@/components/profile/UserProfileSection";
 import { ProfileSocialProvider } from "@/context/ProfileSocialContext";
 import { useProfileData } from "@/hooks/use-profile-data";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -85,6 +86,12 @@ const Profile = () => {
               <ProfileHeader 
                 userData={userData} 
                 onEditClick={() => setIsEditModalOpen(true)} 
+              />
+              
+              <UserProfileSection 
+                userData={userData}
+                isCurrentUser={true}
+                onEditClick={() => setIsEditModalOpen(true)}
               />
             </div>
             

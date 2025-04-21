@@ -1,5 +1,6 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Reel } from "@/components/social/reels/ReelsData";
 import { useState } from "react";
 import { ChatDialog } from "@/components/social/chat/ChatDialog";
@@ -23,11 +24,7 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
     <>
       <Card>
         <CardHeader className="relative pb-0">
-          <UserProfileSection 
-            userData={userData} 
-            onEditClick={onEditClick}
-            isCurrentUser={isCurrentUser}
-          />
+          <UserProfileSection userData={userData} />
         </CardHeader>
         
         <CardContent className="pt-6">
@@ -36,13 +33,12 @@ export const ProfileHeader = ({ userData, onEditClick, isCurrentUser = true }: P
             <p className="text-sm">{userData.bio}</p>
           </div>
           
-          {!isCurrentUser && (
-            <ProfileActionButtons 
-              userData={userData}
-              isCurrentUser={isCurrentUser}
-              onChatOpen={handleChatOpen}
-            />
-          )}
+          <ProfileActionButtons 
+            userData={userData}
+            isCurrentUser={isCurrentUser}
+            onEditClick={onEditClick}
+            onChatOpen={handleChatOpen}
+          />
         </CardContent>
       </Card>
       

@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { TeacherBasicInfoForm } from "./register/TeacherBasicInfoForm";
 import { TeacherGenreSelection } from "./register/TeacherGenreSelection";
 import { TeacherScheduleForm } from "./register/TeacherScheduleForm";
-import { TeacherCurriculumForm } from "./register/TeacherCurriculumForm";
-import { TeacherPricingForm } from "./register/TeacherPricingForm";
 
 export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [name, setName] = useState("");
@@ -17,17 +15,6 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
   const [introduction, setIntroduction] = useState("");
   const [image, setImage] = useState("/placeholder.svg");
   const [musicTypes, setMusicTypes] = useState<string[]>([]);
-  
-  // 커리큘럼 상태 관리
-  const [curriculum, setCurriculum] = useState("");
-  
-  // 레슨 가격 상태 관리
-  const [lessonCount, setLessonCount] = useState<number>(4);
-  const [lessonPrice, setLessonPrice] = useState<number>(100000);
-  
-  // 원포인트 레슨 가격 상태 관리
-  const [onePointPrice, setOnePointPrice] = useState<number>(30000);
-  const [onePointDuration, setOnePointDuration] = useState<number>(10);
   
   // 일정 관리를 위한 상태
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -55,13 +42,6 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
       image,
       musicTypes,
       isProfessional: true, // 모든 선생님을 전문가로 설정
-      curriculum,
-      pricing: {
-        lessonCount,
-        lessonPrice,
-        onePointPrice,
-        onePointDuration
-      },
       schedule: {
         date: selectedDate,
         availableTimes
@@ -106,24 +86,6 @@ export function TeacherRegisterModal({ open, onOpenChange }: { open: boolean; on
             introduction={introduction}
             setIntroduction={setIntroduction}
             image={image}
-          />
-          
-          {/* 커리큘럼 섹션 */}
-          <TeacherCurriculumForm
-            curriculum={curriculum}
-            setCurriculum={setCurriculum}
-          />
-          
-          {/* 레슨 가격 정보 섹션 */}
-          <TeacherPricingForm
-            lessonCount={lessonCount}
-            setLessonCount={setLessonCount}
-            lessonPrice={lessonPrice}
-            setLessonPrice={setLessonPrice}
-            onePointPrice={onePointPrice}
-            setOnePointPrice={setOnePointPrice}
-            onePointDuration={onePointDuration}
-            setOnePointDuration={setOnePointDuration}
           />
           
           {/* 레슨 일정 관리 섹션 */}
