@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
 import { MainNavigation } from "./navigation/MainNavigation";
 import { MobileMenu } from "./navigation/MobileMenu";
 
